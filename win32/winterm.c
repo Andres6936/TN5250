@@ -1901,7 +1901,7 @@ win32_terminal_wndproc( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                           "that was included with this software.\n"
 #endif
 
-#ifdef HAVE_LIBSSL
+#if  !defined(HAVE_LIBSSL)
 #ifdef BINARY_RELEASE
                           "\n"
                           "OpenSSL:\n"

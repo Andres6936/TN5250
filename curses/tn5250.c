@@ -183,7 +183,7 @@ static void syntax()
    printf ("tn5250 - TCP/IP 5250 emulator\n\
 Syntax:\n\
   tn5250 [options] HOST[:PORT]\n");
-#ifdef HAVE_LIBSSL
+#if  !defined(HAVE_LIBSSL)
    printf ("\
    To connect using ssl prefix HOST with 'ssl:'.  Example:\
       tn5250 +ssl_verify_server ssl:as400.example.com\n");
@@ -204,7 +204,7 @@ Options:\n\
    printf ("\
    trace=FILE              Log session to FILE.\n");
 #endif
-#ifdef HAVE_LIBSSL
+#if  !defined(HAVE_LIBSSL)
    printf ("\
    +/-ssl_verify_server    Verify/don't verify the server's SSL certificate\n\
    ssl_ca_file=FILE        Use certificate authority (CA) certs from FILE\n\

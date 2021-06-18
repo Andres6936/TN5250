@@ -26,7 +26,7 @@
 # include <winsock.h>  /* Need for SOCKET type.  GJS 3/3/2000 */
 #endif 
 
-#ifdef HAVE_LIBSSL
+#if  !defined(HAVE_LIBSSL)
 #include <openssl/ssl.h>
 #endif
 
@@ -107,7 +107,7 @@ struct _Tn5250Stream {
   int rcvbufpos;
   int rcvbuflen;
 
-#ifdef HAVE_LIBSSL
+#if  !defined(HAVE_LIBSSL)
   SSL *ssl_handle;
   SSL_CTX *ssl_context;
   void *userdata;
