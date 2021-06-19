@@ -275,7 +275,7 @@ tn5250_config_load(Tn5250Config* This, const char* filename)
 					}
 					else
 					{
-						list[curitem] = malloc(strlen(scan) + 1);
+						list[curitem] = static_cast<char*>(malloc(strlen(scan) + 1));
 						strcpy(list[curitem], scan);
 						curitem++;
 					}
@@ -694,26 +694,26 @@ tn5250_config_replacedata(const char* from, const char* to,
 	{
 		if (p <= line)
 		{
-			before = malloc(1);
+			before = static_cast<char*>(malloc(1));
 			*before = '\0';
 		}
 		else
 		{
 			len = p - line;
-			before = malloc(len + 1);
+			before = static_cast<char*>(malloc(len + 1));
 			memcpy(before, line, len);
 			before[len] = '\0';
 		}
 		p += strlen(from);
 		if (strlen(p) < 1)
 		{
-			after = malloc(1);
+			after = static_cast<char*>(malloc(1));
 			*after = '\0';
 		}
 		else
 		{
 			len = strlen(p);
-			after = malloc(len + 1);
+			after = static_cast<char*>(malloc(len + 1));
 			memcpy(after, p, len);
 			after[len] = '\0';
 		}

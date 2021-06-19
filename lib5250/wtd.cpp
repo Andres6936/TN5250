@@ -557,7 +557,7 @@ tn5250_wtd_context_write_dsfsf(Tn5250WTDContext* This,
 	iter = menubar->menuitem_list;
 	do
 	{
-		minorlength = minorlength + 6 + strlen(iter->text);
+		minorlength = minorlength + 6 + strlen(reinterpret_cast<const char*>(iter->text));
 		iter = iter->next;
 	} while (iter != menubar->menuitem_list);
 
@@ -618,7 +618,7 @@ tn5250_wtd_context_write_dsfsf(Tn5250WTDContext* This,
 	iter = menubar->menuitem_list;
 	do
 	{
-		minorlength = 6 + strlen(iter->text);
+		minorlength = 6 + strlen(reinterpret_cast<const char*>(iter->text));
 		tn5250_wtd_context_putc(This, minorlength);
 		/* Minor type (always 0x10) */
 		tn5250_wtd_context_putc(This, 0x10);
@@ -626,7 +626,7 @@ tn5250_wtd_context_write_dsfsf(Tn5250WTDContext* This,
 		tn5250_wtd_context_putc(This, iter->flagbyte2);
 		tn5250_wtd_context_putc(This, iter->flagbyte3);
 		tn5250_wtd_context_putc(This, 0x00);
-		for (i = 0; i < strlen(iter->text); i++)
+		for (i = 0; i < strlen(reinterpret_cast<const char*>(iter->text)); i++)
 		{
 			tn5250_wtd_context_putc(This, iter->text[i]);
 		}

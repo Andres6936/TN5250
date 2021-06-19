@@ -424,10 +424,11 @@ static void curses_terminal_init(Tn5250Terminal* This)
 	/* Determine if the terminal supports underlining. */
 	if (This->data->have_underscores == 0)
 	{
-		if ((unsigned char*)tgetstr("us", NULL) == NULL)
-			This->data->underscores = 1;
-		else
-			This->data->underscores = 0;
+		This->data->underscores = 1;
+//		if ((unsigned char*)tgetstr("us", NULL) == NULL)
+//			This->data->underscores = 1;
+//		else
+//			This->data->underscores = 0;
 	}
 
 #ifdef USE_OWN_KEY_PARSING
@@ -544,8 +545,8 @@ void tn5250_curses_terminal_display_ruler(Tn5250Terminal* This, int f)
 void tn5250_curses_terminal_set_xterm_font(Tn5250Terminal* This,
 		const char* font80, const char* font132)
 {
-	This->data->font_80 = malloc(strlen(font80) + 6);
-	This->data->font_132 = malloc(strlen(font132) + 6);
+	This->data->font_80 = static_cast<char*>(malloc(strlen(font80) + 6));
+	This->data->font_132 = static_cast<char*>(malloc(strlen(font132) + 6));
 	sprintf(This->data->font_80, "\x1b]50;%s\x07", font80);
 	sprintf(This->data->font_132, "\x1b]50;%s\x07", font132);
 	TN5250_LOG(("font_80 = %s.\n", This->data->font_80));
@@ -1581,8 +1582,8 @@ void curses_terminal_print_screen(Tn5250Terminal* This, Tn5250Display* display)
 	/* allocate enough memory to store the largest possible string that we
 	   could output.   Note that it could be twice the size of the screen
 	   if every single character needs to be escaped... */
-	prttext = malloc((2 * tn5250_display_width(display) *
-					  tn5250_display_height(display)) + 1);
+	prttext = static_cast<char*>(malloc((2 * tn5250_display_width(display) *
+										 tn5250_display_height(display)) + 1));
 
 	out = popen(outcmd, "w");
 	if (out == NULL)

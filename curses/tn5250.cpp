@@ -18,6 +18,7 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+#include "cursesterm.h"
 #include "tn5250-private.h"
 
 Tn5250Session* sess = NULL;

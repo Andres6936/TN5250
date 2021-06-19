@@ -19,12 +19,8 @@
  * Boston, MA 02111-1307 USA
  * 
  */
-#ifndef CURSESTERM_H
-#define CURSESTERM_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#pragma once
 
 #if USE_CURSES
 #ifdef HAVE_NCURSES_H
@@ -38,6 +34,8 @@ extern "C" {
 #include <termcap.h>
 #endif
 
+#include "conf.h"
+#include "terminal.h"
 #include "cursesterm.h"
 
 #endif
@@ -59,9 +57,3 @@ extern void tn5250_curses_terminal_display_ruler(Tn5250Terminal* This,
 extern void tn5250_curses_terminal_load_colorlist(Tn5250Config* config);
 
 #endif
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif                /* CURSESTERM_H */

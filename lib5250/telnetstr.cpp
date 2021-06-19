@@ -173,7 +173,7 @@ static const UCHAR SB_Str_TermType[] = { IAC, SB, TERMINAL_TYPE, SEND, IAC, SE }
 #define TNSB_LOG    log_SB_buf
 #define LOGERROR    logError
 
-static char* getTelOpt(what)
+static char* getTelOpt(unsigned char what)
 {
 	char* wcp;
 	static char wbuf[12];
@@ -915,7 +915,7 @@ static void telnet_stream_host_sb(Tn5250Stream* This, UCHAR* sb_buf,
 			for (i = 0; i < sb_len && sb_buf[i] != IAC; i++)
 				tn5250_buffer_append_byte(&tbuf, sb_buf[i]);
 			tn5250_buffer_append_byte(&tbuf, TN3270E_CONNECT);
-			tn5250_buffer_append_data(&tbuf, dummyname, strlen(dummyname));
+			tn5250_buffer_append_data(&tbuf, reinterpret_cast<unsigned char*>(dummyname), strlen(dummyname));
 			tn5250_buffer_append_byte(&tbuf, IAC);
 			tn5250_buffer_append_byte(&tbuf, SE);
 			rc = TN_SEND(This->sockfd, (char*)tn5250_buffer_data(&tbuf),

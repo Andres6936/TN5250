@@ -118,7 +118,7 @@ int tn5250_daemon(int nochdir, int noclose, int ignsigcld)
 		dup(0);
 	}
 
-	umask(0);
+//	umask(0);
 
 
 	if (ignsigcld)
@@ -279,14 +279,14 @@ Tn5250CharMap* tn5250_char_map_new(const char* map)
 		{
 			if (!strcmp(t->name, "win870"))
 			{
-				t->to_remote_map = (const char*)mapfix;
-				t->to_local_map = (const char*)mapfix2;
+				t->to_remote_map = (const unsigned char*)mapfix;
+				t->to_local_map = (const unsigned char*)mapfix2;
 				TN5250_LOG(("Workaround installed for map \"win870\"\n"));
 			}
 			else if (!strcmp(t->name, "870"))
 			{
-				t->to_remote_map = (const char*)mapfix3;
-				t->to_local_map = (const char*)mapfix4;
+				t->to_remote_map = (const unsigned char*)mapfix3;
+				t->to_local_map = (const unsigned char*)mapfix4;
 				TN5250_LOG(("Workaround installed for map \"870\"\n"));
 			}
 		}
@@ -403,7 +403,7 @@ void tn5250_log_open(const char* fname)
 	/* FIXME: Write $TERM, version, and uname -a to the file. */
 #ifndef WIN32
 	/* Set file mode to 0600 since it may contain passwords. */
-	fchmod(fileno(tn5250_logfile), 0600);
+//	fchmod(fileno(tn5250_logfile), 0600);
 #endif
 	setbuf(tn5250_logfile, NULL);
 }
@@ -637,7 +637,7 @@ int tn5250_setenv(const char* name, const char* value, int overwrite)
 	if (!overwrite)
 		if (getenv(name) != NULL) return 0;
 
-	strval = malloc(strlen(name) + strlen(value) + 2);
+	strval = static_cast<char*>(malloc(strlen(name) + strlen(value) + 2));
 	TN5250_ASSERT(strval != NULL);
 
 	strcpy(strval, name);

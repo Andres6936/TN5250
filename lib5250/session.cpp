@@ -610,7 +610,7 @@ tn5250_session_send_field(Tn5250Session* This, Tn5250Buffer* buf,
 				}
 			}
 
-			data = malloc(size);
+			data = static_cast<unsigned char*>(malloc(size));
 			/* 2nd loop: Copy the data in the temporary buffer */
 			for (iter = field; iter->continuous; iter = iter->next)
 			{
@@ -890,7 +890,7 @@ tn5250_session_write_error_code(Tn5250Session* This, int readop)
 	tn5250_display_set_cursor (This->display,
 			tn5250_display_msg_line(This->display), 0);
 
-	tempmsg = malloc(tn5250_display_width (This->display));
+	tempmsg = static_cast<unsigned char*>(malloc(tn5250_display_width (This->display)));
 	msglen = 0;
 
 	while (1)
@@ -2196,7 +2196,7 @@ tn5250_session_write_display_structured_field(Tn5250Session* This)
      This order is not really implemented.  We just do enough to checking so
      we can handle data stream errors.
    */
-	unsigned char class;
+	unsigned char _class;
 	unsigned char type;
 	unsigned long errorcode;
 	int len;
@@ -2209,9 +2209,9 @@ tn5250_session_write_display_structured_field(Tn5250Session* This)
 
 	/* 3rd byte is the class...  0xd9, I think, always */
 
-	class = tn5250_record_get_byte(This->record);
+	_class = tn5250_record_get_byte(This->record);
 
-	if (class != 0xd9)
+	if (_class != 0xd9)
 	{
 		errorcode = TN5250_NR_INVALID_SF_CLASS_TYPE;
 		tn5250_session_send_error(This, errorcode);
@@ -2231,7 +2231,7 @@ tn5250_session_write_display_structured_field(Tn5250Session* This)
 	case REM_GUI_SCROLL_BAR_FIELD:
 	case DRAW_ERASE_GRID_LINES:
 	case CLEAR_GRID_LINE_BUFFER:
-		TN5250_LOG (("Unhandled WDSF class=%02x type=%02x data=", class, type));
+		TN5250_LOG (("Unhandled WDSF class=%02x type=%02x data=", _class, type));
 		while (len > 0)
 		{
 			TN5250_LOG (("%02x", tn5250_record_get_byte(This->record)));

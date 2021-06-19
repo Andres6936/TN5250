@@ -1,38 +1,38 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.14)
-PROJECT(Tan C)
+PROJECT(Tan CXX)
 
 INCLUDE_DIRECTORIES(.)
 INCLUDE_DIRECTORIES(lib5250)
 
 ADD_LIBRARY(Tan.Protocol
-        lib5250/buffer.c
-        lib5250/conf.c
-        lib5250/dbuffer.c
-        lib5250/debug.c
-        lib5250/display.c
-        lib5250/field.c
-        lib5250/macro.c
-        lib5250/menu.c
-        lib5250/printsession.c
-        lib5250/record.c
-        lib5250/scrollbar.c
-        lib5250/scs.c
-        lib5250/session.c
-        lib5250/sslstream.c
-        lib5250/stream.c
-        lib5250/telnetstr.c
-        lib5250/terminal.c
-        lib5250/utility.c
-        lib5250/version.c
-        lib5250/window.c
-        lib5250/wtd.c
+        lib5250/buffer.cpp
+        lib5250/conf.cpp
+        lib5250/dbuffer.cpp
+        lib5250/debug.cpp
+        lib5250/display.cpp
+        lib5250/field.cpp
+        lib5250/macro.cpp
+        lib5250/menu.cpp
+        lib5250/printsession.cpp
+        lib5250/record.cpp
+        lib5250/scrollbar.cpp
+        lib5250/scs.cpp
+        lib5250/session.cpp
+        lib5250/sslstream.cpp
+        lib5250/stream.cpp
+        lib5250/telnetstr.cpp
+        lib5250/terminal.cpp
+        lib5250/utility.cpp
+        lib5250/version.cpp
+        lib5250/window.cpp
+        lib5250/wtd.cpp
         )
 TARGET_COMPILE_DEFINITIONS(Tan.Protocol PRIVATE -DSYSCONFDIR="tmp")
 TARGET_INCLUDE_DIRECTORIES(Tan.Protocol PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/lib5250/>)
 
 ADD_EXECUTABLE(Tan.App
-        curses/tn5250.c
-        curses/cursesterm.c
+        curses/tn5250.cpp
+        curses/cursesterm.cpp
         )
 TARGET_LINK_LIBRARIES(Tan.App PRIVATE Tan.Protocol)
 

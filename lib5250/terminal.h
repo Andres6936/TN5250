@@ -22,6 +22,8 @@
 #ifndef TERMINAL_H
 #define TERMINAL_H
 
+#include "config.h"
+
 #ifdef __cplusplus
 extern "C"
 {
