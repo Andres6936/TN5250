@@ -1,39 +1,37 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.14)
 PROJECT(Tan CXX)
 
-INCLUDE_DIRECTORIES(.)
-INCLUDE_DIRECTORIES(lib5250)
-
 ADD_LIBRARY(Tan.Protocol
-        lib5250/buffer.cpp
-        lib5250/conf.cpp
-        lib5250/dbuffer.cpp
-        lib5250/debug.cpp
-        lib5250/display.cpp
-        lib5250/field.cpp
-        lib5250/macro.cpp
-        lib5250/menu.cpp
-        lib5250/printsession.cpp
-        lib5250/record.cpp
-        lib5250/scrollbar.cpp
-        lib5250/scs.cpp
-        lib5250/session.cpp
-        lib5250/sslstream.cpp
-        lib5250/stream.cpp
-        lib5250/telnetstr.cpp
-        lib5250/terminal.cpp
-        lib5250/utility.cpp
-        lib5250/version.cpp
-        lib5250/window.cpp
-        lib5250/wtd.cpp
+        Source/Protocol/buffer.cpp
+        Source/Protocol/conf.cpp
+        Source/Protocol/dbuffer.cpp
+        Source/Protocol/debug.cpp
+        Source/Protocol/display.cpp
+        Source/Protocol/field.cpp
+        Source/Protocol/macro.cpp
+        Source/Protocol/menu.cpp
+        Source/Protocol/printsession.cpp
+        Source/Protocol/record.cpp
+        Source/Protocol/scrollbar.cpp
+        Source/Protocol/scs.cpp
+        Source/Protocol/session.cpp
+        Source/Protocol/sslstream.cpp
+        Source/Protocol/stream.cpp
+        Source/Protocol/telnetstr.cpp
+        Source/Protocol/terminal.cpp
+        Source/Protocol/utility.cpp
+        Source/Protocol/version.cpp
+        Source/Protocol/window.cpp
+        Source/Protocol/wtd.cpp
         )
 TARGET_COMPILE_DEFINITIONS(Tan.Protocol PRIVATE -DSYSCONFDIR="tmp")
-TARGET_INCLUDE_DIRECTORIES(Tan.Protocol PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/lib5250/>)
+TARGET_INCLUDE_DIRECTORIES(Tan.Protocol PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Include/Protocol>)
 
 ADD_EXECUTABLE(Tan.App
-        curses/tn5250.cpp
-        curses/cursesterm.cpp
+        Source/Console/tn5250.cpp
+        Source/Console/cursesterm.cpp
         )
+TARGET_INCLUDE_DIRECTORIES(Tan.App PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Include/Console>)
 TARGET_LINK_LIBRARIES(Tan.App PRIVATE Tan.Protocol)
 
 
