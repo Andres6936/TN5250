@@ -20,6 +20,21 @@
 
 #include "tn5250-private.h"
 
+void Tn5250Config::add(const std::string& key, const std::string& value) noexcept
+{
+	this->push_back({key, value});
+}
+
+const std::string Tn5250Config::get(const std::string& key) const noexcept
+{
+	for (const auto& [_key, _value]: *this)
+	{
+		if (key == _key) return _value;
+	}
+
+	return {};
+}
+
 #define MAX_PREFIX_STACK 50
 
 static void tn5250_config_str_destroy(Tn5250ConfigStr* This);

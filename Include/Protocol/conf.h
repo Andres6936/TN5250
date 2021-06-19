@@ -20,8 +20,10 @@
 #ifndef CONF_H
 #define CONF_H
 
+#include <string>
+#include <vector>
+#include <utility>
 #include <cstdint>
-
 
 struct _Tn5250ConfigStr
 {
@@ -33,7 +35,7 @@ struct _Tn5250ConfigStr
 
 typedef struct _Tn5250ConfigStr Tn5250ConfigStr;
 
-struct _Tn5250Config
+struct _Tn5250Config : private std::vector<std::pair<std::string, std::string>>
 {
 	std::int32_t ref = 1;
 	Tn5250ConfigStr* vars = nullptr;
@@ -41,6 +43,10 @@ struct _Tn5250Config
 	// Constructor
 
 	_Tn5250Config() noexcept = default;
+
+	void add(const std::string& key, const std::string& value) noexcept;
+
+	const std::string get(const std::string& key) const noexcept;
 };
 
 typedef struct _Tn5250Config Tn5250Config;
