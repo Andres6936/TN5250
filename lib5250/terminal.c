@@ -22,144 +22,144 @@
 #include "tn5250-private.h"
 
 void
-tn5250_terminal_init (Tn5250Terminal * This)
+tn5250_terminal_init(Tn5250Terminal* This)
 {
-  (*((This)->init)) ((This));
+	(*((This)->init))((This));
 }
 
 void
-tn5250_terminal_term (Tn5250Terminal * This)
+tn5250_terminal_term(Tn5250Terminal* This)
 {
-  (*((This)->term)) ((This));
+	(*((This)->term))((This));
 }
 
 void
-tn5250_terminal_destroy (Tn5250Terminal * This)
+tn5250_terminal_destroy(Tn5250Terminal* This)
 {
-  (*((This)->destroy)) ((This));
+	(*((This)->destroy))((This));
 }
 
 int
-tn5250_terminal_width (Tn5250Terminal * This)
+tn5250_terminal_width(Tn5250Terminal* This)
 {
-  return (*((This)->width)) ((This));
+	return (*((This)->width))((This));
 }
 
 int
-tn5250_terminal_height (Tn5250Terminal * This)
+tn5250_terminal_height(Tn5250Terminal* This)
 {
-  return (*((This)->height)) ((This));
+	return (*((This)->height))((This));
 }
 
 int
-tn5250_terminal_flags (Tn5250Terminal * This)
+tn5250_terminal_flags(Tn5250Terminal* This)
 {
-  return (*((This)->flags)) ((This));
+	return (*((This)->flags))((This));
 }
 
 void
-tn5250_terminal_update (Tn5250Terminal * This, Tn5250Display * d)
+tn5250_terminal_update(Tn5250Terminal* This, Tn5250Display* d)
 {
-  (*((This)->update)) ((This), (d));
+	(*((This)->update))((This), (d));
 }
 
 void
-tn5250_terminal_update_indicators (Tn5250Terminal * This, Tn5250Display * d)
+tn5250_terminal_update_indicators(Tn5250Terminal* This, Tn5250Display* d)
 {
-  (*((This)->update_indicators)) ((This), (d));
+	(*((This)->update_indicators))((This), (d));
 }
 
 int
-tn5250_terminal_waitevent (Tn5250Terminal * This)
+tn5250_terminal_waitevent(Tn5250Terminal* This)
 {
-  return (*((This)->waitevent)) ((This));
+	return (*((This)->waitevent))((This));
 }
 
 int
-tn5250_terminal_getkey (Tn5250Terminal * This)
+tn5250_terminal_getkey(Tn5250Terminal* This)
 {
-  return (*((This)->getkey)) ((This));
+	return (*((This)->getkey))((This));
 }
 
 void
-tn5250_terminal_putkey (Tn5250Terminal * This, Tn5250Display * d,
-			unsigned char k, int y, int x)
+tn5250_terminal_putkey(Tn5250Terminal* This, Tn5250Display* d,
+		unsigned char k, int y, int x)
 {
-  if ((This)->putkey != NULL)
-    {
-      (*((This)->putkey)) ((This), (d), (k), (y), (x));
-    }
+	if ((This)->putkey != NULL)
+	{
+		(*((This)->putkey))((This), (d), (k), (y), (x));
+	}
 }
 
 void
-tn5250_terminal_beep (Tn5250Terminal * This)
+tn5250_terminal_beep(Tn5250Terminal* This)
 {
-  (*((This)->beep)) ((This));
+	(*((This)->beep))((This));
 }
 
 int
-tn5250_terminal_enhanced (Tn5250Terminal * This)
+tn5250_terminal_enhanced(Tn5250Terminal* This)
 {
-  return (This)->enhanced == NULL ? 0 : (*((This)->enhanced)) ((This));
+	return (This)->enhanced == NULL ? 0 : (*((This)->enhanced))((This));
 }
 
 int
-tn5250_terminal_config (Tn5250Terminal * This, Tn5250Config * conf)
+tn5250_terminal_config(Tn5250Terminal* This, Tn5250Config* conf)
 {
-  return ((This)->config == NULL ? 0 : (*((This)->config)) ((This), (conf)));
+	return ((This)->config == NULL ? 0 : (*((This)->config))((This), (conf)));
 }
 
 void
-tn5250_terminal_create_window (Tn5250Terminal * This, Tn5250Display * d,
-			       struct _Tn5250Window * w)
+tn5250_terminal_create_window(Tn5250Terminal* This, Tn5250Display* d,
+		struct _Tn5250Window* w)
 {
-  (*((This)->create_window)) ((This), (d), (w));
+	(*((This)->create_window))((This), (d), (w));
 }
 
 void
-tn5250_terminal_destroy_window (Tn5250Terminal * This, Tn5250Display * d,
-				struct _Tn5250Window * w)
+tn5250_terminal_destroy_window(Tn5250Terminal* This, Tn5250Display* d,
+		struct _Tn5250Window* w)
 {
-  (*((This)->destroy_window)) ((This), (d), (w));
+	(*((This)->destroy_window))((This), (d), (w));
 }
 
 void
-tn5250_terminal_create_scrollbar (Tn5250Terminal * This, Tn5250Display * d,
-				  struct _Tn5250Scrollbar *s)
+tn5250_terminal_create_scrollbar(Tn5250Terminal* This, Tn5250Display* d,
+		struct _Tn5250Scrollbar* s)
 {
-  (*((This)->create_scrollbar)) ((This), (d), (s));
+	(*((This)->create_scrollbar))((This), (d), (s));
 }
 
 void
-tn5250_terminal_destroy_scrollbar (Tn5250Terminal * This, Tn5250Display * d)
+tn5250_terminal_destroy_scrollbar(Tn5250Terminal* This, Tn5250Display* d)
 {
-  (*((This)->destroy_scrollbar)) ((This), (d));
+	(*((This)->destroy_scrollbar))((This), (d));
 }
 
 void
-tn5250_terminal_create_menubar (Tn5250Terminal * This, Tn5250Display * d,
-				struct _Tn5250Menubar *m)
+tn5250_terminal_create_menubar(Tn5250Terminal* This, Tn5250Display* d,
+		struct _Tn5250Menubar* m)
 {
-  (*((This)->create_menubar)) ((This), (d), (m));
+	(*((This)->create_menubar))((This), (d), (m));
 }
 
 void
-tn5250_terminal_destroy_menubar (Tn5250Terminal * This, Tn5250Display * d,
-				 struct _Tn5250Menubar *m)
+tn5250_terminal_destroy_menubar(Tn5250Terminal* This, Tn5250Display* d,
+		struct _Tn5250Menubar* m)
 {
-  (*((This)->destroy_menubar)) ((This), (d), (m));
+	(*((This)->destroy_menubar))((This), (d), (m));
 }
 
 void
-tn5250_terminal_create_menuitem (Tn5250Terminal * This, Tn5250Display * d,
-				 struct _Tn5250Menuitem *i)
+tn5250_terminal_create_menuitem(Tn5250Terminal* This, Tn5250Display* d,
+		struct _Tn5250Menuitem* i)
 {
-  (*((This)->create_menuitem)) ((This), (d), (i));
+	(*((This)->create_menuitem))((This), (d), (i));
 }
 
 void
-tn5250_terminal_destroy_menuitem (Tn5250Terminal * This, Tn5250Display * d,
-				  struct _Tn5250Menuitem *i)
+tn5250_terminal_destroy_menuitem(Tn5250Terminal* This, Tn5250Display* d,
+		struct _Tn5250Menuitem* i)
 {
-  (*((This)->destroy_menuitem)) ((This), (d), (i));
+	(*((This)->destroy_menuitem))((This), (d), (i));
 }

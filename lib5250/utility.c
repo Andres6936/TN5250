@@ -41,10 +41,10 @@ static char mapfix4[256];
  *****/
 void tn5250_closeall(int fd)
 {
-    int fdlimit = sysconf(_SC_OPEN_MAX);
+	int fdlimit = sysconf(_SC_OPEN_MAX);
 
-    while (fd < fdlimit)
-      close(fd++);
+	while (fd < fdlimit)
+		close(fd++);
 }
 
 /*
@@ -55,12 +55,12 @@ void tn5250_closeall(int fd)
 void
 sig_child(int signum)
 {
-  int pid;
-  int status;
+	int pid;
+	int status;
 
-  while( pid = waitpid(-1, &status, WNOHANG) > 0);
+	while (pid = waitpid(-1, &status, WNOHANG) > 0);
 
-  return;
+	return;
 }
 
 /****f* lp5250d/tn5250_daemon
@@ -79,93 +79,101 @@ sig_child(int signum)
  *****/
 int tn5250_daemon(int nochdir, int noclose, int ignsigcld)
 {
-  struct sigaction sa;
+	struct sigaction sa;
 
-    switch (fork())
-    {
-        case 0:  break;
-        case -1: return -1;
-        default: _exit(0);          /* exit the original process */
-    }
+	switch (fork())
+	{
+	case 0:
+		break;
+	case -1:
+		return -1;
+	default:
+		_exit(0);          /* exit the original process */
+	}
 
-    if (setsid() < 0)               /* shoudn't fail */
-      return -1;
+	if (setsid() < 0)               /* shoudn't fail */
+		return -1;
 
-    /* dyke out this switch if you want to acquire a control tty in */
-    /* the future -- not normally advisable for daemons */
+	/* dyke out this switch if you want to acquire a control tty in */
+	/* the future -- not normally advisable for daemons */
 
-    switch (fork())
-    {
-        case 0:  break;
-        case -1: return -1;
-        default: _exit(0);
-    }
+	switch (fork())
+	{
+	case 0:
+		break;
+	case -1:
+		return -1;
+	default:
+		_exit(0);
+	}
 
-    if (!nochdir)
-      chdir("/");
+	if (!nochdir)
+		chdir("/");
 
-    if (!noclose)
-    {
-        tn5250_closeall(0);
-        open("/dev/null",O_RDWR);
-        dup(0); dup(0);
-    }
+	if (!noclose)
+	{
+		tn5250_closeall(0);
+		open("/dev/null", O_RDWR);
+		dup(0);
+		dup(0);
+	}
 
-    umask(0);
+	umask(0);
 
 
-    if(ignsigcld) {
-      sa.sa_handler = sig_child;
-      sigemptyset(&sa.sa_mask);
-      sa.sa_flags = SA_RESTART;
+	if (ignsigcld)
+	{
+		sa.sa_handler = sig_child;
+		sigemptyset(&sa.sa_mask);
+		sa.sa_flags = SA_RESTART;
 
 #ifdef SIGCHLD
-      sigaction(SIGCHLD, &sa, NULL);
+		sigaction(SIGCHLD, &sa, NULL);
 #else
 #ifdef SIGCLD
-      sigaction(SIGCLD, &sa, NULL);
+		sigaction(SIGCLD, &sa, NULL);
 #endif
 #endif
-    }
+	}
 
-    return 0;
+	return 0;
 }
 
 #endif  /* ifndef WIN32 */
 
-int 
-tn5250_make_socket (unsigned short int port)
+int
+tn5250_make_socket(unsigned short int port)
 {
-  int sock;
-  int on = 1;
-  struct sockaddr_in name;
-  u_long ioctlarg = 0;
+	int sock;
+	int on = 1;
+	struct sockaddr_in name;
+	u_long ioctlarg = 0;
 
-  /* Create the socket. */
-  sock = socket (PF_INET, SOCK_STREAM, 0);
-  if (sock < 0)
-    {
+	/* Create the socket. */
+	sock = socket(PF_INET, SOCK_STREAM, 0);
+	if (sock < 0)
+	{
 #ifndef WIN32
-      syslog(LOG_INFO, "socket: %s\n", strerror(errno));
+		syslog(LOG_INFO, "socket: %s\n", strerror(errno));
 #endif
-      exit (EXIT_FAILURE);
-    }
+		exit(EXIT_FAILURE);
+	}
 
-  /* Give the socket a name. */
-  name.sin_family = AF_INET;
-  name.sin_port = htons (port);
-  name.sin_addr.s_addr = htonl (INADDR_ANY);
-  setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (const char *)&on, sizeof(on));
-  TN_IOCTL(sock, FIONBIO, &ioctlarg);
-  if (bind (sock, (struct sockaddr *) &name, sizeof (name)) < 0)
-    {
+	/* Give the socket a name. */
+	name.sin_family = AF_INET;
+	name.sin_port = htons(port);
+	name.sin_addr.s_addr = htonl(INADDR_ANY);
+	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (const char*)&on, sizeof(on));
+	TN_IOCTL(sock, FIONBIO, &ioctlarg);
+	if (bind(sock, (struct sockaddr*)&name, sizeof(name)) < 0)
+	{
 #ifndef WIN32
-      syslog(LOG_INFO, "bind: %s\n", strerror(errno));
+		syslog(LOG_INFO, "bind: %s\n", strerror(errno));
 #endif
-      exit (EXIT_FAILURE);
-    }
+		exit(EXIT_FAILURE);
+	}
 
-  return sock;
+	return sock;
 }
 
 
@@ -179,9 +187,9 @@ tn5250_make_socket (unsigned short int port)
  * DESCRIPTION
  *    Translate the specified character from local to remote.
  *****/
-Tn5250Char tn5250_char_map_to_remote(Tn5250CharMap *map, Tn5250Char ascii)
+Tn5250Char tn5250_char_map_to_remote(Tn5250CharMap* map, Tn5250Char ascii)
 {
-   return map->to_remote_map[ascii];
+	return map->to_remote_map[ascii];
 }
 
 /****f* lib5250/tn5250_char_map_to_local
@@ -194,16 +202,17 @@ Tn5250Char tn5250_char_map_to_remote(Tn5250CharMap *map, Tn5250Char ascii)
  * DESCRIPTION
  *    Translate the specified character from remote character to local.
  *****/
-Tn5250Char tn5250_char_map_to_local(Tn5250CharMap *map, Tn5250Char ebcdic)
+Tn5250Char tn5250_char_map_to_local(Tn5250CharMap* map, Tn5250Char ebcdic)
 {
-   switch (ebcdic) {
-   case 0x1C:
-      return '*'; /* This should be an overstriken asterisk (DUP) */
-   case 0:
-      return ' ';
-   default:
-      return map->to_local_map[ebcdic];
-   }
+	switch (ebcdic)
+	{
+	case 0x1C:
+		return '*'; /* This should be an overstriken asterisk (DUP) */
+	case 0:
+		return ' ';
+	default:
+		return map->to_local_map[ebcdic];
+	}
 }
 
 /****f* lib5250/tn5250_char_map_new
@@ -219,86 +228,91 @@ Tn5250Char tn5250_char_map_to_local(Tn5250CharMap *map, Tn5250Char ebcdic)
  *    Translation maps are currently statically allocated, although you should
  *    call tn5250_char_map_destroy (a no-op) for future compatibility.
  *****/
-Tn5250CharMap *tn5250_char_map_new (const char *map)
+Tn5250CharMap* tn5250_char_map_new(const char* map)
 {
-   Tn5250CharMap *t;
+	Tn5250CharMap* t;
 
 /* XXX: HACK: These characters were reported wrong in transmaps.h.
         Since that's a generated file, I'm overriding them here -SCK */
 
-   TN5250_LOG(("tn5250_char_map_new: map = \"%s\"\n", map));
+	TN5250_LOG(("tn5250_char_map_new: map = \"%s\"\n", map));
 
-   if (!strcmp(map, "870") || !strcmp(map, "win870")) {
+	if (!strcmp(map, "870") || !strcmp(map, "win870"))
+	{
 
-      TN5250_LOG(("tn5250_char_map_new: Installing 870 workaround\n"));
+		TN5250_LOG(("tn5250_char_map_new: Installing 870 workaround\n"));
 
-      memcpy(mapfix, windows_1250_to_ibm870, sizeof(mapfix));
-      memcpy(mapfix2, ibm870_to_windows_1250, sizeof(mapfix2));
-      memcpy(mapfix3, iso_8859_2_to_ibm870, sizeof(mapfix3));
-      memcpy(mapfix4, ibm870_to_iso_8859_2, sizeof(mapfix4));
+		memcpy(mapfix, windows_1250_to_ibm870, sizeof(mapfix));
+		memcpy(mapfix2, ibm870_to_windows_1250, sizeof(mapfix2));
+		memcpy(mapfix3, iso_8859_2_to_ibm870, sizeof(mapfix3));
+		memcpy(mapfix4, ibm870_to_iso_8859_2, sizeof(mapfix4));
 
-      mapfix[142] = 184;
-      mapfix[143] = 185;
-      mapfix[158] = 182;
-      mapfix[159] = 183;
-      mapfix[163] = 186;
-      mapfix[202] = 114;
-      mapfix[234] = 82;
+		mapfix[142] = 184;
+		mapfix[143] = 185;
+		mapfix[158] = 182;
+		mapfix[159] = 183;
+		mapfix[163] = 186;
+		mapfix[202] = 114;
+		mapfix[234] = 82;
 
-      mapfix2[82] = 234;
-      mapfix2[114] = 202;
-      mapfix2[182] = 158;
-      mapfix2[183] = 159;
-      mapfix2[184] = 142;
-      mapfix2[185] = 143;
-      mapfix2[186] = 163;
+		mapfix2[82] = 234;
+		mapfix2[114] = 202;
+		mapfix2[182] = 158;
+		mapfix2[183] = 159;
+		mapfix2[184] = 142;
+		mapfix2[185] = 143;
+		mapfix2[186] = 163;
 
-      mapfix3[163] = 186;
-      mapfix3[172] = 185;
-      mapfix3[188] = 183;
-      mapfix3[202] = 114;
-      mapfix3[234] = 82;
+		mapfix3[163] = 186;
+		mapfix3[172] = 185;
+		mapfix3[188] = 183;
+		mapfix3[202] = 114;
+		mapfix3[234] = 82;
 
-      mapfix4[82] = 234;
-      mapfix4[114] = 202;
-      mapfix4[183] = 188;
-      mapfix4[185] = 172;
-      mapfix4[186] = 163;
+		mapfix4[82] = 234;
+		mapfix4[114] = 202;
+		mapfix4[183] = 188;
+		mapfix4[185] = 172;
+		mapfix4[186] = 163;
 
-      for (t = tn5250_transmaps;  t->name; t++) {
-          if (!strcmp(t->name, "win870")) {
-               t->to_remote_map = (const char *)mapfix;
-               t->to_local_map = (const char *)mapfix2;
-               TN5250_LOG(("Workaround installed for map \"win870\"\n"));
-          }
-          else if (!strcmp(t->name, "870")) {
-               t->to_remote_map = (const char *)mapfix3;
-               t->to_local_map = (const char *)mapfix4;
-               TN5250_LOG(("Workaround installed for map \"870\"\n"));
-          }
-      }
-   }
-   
-   /* Under Windows, we'll try the "winXXX" maps first, then fall back 
-      to the standard (unix) versions */
+		for (t = tn5250_transmaps; t->name; t++)
+		{
+			if (!strcmp(t->name, "win870"))
+			{
+				t->to_remote_map = (const char*)mapfix;
+				t->to_local_map = (const char*)mapfix2;
+				TN5250_LOG(("Workaround installed for map \"win870\"\n"));
+			}
+			else if (!strcmp(t->name, "870"))
+			{
+				t->to_remote_map = (const char*)mapfix3;
+				t->to_local_map = (const char*)mapfix4;
+				TN5250_LOG(("Workaround installed for map \"870\"\n"));
+			}
+		}
+	}
+
+	/* Under Windows, we'll try the "winXXX" maps first, then fall back
+	   to the standard (unix) versions */
 #ifdef WIN32
-   {
-      char winmap[10];
-      _snprintf(winmap, sizeof(winmap)-1, "win%s", map);
-      for (t = tn5250_transmaps; t->name; t++) {
-         if (strcmp(t->name, winmap) == 0) {
-              TN5250_LOG(("Using map %s\n", t->name));
-       	      return t;
-         }
-      }
-   }
+	{
+	   char winmap[10];
+	   _snprintf(winmap, sizeof(winmap)-1, "win%s", map);
+	   for (t = tn5250_transmaps; t->name; t++) {
+		  if (strcmp(t->name, winmap) == 0) {
+			   TN5250_LOG(("Using map %s\n", t->name));
+				  return t;
+		  }
+	   }
+	}
 #endif
 
-   for (t = tn5250_transmaps; t->name; t++) {
-      if (strcmp(t->name, map) == 0)
-	 return t;
-   }
-   return NULL;
+	for (t = tn5250_transmaps; t->name; t++)
+	{
+		if (strcmp(t->name, map) == 0)
+			return t;
+	}
+	return NULL;
 }
 
 /****f* lib5250/tn5250_char_map_destroy
@@ -311,9 +325,9 @@ Tn5250CharMap *tn5250_char_map_new (const char *map)
  * DESCRIPTION
  *    Frees the character map's resources.
  *****/
-void tn5250_char_map_destroy (Tn5250CharMap *map)
+void tn5250_char_map_destroy(Tn5250CharMap* map)
 {
-   /* NOOP */
+	/* NOOP */
 }
 
 /****f* lib5250/tn5250_char_map_printable_p
@@ -331,19 +345,19 @@ void tn5250_char_map_destroy (Tn5250CharMap *map)
  *    character, a NUL, or a few other odds and ends.
  * SOURCE
  */
-int tn5250_char_map_printable_p(Tn5250CharMap *map, Tn5250Char data)
+int tn5250_char_map_printable_p(Tn5250CharMap* map, Tn5250Char data)
 {
-   switch (data) 
-     {
-       /* 
-	  Ideographic Shift-In and Shift-Out. 
-	  case 0x0e: 
-	  case 0x0f: 
-       */
-     default:
-       break;
-     }
-   return 1;
+	switch (data)
+	{
+		/*
+	   Ideographic Shift-In and Shift-Out.
+	   case 0x0e:
+	   case 0x0f:
+		*/
+	default:
+		break;
+	}
+	return 1;
 }
 /*******/
 
@@ -358,13 +372,13 @@ int tn5250_char_map_printable_p(Tn5250CharMap *map, Tn5250Char data)
  * DESCRIPTION
  *    Determines whether the character is a 5250 attribute.
  *****/
-int tn5250_char_map_attribute_p(Tn5250CharMap *map, Tn5250Char data)
+int tn5250_char_map_attribute_p(Tn5250CharMap* map, Tn5250Char data)
 {
-   return ((data & 0xE0) == 0x20);
+	return ((data & 0xE0) == 0x20);
 }
 
 #ifndef NDEBUG
-FILE *tn5250_logfile = NULL;
+FILE* tn5250_logfile = NULL;
 
 /****f* lib5250/tn5250_log_open
  * NAME
@@ -376,21 +390,22 @@ FILE *tn5250_logfile = NULL;
  * DESCRIPTION
  *    Opens the debug tracefile for this session.
  *****/
-void tn5250_log_open(const char *fname)
+void tn5250_log_open(const char* fname)
 {
-   if (tn5250_logfile != NULL)
-      fclose(tn5250_logfile);
-   tn5250_logfile = fopen(fname, "w");
-   if (tn5250_logfile == NULL) {
-      perror(fname);
-      exit(1);
-   }
-   /* FIXME: Write $TERM, version, and uname -a to the file. */
+	if (tn5250_logfile != NULL)
+		fclose(tn5250_logfile);
+	tn5250_logfile = fopen(fname, "w");
+	if (tn5250_logfile == NULL)
+	{
+		perror(fname);
+		exit(1);
+	}
+	/* FIXME: Write $TERM, version, and uname -a to the file. */
 #ifndef WIN32
-   /* Set file mode to 0600 since it may contain passwords. */
-   fchmod(fileno(tn5250_logfile), 0600);
+	/* Set file mode to 0600 since it may contain passwords. */
+	fchmod(fileno(tn5250_logfile), 0600);
 #endif
-   setbuf(tn5250_logfile, NULL);
+	setbuf(tn5250_logfile, NULL);
 }
 
 /****f* lib5250/tn5250_log_close
@@ -405,10 +420,11 @@ void tn5250_log_open(const char *fname)
  *****/
 void tn5250_log_close()
 {
-   if (tn5250_logfile != NULL) {
-      fclose(tn5250_logfile);
-      tn5250_logfile = NULL;
-   }
+	if (tn5250_logfile != NULL)
+	{
+		fclose(tn5250_logfile);
+		tn5250_logfile = NULL;
+	}
 }
 
 /****f* lib5250/tn5250_log_printf
@@ -422,14 +438,15 @@ void tn5250_log_close()
  *    This is an internal function called by the TN5250_LOG() macro.  Use
  *    the macro instead, since it can be conditionally compiled.
  *****/
-void tn5250_log_printf(const char *fmt,...)
+void tn5250_log_printf(const char* fmt, ...)
 {
-   va_list vl;
-   if (tn5250_logfile != NULL) {
-      va_start(vl, fmt);
-      vfprintf(tn5250_logfile, fmt, vl);
-      va_end(vl);
-   }
+	va_list vl;
+	if (tn5250_logfile != NULL)
+	{
+		va_start(vl, fmt);
+		vfprintf(tn5250_logfile, fmt, vl);
+		va_end(vl);
+	}
 }
 
 /****f* lib5250/tn5250_log_assert
@@ -446,15 +463,17 @@ void tn5250_log_printf(const char *fmt,...)
  *    This is an internal function called by the TN5250_ASSERT() macro.  Use
  *    the macro instead, since it can be conditionally compiled.
  *****/
-void tn5250_log_assert(int val, char const *expr, char const *file, int line)
+void tn5250_log_assert(int val, char const* expr, char const* file, int line)
 {
-   if (!val) {
-      tn5250_log_printf("\nAssertion %s failed at %s, line %d.\n", expr, file, line);
-      fprintf (stderr,"\nAssertion %s failed at %s, line %d.\n", expr, file, line);
-      abort ();
-   }
+	if (!val)
+	{
+		tn5250_log_printf("\nAssertion %s failed at %s, line %d.\n", expr, file, line);
+		fprintf(stderr, "\nAssertion %s failed at %s, line %d.\n", expr, file, line);
+		abort();
+	}
 }
-#endif				/* NDEBUG */
+
+#endif                /* NDEBUG */
 
 
 /****f* lib5250/tn5250_parse_color
@@ -472,64 +491,127 @@ void tn5250_log_assert(int val, char const *expr, char const *file, int line)
  *    This loads a color from the TN5250 config object, and then
  *    parses it into it's red, green, blue components.
  *****/
-int tn5250_parse_color(Tn5250Config *config, const char *colorname, 
-                        int *red, int *green, int *blue) {
+int tn5250_parse_color(Tn5250Config* config, const char* colorname,
+		int* red, int* green, int* blue)
+{
 
-    const char *p;
-    char colorspec[16];
-    int r, g, b;
+	const char* p;
+	char colorspec[16];
+	int r, g, b;
 
-    if ((p=tn5250_config_get(config, colorname)) == NULL) {
-        return -1;
-    }
+	if ((p = tn5250_config_get(config, colorname)) == NULL)
+	{
+		return -1;
+	}
 
-    strncpy(colorspec, p, sizeof(colorspec));
-    colorspec[sizeof(colorspec)-1] = '\0';
+	strncpy(colorspec, p, sizeof(colorspec));
+	colorspec[sizeof(colorspec) - 1] = '\0';
 
-    if (*colorspec != '#') {
-          if (!strcasecmp(colorspec, "white")) {
-               r = 255; g = 255; b = 255;
-          } else if (!strcasecmp(colorspec, "yellow")) {
-               r = 255; g = 255; b = 0;
-          } else if (!strcasecmp(colorspec, "lightmagenta")) {
-               r = 255; g = 0;   b = 255;
-          } else if (!strcasecmp(colorspec, "lightred")) {
-               r = 255; g = 0;   b = 0;
-          } else if (!strcasecmp(colorspec, "lightcyan")) {
-               r = 0;   g = 255; b = 255;
-          } else if (!strcasecmp(colorspec, "lightgreen")) {
-               r = 0;   g = 255; b = 0;
-          } else if (!strcasecmp(colorspec, "lightblue")) {
-               r = 0;   g = 0;   b = 255;
-          } else if (!strcasecmp(colorspec, "lightgray")) {
-               r = 192; g = 192; b = 192;
-          } else if (!strcasecmp(colorspec, "gray")) {
-               r = 128; g = 128; b = 128;
-          } else if (!strcasecmp(colorspec, "brown")) {
-               r = 128; g = 128; b = 0;
-          } else if (!strcasecmp(colorspec, "red")) {
-               r = 128; g = 0;   b = 0;
-          } else if (!strcasecmp(colorspec, "cyan")) {
-               r = 0;   g = 128; b = 128;
-          } else if (!strcasecmp(colorspec, "green")) {
-               r = 0;   g = 128; b = 0;
-          } else if (!strcasecmp(colorspec, "blue")) {
-               r = 0;   g = 0;   b = 128;
-          } else if (!strcasecmp(colorspec, "black")) {
-               r = 0;   g = 0;   b = 0;
-          }
-    }
-    else {
-         if (strlen(colorspec) != 7)
-              return -1;
-         if (sscanf(&colorspec[1], "%02x%02x%02x", &r, &g, &b)!=3) 
-              return -1;
-    }
+	if (*colorspec != '#')
+	{
+		if (!strcasecmp(colorspec, "white"))
+		{
+			r = 255;
+			g = 255;
+			b = 255;
+		}
+		else if (!strcasecmp(colorspec, "yellow"))
+		{
+			r = 255;
+			g = 255;
+			b = 0;
+		}
+		else if (!strcasecmp(colorspec, "lightmagenta"))
+		{
+			r = 255;
+			g = 0;
+			b = 255;
+		}
+		else if (!strcasecmp(colorspec, "lightred"))
+		{
+			r = 255;
+			g = 0;
+			b = 0;
+		}
+		else if (!strcasecmp(colorspec, "lightcyan"))
+		{
+			r = 0;
+			g = 255;
+			b = 255;
+		}
+		else if (!strcasecmp(colorspec, "lightgreen"))
+		{
+			r = 0;
+			g = 255;
+			b = 0;
+		}
+		else if (!strcasecmp(colorspec, "lightblue"))
+		{
+			r = 0;
+			g = 0;
+			b = 255;
+		}
+		else if (!strcasecmp(colorspec, "lightgray"))
+		{
+			r = 192;
+			g = 192;
+			b = 192;
+		}
+		else if (!strcasecmp(colorspec, "gray"))
+		{
+			r = 128;
+			g = 128;
+			b = 128;
+		}
+		else if (!strcasecmp(colorspec, "brown"))
+		{
+			r = 128;
+			g = 128;
+			b = 0;
+		}
+		else if (!strcasecmp(colorspec, "red"))
+		{
+			r = 128;
+			g = 0;
+			b = 0;
+		}
+		else if (!strcasecmp(colorspec, "cyan"))
+		{
+			r = 0;
+			g = 128;
+			b = 128;
+		}
+		else if (!strcasecmp(colorspec, "green"))
+		{
+			r = 0;
+			g = 128;
+			b = 0;
+		}
+		else if (!strcasecmp(colorspec, "blue"))
+		{
+			r = 0;
+			g = 0;
+			b = 128;
+		}
+		else if (!strcasecmp(colorspec, "black"))
+		{
+			r = 0;
+			g = 0;
+			b = 0;
+		}
+	}
+	else
+	{
+		if (strlen(colorspec) != 7)
+			return -1;
+		if (sscanf(&colorspec[1], "%02x%02x%02x", &r, &g, &b) != 3)
+			return -1;
+	}
 
-    *red = r;
-    *green = g;
-    *blue = b;
-    return 0;
+	*red = r;
+	*green = g;
+	*blue = b;
+	return 0;
 }
 
 
@@ -546,27 +628,28 @@ int tn5250_parse_color(Tn5250Config *config, const char *colorname,
  *    This works just like setenv(3), but setenv(3) doesn't
  *    exist on all systems. 
  *****/
-int tn5250_setenv(const char *name, const char *value, int overwrite) {
+int tn5250_setenv(const char* name, const char* value, int overwrite)
+{
 
-     char *strval;
-     int ret;
+	char* strval;
+	int ret;
 
-     if (!overwrite) 
-         if (getenv(name)!=NULL) return 0;
+	if (!overwrite)
+		if (getenv(name) != NULL) return 0;
 
-     strval = malloc(strlen(name)+strlen(value)+2);
-     TN5250_ASSERT(strval!=NULL);
+	strval = malloc(strlen(name) + strlen(value) + 2);
+	TN5250_ASSERT(strval != NULL);
 
-     strcpy(strval, name);
-     strcat(strval, "=");
-     strcat(strval, value);
+	strcpy(strval, name);
+	strcat(strval, "=");
+	strcat(strval, value);
 
-     ret = putenv(strval);
+	ret = putenv(strval);
 
-     /* free(strval)   on some systems, it continues to use our memory,
-                       so we should not free it...                    */
+	/* free(strval)   on some systems, it continues to use our memory,
+					  so we should not free it...                    */
 
-     return ret;
+	return ret;
 }
 
 /****f* lib5250/tn5250_run_cmd
@@ -581,38 +664,42 @@ int tn5250_setenv(const char *name, const char *value, int overwrite) {
  *    Run a command (submitted to us by the AS/400)
  *****/
 #ifndef WIN32
-int tn5250_run_cmd(const char *cmd, int wait) {
 
-    struct sigaction sa;
-    int sig;
-    int cpid;
+int tn5250_run_cmd(const char* cmd, int wait)
+{
 
-    sa.sa_handler = sig_child;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = SA_RESTART;
+	struct sigaction sa;
+	int sig;
+	int cpid;
+
+	sa.sa_handler = sig_child;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
 
 #ifdef SIGCHLD
-    sigaction(SIGCHLD, &sa, NULL);
+	sigaction(SIGCHLD, &sa, NULL);
 #else
 #ifdef SIGCLD
-    sigaction(SIGCLD, &sa, NULL);
+	sigaction(SIGCLD, &sa, NULL);
 #endif
 #endif
 
-    switch ( cpid = fork() ) {
-        case -1:
-           return -1;
+	switch (cpid = fork())
+	{
+	case -1:
+		return -1;
 
-        case 0:
-           system(cmd);
-           _exit(0);
-    }
+	case 0:
+		system(cmd);
+		_exit(0);
+	}
 
-    if (wait) 
-      waitpid(cpid, NULL, 0);
+	if (wait)
+		waitpid(cpid, NULL, 0);
 
-    return 0;
+	return 0;
 }
+
 #endif
 
 #ifdef WIN32
@@ -628,19 +715,19 @@ int tn5250_run_cmd(const char *cmd, int wait) {
 
   if (rc == -1) {
 
-     tempcmd = malloc(strlen(prefix) + strlen(cmd) + 1);
-     strcpy(tempcmd, prefix);
-     strcat(tempcmd, cmd);
+	 tempcmd = malloc(strlen(prefix) + strlen(cmd) + 1);
+	 strcpy(tempcmd, prefix);
+	 strcat(tempcmd, cmd);
 
-     rc = win32_run_process(tempcmd, wait);
-     free(tempcmd);
+	 rc = win32_run_process(tempcmd, wait);
+	 free(tempcmd);
   }
 
   return rc;
 }
 
 int win32_run_process(const char *cmd, int wait) {
-    
+
   STARTUPINFO si;
   PROCESS_INFORMATION pi;
 
@@ -649,24 +736,24 @@ int win32_run_process(const char *cmd, int wait) {
   si.cb = sizeof(si);
 
   if ( !CreateProcess( NULL,            /* no module name */
-                       (LPTSTR)cmd,     /* command line */
-                       NULL,            /* don't inherit process bandle */
-                       NULL,            /* don't inherit thread handle */
-                       FALSE,           /* no inheritance, by golly! */
-                       0,               /* flags */
-                       NULL,            /* use parent's environment */
-                       NULL,            /* use parent's directory */
-                       &si,             /* STARTUPINFO */
-                       &pi )) {         /* PROCESS_INFORMATION */
-       return -1;
+					   (LPTSTR)cmd,     /* command line */
+					   NULL,            /* don't inherit process bandle */
+					   NULL,            /* don't inherit thread handle */
+					   FALSE,           /* no inheritance, by golly! */
+					   0,               /* flags */
+					   NULL,            /* use parent's environment */
+					   NULL,            /* use parent's directory */
+					   &si,             /* STARTUPINFO */
+					   &pi )) {         /* PROCESS_INFORMATION */
+	   return -1;
   }
 
   if (wait)
-     WaitForSingleObject( pi.hProcess, INFINITE );
+	 WaitForSingleObject( pi.hProcess, INFINITE );
 
   CloseHandle(pi.hProcess);
   CloseHandle(pi.hThread);
   return 0;
 }
-    
+
 #endif /* ifdef WIN32 */

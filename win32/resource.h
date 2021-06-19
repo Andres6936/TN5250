@@ -22,7 +22,7 @@
 
 /* Windows resources used in tn5250-win.c, winterm.c & lp5250d-win.c */
 
-#define IDI_TN5250_ICON	200
+#define IDI_TN5250_ICON    200
 #define IDM_APP_EXIT    40001
 #define IDM_APP_ABOUT   40002
 #define IDM_EDIT_COPY   40003

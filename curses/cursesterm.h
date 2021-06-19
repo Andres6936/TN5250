@@ -30,28 +30,38 @@ extern "C" {
 #ifdef HAVE_NCURSES_H
 #include <ncurses.h>
 #else
+
 #include <curses.h>
+
 #endif
 #ifdef HAVE_TERMCAP_H
 #include <termcap.h>
 #endif
+
 #include "cursesterm.h"
+
 #endif
 
 #ifdef USE_CURSES
-   extern Tn5250Terminal /*@null@*/ /*@only@*/ *tn5250_curses_terminal_new(void);
-   extern void tn5250_curses_terminal_use_underscores (Tn5250Terminal *This,
-						       int use_underscores);
-   extern void tn5250_curses_terminal_set_xterm_font (Tn5250Terminal *This,
-                                                       const char *font80,
-                                                       const char *font132);
-   extern void tn5250_curses_terminal_display_ruler (Tn5250Terminal *This,
-                                                       int display_ruler);
-   extern void tn5250_curses_terminal_load_colorlist (Tn5250Config *config);
+
+extern Tn5250Terminal /*@null@*/ /*@only@*/ * tn5250_curses_terminal_new(void);
+
+extern void tn5250_curses_terminal_use_underscores(Tn5250Terminal* This,
+		int use_underscores);
+
+extern void tn5250_curses_terminal_set_xterm_font(Tn5250Terminal* This,
+		const char* font80,
+		const char* font132);
+
+extern void tn5250_curses_terminal_display_ruler(Tn5250Terminal* This,
+		int display_ruler);
+
+extern void tn5250_curses_terminal_load_colorlist(Tn5250Config* config);
+
 #endif
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif				/* CURSESTERM_H */
+#endif                /* CURSESTERM_H */

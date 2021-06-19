@@ -20,6 +20,7 @@
  * 
  */
 #define _TN5250_TERMINAL_PRIVATE_DEFINED
+
 #include "tn5250-private.h"
 #include "slangterm.h"
 
@@ -85,7 +86,7 @@ static int slang_terminal_flags(Tn5250Terminal * This);
 static void slang_terminal_update(Tn5250Terminal * This,
 				   Tn5250Display * display);
 static void slang_terminal_update_indicators(Tn5250Terminal * This,
-					      Tn5250Display *display);
+						  Tn5250Display *display);
 static int slang_terminal_waitevent(Tn5250Terminal * This);
 static int slang_terminal_getkey(Tn5250Terminal * This);
 static void slang_terminal_beep(Tn5250Terminal * This);
@@ -113,12 +114,12 @@ Tn5250Terminal *tn5250_slang_terminal_new()
 {
    Tn5250Terminal *r = tn5250_new(Tn5250Terminal, 1);
    if (r == NULL)
-      return NULL;
+	  return NULL;
 
    r->data = tn5250_new(struct _Tn5250TerminalPrivate, 1);
    if (r->data == NULL) {
-      free(r);
-      return NULL;
+	  free(r);
+	  return NULL;
    }
 
    r->data->quit_flag = 0;
@@ -149,7 +150,7 @@ Tn5250Terminal *tn5250_slang_terminal_new()
  * SYNOPSIS
  *    slang_terminal_init (This);
  * INPUTS
- *    Tn5250Terminal *     This       - 
+ *    Tn5250Terminal *     This       -
  * DESCRIPTION
  *    DOCUMENT ME!!!
  *****/
@@ -157,17 +158,17 @@ static void slang_terminal_init(Tn5250Terminal * This)
 {
    SLtt_get_terminfo ();
    if (-1 == SLkp_init ()) {
-      SLang_doerror ("SLkp_init failed.");
-      exit (255);
+	  SLang_doerror ("SLkp_init failed.");
+	  exit (255);
    }
    if (-1 == SLang_init_tty (K_CTRL('Q'), 1, 0)) {
-      SLang_doerror ("SLang_init_tty failed.");
-      exit (255);
+	  SLang_doerror ("SLang_init_tty failed.");
+	  exit (255);
    }
    SLang_set_abort_signal (NULL);
    if (-1 == SLsmg_init_smg ()) {
-      SLang_doerror ("SLsmg_init_smg failed.");
-      exit (255);
+	  SLang_doerror ("SLsmg_init_smg failed.");
+	  exit (255);
    }
 
    SLtt_set_color_fgbg (1, SLSMG_COLOR_BRIGHT_WHITE, SLSMG_COLOR_BLACK);
@@ -190,7 +191,7 @@ static void slang_terminal_init(Tn5250Terminal * This)
  * SYNOPSIS
  *    slang_terminal_term (This);
  * INPUTS
- *    Tn5250Terminal *     This       - 
+ *    Tn5250Terminal *     This       -
  * DESCRIPTION
  *    DOCUMENT ME!!!
  *****/
@@ -206,14 +207,14 @@ static void slang_terminal_term(Tn5250Terminal * This)
  * SYNOPSIS
  *    slang_terminal_destroy (This);
  * INPUTS
- *    Tn5250Terminal *     This       - 
+ *    Tn5250Terminal *     This       -
  * DESCRIPTION
  *    DOCUMENT ME!!!
  *****/
 static void slang_terminal_destroy(Tn5250Terminal * This)
 {
    if (This->data != NULL)
-      free(This->data);
+	  free(This->data);
    free(This);
 }
 
@@ -223,7 +224,7 @@ static void slang_terminal_destroy(Tn5250Terminal * This)
  * SYNOPSIS
  *    ret = slang_terminal_width (This);
  * INPUTS
- *    Tn5250Terminal  *    This       - 
+ *    Tn5250Terminal  *    This       -
  * DESCRIPTION
  *    DOCUMENT ME!!!
  *****/
@@ -239,7 +240,7 @@ static int slang_terminal_width(Tn5250Terminal /*@unused@*/ * This)
  * SYNOPSIS
  *    ret = slang_terminal_height (This);
  * INPUTS
- *    Tn5250Terminal  *    This       - 
+ *    Tn5250Terminal  *    This       -
  * DESCRIPTION
  *    DOCUMENT ME!!!
  *****/
@@ -255,7 +256,7 @@ static int slang_terminal_height(Tn5250Terminal /*@unused@*/ * This)
  * SYNOPSIS
  *    ret = slang_terminal_flags (This);
  * INPUTS
- *    Tn5250Terminal  *    This       - 
+ *    Tn5250Terminal  *    This       -
  * DESCRIPTION
  *    DOCUMENT ME!!!
  *****/
@@ -263,7 +264,7 @@ static int slang_terminal_flags(Tn5250Terminal /*@unused@*/ * This)
 {
    int f = 0;
    if (SLtt_Use_Ansi_Colors)
-      f |= TN5250_TERMINAL_HAS_COLOR;
+	  f |= TN5250_TERMINAL_HAS_COLOR;
    return f;
 }
 
@@ -273,8 +274,8 @@ static int slang_terminal_flags(Tn5250Terminal /*@unused@*/ * This)
  * SYNOPSIS
  *    slang_terminal_update (This, display);
  * INPUTS
- *    Tn5250Terminal *     This       - 
- *    Tn5250Display *      display    - 
+ *    Tn5250Terminal *     This       -
+ *    Tn5250Display *      display    -
  * DESCRIPTION
  *    DOCUMENT ME!!!
  *****/
@@ -286,57 +287,57 @@ static void slang_terminal_update(Tn5250Terminal * This, Tn5250Display * display
    unsigned char a = 0x20, c;
 
    if (This->data->last_width != tn5250_display_width(display)
-       || This->data->last_height != tn5250_display_height(display)) {
-      SLsmg_cls ();
-      This->data->last_width = tn5250_display_width(display);
-      This->data->last_height = tn5250_display_height(display);
-      slang_terminal_update_indicators(This, display);
+	   || This->data->last_height != tn5250_display_height(display)) {
+	  SLsmg_cls ();
+	  This->data->last_width = tn5250_display_width(display);
+	  This->data->last_height = tn5250_display_height(display);
+	  slang_terminal_update_indicators(This, display);
    }
    SLsmg_normal_video ();
    my = SLtt_Screen_Rows - 1;
    mx = SLtt_Screen_Cols - 1;
    for (y = 0; y < tn5250_display_height(display); y++) {
-      if (y > my)
+	  if (y > my)
 	 break;
 
-      SLsmg_gotorc (y, 0);
-      for (x = 0; x < tn5250_display_width(display); x++) {
+	  SLsmg_gotorc (y, 0);
+	  for (x = 0; x < tn5250_display_width(display); x++) {
 	 c = tn5250_display_char_at(display, y, x);
 	 if ((c & 0xe0) == 0x20) {	/* ATTRIBUTE */
-	    a = (c & 0xff);
-	    temp_attr = This->data->attrs;
-	    slang_terminal_set_attrs (This, attribute_map[0]);
-	    SLsmg_write_char (' ');
-	    slang_terminal_set_attrs (This, temp_attr);
+		a = (c & 0xff);
+		temp_attr = This->data->attrs;
+		slang_terminal_set_attrs (This, attribute_map[0]);
+		SLsmg_write_char (' ');
+		slang_terminal_set_attrs (This, temp_attr);
 	 } else {		/* DATA */
-	    curs_attr = attribute_map[a - 0x20];
-	    if (curs_attr == 0x00) {	/* NONDISPLAY */
-	       temp_attr = This->data->attrs;
-	       slang_terminal_set_attrs (This, attribute_map[0]);
-	       SLsmg_write_char (' ');
-	       slang_terminal_set_attrs (This, temp_attr);
-	    } else {
-	       c = tn5250_char_map_to_local (tn5250_display_char_map (display), c);
-	       if ((c < 0x20 && c > 0x00) || c >= 0x7f) { /* UNPRINTABLE */
+		curs_attr = attribute_map[a - 0x20];
+		if (curs_attr == 0x00) {	/* NONDISPLAY */
+		   temp_attr = This->data->attrs;
+		   slang_terminal_set_attrs (This, attribute_map[0]);
+		   SLsmg_write_char (' ');
+		   slang_terminal_set_attrs (This, temp_attr);
+		} else {
+		   c = tn5250_char_map_to_local (tn5250_display_char_map (display), c);
+		   if ((c < 0x20 && c > 0x00) || c >= 0x7f) { /* UNPRINTABLE */
 		  c = ' ';
 		  curs_attr ^= A_REVERSE;
-	       }
-	       if ((curs_attr & A_VERTICAL) != 0) {
+		   }
+		   if ((curs_attr & A_VERTICAL) != 0) {
 		  curs_attr |= A_UNDERLINE;
 		  curs_attr &= ~A_VERTICAL;
-	       }
-	       /* This is a kludge since vga hardware doesn't support under-
-	        * lining characters.  It's pretty ugly. */
-	       if ((curs_attr & A_UNDERLINE) != 0) {
+		   }
+		   /* This is a kludge since vga hardware doesn't support under-
+			* lining characters.  It's pretty ugly. */
+		   if ((curs_attr & A_UNDERLINE) != 0) {
 		  curs_attr &= ~A_UNDERLINE;
 		  if (c == ' ')
-		     c = '_';
-	       }
-	       slang_terminal_set_attrs (This, curs_attr);
-	       SLsmg_write_char (c);
-	    }
+			 c = '_';
+		   }
+		   slang_terminal_set_attrs (This, curs_attr);
+		   SLsmg_write_char (c);
+		}
 	 }			/* if ((c & 0xe0) ... */
-      }				/* for (int x ... */
+	  }				/* for (int x ... */
    }				/* for (int y ... */
 
    SLsmg_gotorc (tn5250_display_cursor_y(display), tn5250_display_cursor_x(display));
@@ -349,8 +350,8 @@ static void slang_terminal_update(Tn5250Terminal * This, Tn5250Display * display
  * SYNOPSIS
  *    slang_terminal_update_indicators (This, display);
  * INPUTS
- *    Tn5250Terminal *     This       - 
- *    Tn5250Display *      display    - 
+ *    Tn5250Terminal *     This       -
+ *    Tn5250Display *      display    -
  * DESCRIPTION
  *    DOCUMENT ME!!!
  *****/
@@ -362,20 +363,20 @@ static void slang_terminal_update_indicators(Tn5250Terminal * This, Tn5250Displa
    memset(ind_buf, ' ', sizeof(ind_buf));
    memcpy(ind_buf, "5250", 4);
    if ((inds & TN5250_DISPLAY_IND_MESSAGE_WAITING) != 0) {
-      memcpy(ind_buf + 23, "MW", 2);
+	  memcpy(ind_buf + 23, "MW", 2);
    }
    if ((inds & TN5250_DISPLAY_IND_INHIBIT) != 0) {
-      memcpy(ind_buf + 9, "X II", 4);
+	  memcpy(ind_buf + 9, "X II", 4);
    } else if ((inds & TN5250_DISPLAY_IND_X_CLOCK) != 0) {
-      memcpy(ind_buf + 9, "X CLOCK", 7);
+	  memcpy(ind_buf + 9, "X CLOCK", 7);
    } else if ((inds & TN5250_DISPLAY_IND_X_SYSTEM) != 0) {
-      memcpy(ind_buf + 9, "X SYSTEM", 8);
+	  memcpy(ind_buf + 9, "X SYSTEM", 8);
    }
    if ((inds & TN5250_DISPLAY_IND_INSERT) != 0) {
-      memcpy(ind_buf + 30, "IM", 2);
+	  memcpy(ind_buf + 30, "IM", 2);
    }
    if ((inds & TN5250_DISPLAY_IND_MACRO) != 0) {
-      memcpy(ind_buf + 54, tn5250_macro_printstate (display), 11);
+	  memcpy(ind_buf + 54, tn5250_macro_printstate (display), 11);
    }
    SLsmg_normal_video ();
    SLsmg_gotorc (tn5250_display_height (display), 0);
@@ -390,7 +391,7 @@ static void slang_terminal_update_indicators(Tn5250Terminal * This, Tn5250Displa
  * SYNOPSIS
  *    ret = slang_terminal_waitevent (This);
  * INPUTS
- *    Tn5250Terminal *     This       - 
+ *    Tn5250Terminal *     This       -
  * DESCRIPTION
  *    DOCUMENT ME!!!
  *****/
@@ -402,25 +403,25 @@ static int slang_terminal_waitevent(Tn5250Terminal * This)
    int sm;
 
    if (SLang_Error == USER_BREAK)
-      This->data->quit_flag = 1;
+	  This->data->quit_flag = 1;
    if (This->data->quit_flag)
-      return TN5250_TERMINAL_EVENT_QUIT;
+	  return TN5250_TERMINAL_EVENT_QUIT;
 
    FD_ZERO(&fdr);
    FD_SET(0, &fdr);
    sm = 1;
    if (This->conn_fd >= 0) {
-      FD_SET(This->conn_fd, &fdr);
-      sm = This->conn_fd + 1;
+	  FD_SET(This->conn_fd, &fdr);
+	  sm = This->conn_fd + 1;
    }
 
    select(sm, &fdr, NULL, NULL, NULL);
 
    if (FD_ISSET(0, &fdr))
-      result |= TN5250_TERMINAL_EVENT_KEY;
+	  result |= TN5250_TERMINAL_EVENT_KEY;
 
    if (This->conn_fd >= 0 && FD_ISSET(This->conn_fd, &fdr))
-      result |= TN5250_TERMINAL_EVENT_DATA;
+	  result |= TN5250_TERMINAL_EVENT_DATA;
 
    return result;
 #else
@@ -434,7 +435,7 @@ static int slang_terminal_waitevent(Tn5250Terminal * This)
  * SYNOPSIS
  *    ret = slang_terminal_getkey (This);
  * INPUTS
- *    Tn5250Terminal *     This       - 
+ *    Tn5250Terminal *     This       -
  * DESCRIPTION
  *    DOCUMENT ME!!!
  *****/
@@ -443,157 +444,157 @@ static int slang_terminal_getkey(Tn5250Terminal * This)
    unsigned int key;
 
    if (!SLang_input_pending (0))
-      return -1;
+	  return -1;
 
    key = SLkp_getkey ();
    while (1) {
-      switch (key) {
-      case 0x0d:
-      case 0x0a:
+	  switch (key) {
+	  case 0x0d:
+	  case 0x0a:
 	 return K_ENTER;
 
-      case 0x1b:
+	  case 0x1b:
 	 if ((key = slang_terminal_get_esc_key(This, 1)) != SL_KEY_ERR)
-	    return key;
+		return key;
 	 break;
 
-      case K_CTRL('A'):
+	  case K_CTRL('A'):
 	 return K_ATTENTION;
-      case K_CTRL('B'):
+	  case K_CTRL('B'):
 	 return K_ROLLDN;
-      case K_CTRL('C'):
+	  case K_CTRL('C'):
 	 return K_SYSREQ;
-      case K_CTRL('D'):
+	  case K_CTRL('D'):
 	 return K_ROLLUP;
-      case K_CTRL('E'):
+	  case K_CTRL('E'):
 	 return K_ERASE;
-      case K_CTRL('F'):
+	  case K_CTRL('F'):
 	 return K_ROLLUP;
-      case K_CTRL('K'):
+	  case K_CTRL('K'):
 	 return K_FIELDEXIT;
-      case K_CTRL('L'):
+	  case K_CTRL('L'):
 	 return K_REFRESH;
-      case K_CTRL('O'):
+	  case K_CTRL('O'):
 	 return K_HOME;
-      case K_CTRL('P'):
+	  case K_CTRL('P'):
 	 return K_PRINT;
-      case K_CTRL('R'):
+	  case K_CTRL('R'):
 	 return K_RESET;	/* Error Reset */
-      case K_CTRL('S'):
+	  case K_CTRL('S'):
 	 return K_MEMO;
-      case K_CTRL('T'):
+	  case K_CTRL('T'):
 	 return K_TESTREQ;
-      case K_CTRL('U'):
+	  case K_CTRL('U'):
 	 return K_ROLLDN;
-      case K_CTRL('W'):
+	  case K_CTRL('W'):
 	 return K_EXEC;
-      case K_CTRL('X'):
+	  case K_CTRL('X'):
 	 return K_FIELDEXIT;
 
-      case K_CTRL('Q'):
+	  case K_CTRL('Q'):
 	 This->data->quit_flag = 1;
 	 return -1;
 
-      case K_CTRL('G'):	/* C-g <function-key-shortcut> */
+	  case K_CTRL('G'):	/* C-g <function-key-shortcut> */
 	 if ((key = slang_terminal_get_esc_key(This, 0)) != SL_KEY_ERR)
-	    return key;
+		return key;
 	 break;
 
-      case SL_KEY_ERR:
+	  case SL_KEY_ERR:
 	 if (SLang_Error == USER_BREAK)
-	    This->data->quit_flag = 1;
+		This->data->quit_flag = 1;
 	 return -1;
 
-      case SL_KEY_DELETE:
+	  case SL_KEY_DELETE:
 	 return K_DELETE;
 
-      case SL_KEY_F(1):
+	  case SL_KEY_F(1):
 	 return K_F1;
-      case SL_KEY_F(2):
+	  case SL_KEY_F(2):
 	 return K_F2;
-      case SL_KEY_F(3):
+	  case SL_KEY_F(3):
 	 return K_F3;
-      case SL_KEY_F(4):
+	  case SL_KEY_F(4):
 	 return K_F4;
-      case SL_KEY_F(5):
+	  case SL_KEY_F(5):
 	 return K_F5;
-      case SL_KEY_F(6):
+	  case SL_KEY_F(6):
 	 return K_F6;
-      case SL_KEY_F(7):
+	  case SL_KEY_F(7):
 	 return K_F7;
-      case SL_KEY_F(8):
+	  case SL_KEY_F(8):
 	 return K_F8;
-      case SL_KEY_F(9):
+	  case SL_KEY_F(9):
 	 return K_F9;
-      case SL_KEY_F(10):
+	  case SL_KEY_F(10):
 	 return K_F10;
-      case SL_KEY_F(11):
+	  case SL_KEY_F(11):
 	 return K_F11;
-      case SL_KEY_F(12):
+	  case SL_KEY_F(12):
 	 return K_F12;
-      case SL_KEY_F(13):
+	  case SL_KEY_F(13):
 	 return K_F13;
-      case SL_KEY_F(14):
+	  case SL_KEY_F(14):
 	 return K_F14;
-      case SL_KEY_F(15):
+	  case SL_KEY_F(15):
 	 return K_F15;
-      case SL_KEY_F(16):
+	  case SL_KEY_F(16):
 	 return K_F16;
-      case SL_KEY_F(17):
+	  case SL_KEY_F(17):
 	 return K_F17;
-      case SL_KEY_F(18):
+	  case SL_KEY_F(18):
 	 return K_F18;
-      case SL_KEY_F(19):
+	  case SL_KEY_F(19):
 	 return K_F19;
-      case SL_KEY_F(20):
+	  case SL_KEY_F(20):
 	 return K_F20;
-      case SL_KEY_F(21):
+	  case SL_KEY_F(21):
 	 return K_F21;
-      case SL_KEY_F(22):
+	  case SL_KEY_F(22):
 	 return K_F22;
-      case SL_KEY_F(23):
+	  case SL_KEY_F(23):
 	 return K_F23;
-      case SL_KEY_F(24):
+	  case SL_KEY_F(24):
 	 return K_F24;
-      case SL_KEY_BACKSPACE:
+	  case SL_KEY_BACKSPACE:
 	 return K_BACKSPACE;
-      case SL_KEY_IC:
+	  case SL_KEY_IC:
 	 return K_INSERT;
 
-      case SL_KEY_HOME:
-      case SL_KEY_A1:
+	  case SL_KEY_HOME:
+	  case SL_KEY_A1:
 	 return K_HOME;
 
-      case SL_KEY_PPAGE:
-      case SL_KEY_A3:
+	  case SL_KEY_PPAGE:
+	  case SL_KEY_A3:
 	 return K_ROLLDN;
 
-      case SL_KEY_END:
-      case SL_KEY_C1:
+	  case SL_KEY_END:
+	  case SL_KEY_C1:
 	 return K_END;
 
-      case SL_KEY_NPAGE:
-      case SL_KEY_C3:
+	  case SL_KEY_NPAGE:
+	  case SL_KEY_C3:
 	 return K_ROLLUP;
 
-      case SL_KEY_ENTER:
+	  case SL_KEY_ENTER:
 	 return K_FIELDEXIT;
 
-      case SL_KEY_UP:
+	  case SL_KEY_UP:
 	 return K_UP;
 
-      case SL_KEY_DOWN:
+	  case SL_KEY_DOWN:
 	 return K_DOWN;
 
-      case SL_KEY_LEFT:
+	  case SL_KEY_LEFT:
 	 return K_LEFT;
 
-      case SL_KEY_RIGHT:
+	  case SL_KEY_RIGHT:
 	 return K_RIGHT;
 
-      default:
+	  default:
 	 return key;
-      }
+	  }
    }
 }
 
@@ -603,7 +604,7 @@ static int slang_terminal_getkey(Tn5250Terminal * This)
  * SYNOPSIS
  *    slang_terminal_beep (This);
  * INPUTS
- *    Tn5250Terminal *     This       - 
+ *    Tn5250Terminal *     This       -
  * DESCRIPTION
  *    DOCUMENT ME!!!
  *****/
@@ -619,7 +620,7 @@ static void slang_terminal_beep (Tn5250Terminal * This)
  * SYNOPSIS
  *    ret = slang_terminal_enhanced (This);
  * INPUTS
- *    Tn5250Terminal  *    This       - 
+ *    Tn5250Terminal  *    This       -
  * DESCRIPTION
  *    Return 1 if we support the enhanced 5250 protocol, 0 otherwise.
  *****/
@@ -636,8 +637,8 @@ slang_terminal_enhanced (Tn5250Terminal * This)
  * SYNOPSIS
  *    ret = slang_terminal_get_esc_key (This, is_esc);
  * INPUTS
- *    Tn5250Terminal *     This       - 
- *    int                  is_esc     - 
+ *    Tn5250Terminal *     This       -
+ *    int                  is_esc     -
  * DESCRIPTION
  *    If a vt100 escape key sequence was introduced (using either
  *    <Esc> or <Ctrl+g>), handle the next key in the sequence.
@@ -651,18 +652,18 @@ static int slang_terminal_get_esc_key(Tn5250Terminal * This, int is_esc)
    SLsmg_normal_video ();
    SLsmg_gotorc (This->data->last_height, 60);
    if (is_esc)
-      SLsmg_write_string ("Esc ");
+	  SLsmg_write_string ("Esc ");
    else
-      SLsmg_write_string ("C-g ");
+	  SLsmg_write_string ("C-g ");
    SLsmg_gotorc (y, x);
    SLsmg_refresh();
 
 #if !defined(WIN32) && !defined(WINE)
    {
-      fd_set fdr;
-      FD_ZERO(&fdr);
-      FD_SET(0, &fdr);
-      select(1, &fdr, NULL, NULL, NULL);
+	  fd_set fdr;
+	  FD_ZERO(&fdr);
+	  FD_SET(0, &fdr);
+	  select(1, &fdr, NULL, NULL, NULL);
    }
 #else
    /* XXX: What do we need that for? */
@@ -670,149 +671,149 @@ static int slang_terminal_get_esc_key(Tn5250Terminal * This, int is_esc)
    key = SLkp_getkey ();
 
    if (isalpha(key))
-      key = toupper(key);
+	  key = toupper(key);
 
    display_key = key;
    switch (key) {
 
-      /* Function keys */
+	  /* Function keys */
    case '1':
-      key = K_F1;
-      break;
+	  key = K_F1;
+	  break;
    case '2':
-      key = K_F2;
-      break;
+	  key = K_F2;
+	  break;
    case '3':
-      key = K_F3;
-      break;
+	  key = K_F3;
+	  break;
    case '4':
-      key = K_F4;
-      break;
+	  key = K_F4;
+	  break;
    case '5':
-      key = K_F5;
-      break;
+	  key = K_F5;
+	  break;
    case '6':
-      key = K_F6;
-      break;
+	  key = K_F6;
+	  break;
    case '7':
-      key = K_F7;
-      break;
+	  key = K_F7;
+	  break;
    case '8':
-      key = K_F8;
-      break;
+	  key = K_F8;
+	  break;
    case '9':
-      key = K_F9;
-      break;
+	  key = K_F9;
+	  break;
    case '0':
-      key = K_F10;
-      break;
+	  key = K_F10;
+	  break;
    case '-':
-      key = K_F11;
-      break;
+	  key = K_F11;
+	  break;
    case '=':
-      key = K_F12;
-      break;
+	  key = K_F12;
+	  break;
    case '!':
-      key = K_F13;
-      break;
+	  key = K_F13;
+	  break;
    case '@':
-      key = K_F14;
-      break;
+	  key = K_F14;
+	  break;
    case '#':
-      key = K_F15;
-      break;
+	  key = K_F15;
+	  break;
    case '$':
-      key = K_F16;
-      break;
+	  key = K_F16;
+	  break;
    case '%':
-      key = K_F17;
-      break;
+	  key = K_F17;
+	  break;
    case '^':
-      key = K_F18;
-      break;
+	  key = K_F18;
+	  break;
    case '&':
-      key = K_F19;
-      break;
+	  key = K_F19;
+	  break;
    case '*':
-      key = K_F20;
-      break;
+	  key = K_F20;
+	  break;
    case '(':
-      key = K_F21;
-      break;
+	  key = K_F21;
+	  break;
    case ')':
-      key = K_F22;
-      break;
+	  key = K_F22;
+	  break;
    case '_':
-      key = K_F23;
-      break;
+	  key = K_F23;
+	  break;
    case '+':
-      key = K_F24;
-      break;
+	  key = K_F24;
+	  break;
 
-      /* AS/400 strangeness */
+	  /* AS/400 strangeness */
    case 'A':
-      key = K_ATTENTION;
-      break;
+	  key = K_ATTENTION;
+	  break;
    case 'C':
-      key = K_CLEAR;
-      break;
+	  key = K_CLEAR;
+	  break;
    case 'D':
-      key = K_DUPLICATE;
-      break;
+	  key = K_DUPLICATE;
+	  break;
    case 'H':
-      key = K_HELP;
-      break;
+	  key = K_HELP;
+	  break;
    case 'I':
-      key = K_INSERT;
-      break;
+	  key = K_INSERT;
+	  break;
    case 'L':
-      key = K_REFRESH;
-      break;
+	  key = K_REFRESH;
+	  break;
    case 'M':
-      key = K_FIELDMINUS;
-      break;
+	  key = K_FIELDMINUS;
+	  break;
    case 'P':
-      key = K_PRINT;
-      break;
+	  key = K_PRINT;
+	  break;
    case 'R':
-      key = K_RESET;
-      break;
+	  key = K_RESET;
+	  break;
    case 'S':
-      key = K_SYSREQ;
-      break;
+	  key = K_SYSREQ;
+	  break;
    case 'T':
-      key = K_TOGGLE;
-      break;
+	  key = K_TOGGLE;
+	  break;
    case 'X':
-      key = K_FIELDEXIT;
-      break;
+	  key = K_FIELDEXIT;
+	  break;
 
    case 127:
-      key = K_INSERT;
-      break;			/* ESC DEL */
+	  key = K_INSERT;
+	  break;			/* ESC DEL */
    case SL_KEY_DELETE:
-      key = K_INSERT;
-      break;			/* ESC DEL, also */
+	  key = K_INSERT;
+	  break;			/* ESC DEL, also */
    case K_CTRL('J'):
-      key = K_NEWLINE;
-      break;
+	  key = K_NEWLINE;
+	  break;
 
    case 'Q':
-      This->data->quit_flag = 1;
-      key = SL_KEY_ERR;
-      break;
+	  This->data->quit_flag = 1;
+	  key = SL_KEY_ERR;
+	  break;
 
    default:
-      SLtt_beep();
-      key = SL_KEY_ERR;
-      break;
+	  SLtt_beep();
+	  key = SL_KEY_ERR;
+	  break;
    }
 
    SLsmg_gotorc (This->data->last_height, 64);
    if (key == SL_KEY_ERR)
-      SLsmg_write_string ("???");
+	  SLsmg_write_string ("???");
    else
-      SLsmg_write_char (display_key);
+	  SLsmg_write_char (display_key);
    SLsmg_gotorc (y, x);
    SLsmg_refresh ();
    return key;
@@ -824,19 +825,19 @@ static int slang_terminal_get_esc_key(Tn5250Terminal * This, int is_esc)
  * SYNOPSIS
  *    slang_terminal_set_attrs (This, attrs);
  * INPUTS
- *    Tn5250Terminal *     This       - 
- *    int                  attrs      - 
+ *    Tn5250Terminal *     This       -
+ *    int                  attrs      -
  * DESCRIPTION
  *    DOCUMENT ME!!!
  *****/
 static void slang_terminal_set_attrs (Tn5250Terminal * This, int attrs)
 {
    if (attrs == This->data->attrs)
-      return;
+	  return;
    SLsmg_normal_video ();
    SLsmg_set_color ((attrs & A_COLOR_MASK) >> 8);
    if ((attrs & A_REVERSE) != 0)
-      SLsmg_reverse_video ();
+	  SLsmg_reverse_video ();
    /* FIXME: Handle A_BLINK */
    This->data->attrs = attrs;
 }
@@ -844,8 +845,9 @@ static void slang_terminal_set_attrs (Tn5250Terminal * This, int attrs)
 #else /* USE_SLANG */
 
 /* When compiled with -Wall -pedantic: ANSI C forbids empty source file. */
-struct NoSlang {
-   long dummy;
+struct NoSlang
+{
+	long dummy;
 };
 
 #endif /* USE_SLANG */

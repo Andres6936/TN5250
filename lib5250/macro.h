@@ -26,7 +26,7 @@
 extern "C" {
 #endif
 
-#define	MACRO_BUFSIZE	2000		/* 9999 Max */
+#define    MACRO_BUFSIZE    2000        /* 9999 Max */
 
 /****s* lib5250/Tn5250Macro
  * NAME
@@ -37,35 +37,50 @@ extern "C" {
  *
  * SOURCE
  */
-struct _Tn5250Macro {
-   char	RState ;		/* Macro record state */
-   char	EState ;		/* Macro execution state */
-   int	FctnKey ;
-   int	*BuffM[24] ;
-   int	TleBuff ;
-   char	*fname ;		/* Macro file name */
+struct _Tn5250Macro
+{
+	char RState;        /* Macro record state */
+	char EState;        /* Macro execution state */
+	int FctnKey;
+	int* BuffM[24];
+	int TleBuff;
+	char* fname;        /* Macro file name */
 };
 
 typedef struct _Tn5250Macro Tn5250Macro;
+
 /*******/
 
-extern Tn5250Macro *tn5250_macro_init() ;
-extern void tn5250_macro_exit(Tn5250Macro * This) ;
-extern int tn5250_macro_attach (Tn5250Display *This, Tn5250Macro *Macro) ;
-extern char tn5250_macro_rstate (Tn5250Display *This) ;
-extern char tn5250_macro_startdef (Tn5250Display *This) ;
-extern void tn5250_macro_enddef (Tn5250Display *This) ;
-extern char tn5250_macro_recfunct (Tn5250Display *This, int key) ;
-extern void tn5250_macro_reckey (Tn5250Display *This, int key) ;
-extern char  * tn5250_macro_printstate (Tn5250Display *This) ;
-extern char tn5250_macro_estate (Tn5250Display *This) ;
-extern char tn5250_macro_startexec (Tn5250Display *This) ;
-extern void tn5250_macro_endexec (Tn5250Display *This) ;
-extern char tn5250_macro_execfunct (Tn5250Display *This, int key) ;
-extern int tn5250_macro_getkey (Tn5250Display *This, char *Last) ;
+extern Tn5250Macro* tn5250_macro_init();
+
+extern void tn5250_macro_exit(Tn5250Macro* This);
+
+extern int tn5250_macro_attach(Tn5250Display* This, Tn5250Macro* Macro);
+
+extern char tn5250_macro_rstate(Tn5250Display* This);
+
+extern char tn5250_macro_startdef(Tn5250Display* This);
+
+extern void tn5250_macro_enddef(Tn5250Display* This);
+
+extern char tn5250_macro_recfunct(Tn5250Display* This, int key);
+
+extern void tn5250_macro_reckey(Tn5250Display* This, int key);
+
+extern char* tn5250_macro_printstate(Tn5250Display* This);
+
+extern char tn5250_macro_estate(Tn5250Display* This);
+
+extern char tn5250_macro_startexec(Tn5250Display* This);
+
+extern void tn5250_macro_endexec(Tn5250Display* This);
+
+extern char tn5250_macro_execfunct(Tn5250Display* This, int key);
+
+extern int tn5250_macro_getkey(Tn5250Display* This, char* Last);
 
 #ifdef __cplusplus
 }
 
 #endif
-#endif				/* MACRO_H */
+#endif                /* MACRO_H */

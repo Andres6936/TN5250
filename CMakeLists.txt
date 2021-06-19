@@ -26,7 +26,7 @@ ADD_LIBRARY(Tan.Protocol
         lib5250/version.c
         lib5250/window.c
         lib5250/wtd.c
-)
+        )
 TARGET_COMPILE_DEFINITIONS(Tan.Protocol PRIVATE -DSYSCONFDIR="tmp")
 TARGET_INCLUDE_DIRECTORIES(Tan.Protocol PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/lib5250/>)
 
@@ -39,7 +39,8 @@ TARGET_LINK_LIBRARIES(Tan.App PRIVATE Tan.Protocol)
 
 #[[ Set CURSES_NEED_NCURSES to TRUE before the find_package(Curses) call if
  NCurses functionality is required. Set CURSES_NEED_WIDE to TRUE before the
- find_package(Curses) call if unicode functionality is required. ]]#
+ find_package(Curses) call if unicode functionality is required. ]]
+#
 SET(CURSES_NEED_NCURSES TRUE)
 SET(CURSES_NEED_WIDE TRUE)
 
@@ -50,6 +51,6 @@ IF (CURSES_FOUND)
     TARGET_INCLUDE_DIRECTORIES(Tan.App PRIVATE ${CURSES_INCLUDE_DIRS})
     TARGET_LINK_LIBRARIES(Tan.App PRIVATE ${CURSES_LIBRARIES})
 
-ELSE()
+ELSE ()
     MESSAGE(FATAL_ERROR "Not support to NCurses")
-ENDIF()
+ENDIF ()

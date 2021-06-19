@@ -26,7 +26,7 @@
 extern "C" {
 #endif
 
-	/* We need this */
+/* We need this */
 #include <stdio.h>
 
 #include <tn5250/buffer.h>
@@ -53,4 +53,4 @@ extern "C" {
 }
 #endif
 
-#endif				/* TN5250_H */
+#endif                /* TN5250_H */
