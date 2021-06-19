@@ -55,9 +55,12 @@ int main(int argc, char* argv[])
 		syntax();
 	}
 
-	if (tn5250_config_get(config, "help"))
+
+	if (config->contains("help"))
+	{
 		syntax();
-	else if (tn5250_config_get(config, "version"))
+	}
+	else if (config->contains("version"))
 	{
 		printf("tn5250 %s\n", VERSION);
 		exit(0);
