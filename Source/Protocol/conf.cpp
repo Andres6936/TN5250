@@ -82,18 +82,6 @@ tn5250_config_str_new(const char* name, const char* value)
 
 /*** Tn5250Config ***/
 
-Tn5250Config*
-tn5250_config_new()
-{
-	Tn5250Config* This = tn5250_new (Tn5250Config, 1);
-	if (This == NULL)
-		return NULL;
-
-	This->ref = 1;
-	This->vars = NULL;
-
-	return This;
-}
 
 Tn5250Config*
 tn5250_config_ref(Tn5250Config* This)

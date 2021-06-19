@@ -309,7 +309,7 @@ void tn5250_stream_setenv(Tn5250Stream* This, const char* name, const char* valu
 	char* name_buf;
 	if (This->config == NULL)
 	{
-		This->config = tn5250_config_new();
+		This->config = new Tn5250Config();
 		TN5250_ASSERT (This->config != NULL);
 	}
 	name_buf = (char*)malloc(strlen(name) + 10);

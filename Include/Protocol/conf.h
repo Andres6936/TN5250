@@ -20,6 +20,8 @@
 #ifndef CONF_H
 #define CONF_H
 
+#include <cstdint>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -36,13 +38,15 @@ typedef struct _Tn5250ConfigStr Tn5250ConfigStr;
 
 struct _Tn5250Config
 {
-	int ref;
-	Tn5250ConfigStr* vars;
+	std::int32_t ref = 1;
+	Tn5250ConfigStr* vars = nullptr;
+
+	// Constructor
+
+	_Tn5250Config() noexcept = default;
 };
 
 typedef struct _Tn5250Config Tn5250Config;
-
-extern Tn5250Config* tn5250_config_new(void);
 
 extern Tn5250Config* tn5250_config_ref(Tn5250Config* This);
 

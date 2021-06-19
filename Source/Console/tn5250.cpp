@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
 	setlocale (LC_ALL, "");
 #endif
 
-	config = tn5250_config_new();
+	config = new Tn5250Config();
 	if (tn5250_config_load_default(config) == -1)
 	{
 		tn5250_config_unref(config);
