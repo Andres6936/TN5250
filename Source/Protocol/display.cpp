@@ -185,6 +185,7 @@ tn5250_display_config(Tn5250Display* This, Tn5250Config* config)
 	if (termtype == NULL)
 	{
 		tn5250_config_set(config, "env.TERM", "IBM-3179-2");
+		config->add("env.TERM", "IBM-3179-2");
 	}
 
 	/* Set the new character map. */
@@ -195,6 +196,7 @@ tn5250_display_config(Tn5250Display* This, Tn5250Config* config)
 	if ((v = tn5250_config_get(config, "map")) == NULL)
 	{
 		tn5250_config_set(config, "map", "37");
+		config->add("map", "37");
 		v = tn5250_config_get(config, "map");
 	}
 

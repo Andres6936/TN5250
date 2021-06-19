@@ -25,6 +25,11 @@ void Tn5250Config::add(const std::string& key, const std::string& value) noexcep
 	this->push_back({key, value});
 }
 
+const bool Tn5250Config::contains(const std::string& key) const noexcept
+{
+	return this->get(key).empty() ? false : true;
+}
+
 const std::string Tn5250Config::get(const std::string& key) const noexcept
 {
 	for (const auto& [_key, _value]: *this)
@@ -185,6 +190,7 @@ tn5250_config_load(Tn5250Config* This, const char* filename)
 			}
 			strcat(name, scan);
 			tn5250_config_set(This, name, "1");
+			This->add(name, "1");
 			free(name);
 
 		}
@@ -210,6 +216,7 @@ tn5250_config_load(Tn5250Config* This, const char* filename)
 			}
 			strcat(name, scan);
 			tn5250_config_set(This, name, "0");
+			This->add(name, "0");
 			free(name);
 
 		}
@@ -299,6 +306,7 @@ tn5250_config_load(Tn5250Config* This, const char* filename)
 					scan[len--] = '\0';
 
 				tn5250_config_set(This, name, scan);
+				This->add(name, scan);
 				free(name);
 			}
 		}
@@ -472,12 +480,14 @@ tn5250_config_parse_argv(Tn5250Config* This, int argc, char** argv)
 			/* Set boolean option. */
 			char* opt = argv[argn] + 1;
 			tn5250_config_set(This, opt, "1");
+			This->add(opt, "1");
 		}
 		else if (argv[argn][0] == '-')
 		{
 			/* Clear boolean option. */
 			char* opt = argv[argn] + 1;
 			tn5250_config_set(This, opt, "0");
+			This->add(opt, "0");
 		}
 		else if (strchr(argv[argn], '='))
 		{
@@ -490,12 +500,14 @@ tn5250_config_parse_argv(Tn5250Config* This, int argc, char** argv)
 			memcpy(opt, argv[argn], strchr(argv[argn], '=') - argv[argn] + 1);
 			*strchr(opt, '=') = '\0';
 			tn5250_config_set(This, opt, val);
+			This->add(opt, val);
 		}
 		else
 		{
 			/* Should be profile name/connect URL. */
 			tn5250_config_set(This, "host", argv[argn]);
 			tn5250_config_promote(This, argv[argn]);
+			This->add("host", argv[argn]);
 		}
 		argn++;
 	}
@@ -600,6 +612,7 @@ tn5250_config_promote(Tn5250Config* This, const char* prefix)
 		{
 			tn5250_config_set(This, iter->name + strlen(prefix) + 1,
 					iter->value);
+			This->add(iter->name + strlen(prefix) + 1, iter->value);
 		}
 		iter = iter->next;
 	} while (iter != This->vars);

@@ -316,6 +316,7 @@ void tn5250_stream_setenv(Tn5250Stream* This, const char* name, const char* valu
 	strcpy(name_buf, "env.");
 	strcat(name_buf, name);
 	tn5250_config_set(This->config, name_buf, value);
+	This->config->add(name_buf, value);
 	free(name_buf);
 }
 
