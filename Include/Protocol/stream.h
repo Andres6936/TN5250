@@ -30,9 +30,6 @@
 #include <openssl/ssl.h>
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #define TN3270_STREAM  0
 #define TN3270E_STREAM 1
@@ -168,10 +165,7 @@ tn5250_stream_getenv(Tn5250Stream* This, const char* name);
 
 extern int tn5250_stream_socket_handle(Tn5250Stream* This);
 
-#ifdef __cplusplus
-}
 
-#endif
 #endif
 
 /* vi:set cindent sts=3 sw=3: */

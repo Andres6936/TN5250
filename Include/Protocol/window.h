@@ -23,10 +23,6 @@
  * 
  */
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
 
 struct _Tn5250Window;
 struct _Tn5250DBuffer;
@@ -103,8 +99,4 @@ struct _Tn5250WindowPrivate
 };
 #endif
 
-#ifdef __cplusplus
-}
-
-#endif
 #endif                /* WINDOW_H */

@@ -22,9 +22,6 @@
 #ifndef MACRO_H
 #define MACRO_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #define    MACRO_BUFSIZE    2000        /* 9999 Max */
 
@@ -79,8 +76,5 @@ extern char tn5250_macro_execfunct(Tn5250Display* This, int key);
 
 extern int tn5250_macro_getkey(Tn5250Display* This, char* Last);
 
-#ifdef __cplusplus
-}
 
-#endif
 #endif                /* MACRO_H */

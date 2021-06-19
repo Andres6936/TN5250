@@ -22,10 +22,6 @@
 #ifndef WTD_H
 #define WTD_H
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
 
 struct _Tn5250Buffer;
 struct _Tn5250DBuffer;
@@ -95,9 +91,6 @@ extern void tn5250_wtd_context_convert(Tn5250WTDContext* This);
 extern void tn5250_wtd_context_set_ic(Tn5250WTDContext* This,
 		int y, int x);
 
-#ifdef __cplusplus
-}
-#endif
 
 #endif                /* WTD_H */
 

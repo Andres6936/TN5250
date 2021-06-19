@@ -22,9 +22,6 @@
 #ifndef SESSION_H
 #define SESSION_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /* Negative response codes */
 #define TN5250_NR_INVALID_COMMAND        0x10030101
@@ -128,10 +125,7 @@ extern void tn5250_session_set_stream(Tn5250Session* This, Tn5250Stream /*@only@
 
 extern void tn5250_session_main_loop(Tn5250Session* This);
 
-#ifdef __cplusplus
-}
 
-#endif
 #endif                /* SESSION_H */
 
 /* vi:set cindent sts=3 sw=3: */

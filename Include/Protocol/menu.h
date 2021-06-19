@@ -23,10 +23,6 @@
  * 
  */
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
 
 #define MENU_TYPE_MENUBAR 0x01    /* Menu bar */
 #define MENU_TYPE_SINGLE_SELECT_FIELD 0x11    /* Single choice selection field */
@@ -192,8 +188,5 @@ struct _Tn5250MenuitemPrivate
 };
 #endif
 
-#ifdef __cplusplus
-}
 
-#endif
 #endif                /* MENU_H */

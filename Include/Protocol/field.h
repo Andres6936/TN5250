@@ -23,9 +23,7 @@
  * 
  */
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+
 
 struct _Tn5250Field;
 struct _Tn5250DBuffer;
@@ -258,10 +256,7 @@ tn5250_field_list_find_by_id(Tn5250Field /*@null@*/ * list, int id);
 
 extern Tn5250Field /*@null@*/ * tn5250_field_list_copy(Tn5250Field /*@null@*/ * list);
 
-#ifdef __cplusplus
-}
 
-#endif
 #endif                /* FIELD_H */
 
 /* vi:set cindent sts=3 sw=3: */

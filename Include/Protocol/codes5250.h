@@ -22,9 +22,6 @@
 #ifndef CODES5250_H
 #define CODES5250_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /* Misc */
 #define ESC 0x4
@@ -219,9 +216,6 @@ extern "C" {
 #define TN5250_KBDSRC_FER            0x0018   /* Field Exit Required */
 #define TN5250_KBDSRC_DUP_DISALLOWED    0x0019   /* Dup Key Not Allowed */
 
-#ifdef __cplusplus
-}
 
-#endif
 #endif                /* CODES_5250_H */
 

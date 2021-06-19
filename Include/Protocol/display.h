@@ -22,9 +22,6 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #define TN5250_DISPLAY_KEYQ_SIZE        50
 
@@ -282,9 +279,6 @@ void tn5250_display_wordwrap(Tn5250Display* This, unsigned char* text,
 #define tn5250_display_char_map(This) \
    ((This)->map)
 
-#ifdef __cplusplus
-}
-#endif
 
 #endif                /* DISPLAY_H */
 

@@ -22,10 +22,6 @@
 #ifndef DBUFFER_H
 #define DBUFFER_H
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
 
 /****s* lib5250/Tn5250DBuffer
  * NAME
@@ -170,10 +166,7 @@ extern void tn5250_dbuffer_add_menubar(Tn5250DBuffer* This,
 #define tn5250_dbuffer_mdt(This) ((This)->master_mdt)
 #define tn5250_dbuffer_set_mdt(This) ((This)->master_mdt = 1)
 
-#ifdef __cplusplus
-}
 
-#endif
 #endif                /* DBUFFER_H */
 
 /* vi:set sts=3 sw=3: */

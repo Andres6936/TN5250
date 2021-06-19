@@ -22,9 +22,6 @@
 #ifndef UTILITY_H
 #define UTILITY_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #if SIZEOF_SHORT == 2
 typedef unsigned short Tn5250Uint16;
@@ -131,9 +128,6 @@ int tn5250_parse_color(Tn5250Config* config, const char* colorname,
 
 int tn5250_run_cmd(const char* cmd, int wait);
 
-#ifdef __cplusplus
-}
-#endif
 
 #endif                /* UTILITY_H */
 

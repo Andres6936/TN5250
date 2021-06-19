@@ -22,9 +22,6 @@
 #ifndef RECORD_H
 #define RECORD_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /****s* lib5250/Tn5250Record
  * NAME
@@ -125,10 +122,7 @@ extern Tn5250Record* tn5250_record_list_destroy(Tn5250Record /*@only@*/ /*@null@
 
 extern void tn5250_record_dump(Tn5250Record* This);
 
-#ifdef __cplusplus
-}
 
-#endif
 #endif                /* RECORD_H */
 
 /* vi:set cindent sts=3 sw=3: */

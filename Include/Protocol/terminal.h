@@ -24,10 +24,6 @@
 
 #include "config.h"
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
 
 /* Flags */
 #define TN5250_TERMINAL_HAS_COLOR    0x0001
@@ -295,10 +291,7 @@ extern void tn5250_terminal_destroy_menuitem(Tn5250Terminal* This,
 		struct _Tn5250Display* d,
 		struct _Tn5250Menuitem* i);
 
-#ifdef __cplusplus
-}
 
-#endif
 #endif                /* TERMINAL_H */
 
 /* vi:set cindent sts=3 sw=3: */

@@ -23,10 +23,6 @@
  * 
  */
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
 
 struct _Tn5250Scrollbar;
 struct _Tn5250DBuffer;
@@ -87,8 +83,5 @@ list, int id);
 
 extern Tn5250Scrollbar* tn5250_scrollbar_list_copy(Tn5250Scrollbar* list);
 
-#ifdef __cplusplus
-}
 
-#endif
 #endif                /* SCROLLBAR_H */

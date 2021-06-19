@@ -22,9 +22,6 @@
 #ifndef BUFFER_H
 #define BUFFER_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /****s* lib5250/Tn5250Buffer
  * NAME
@@ -65,10 +62,7 @@ extern void tn5250_buffer_append_data(Tn5250Buffer* This, unsigned char* data, i
 
 extern void tn5250_buffer_log(Tn5250Buffer* This, const char* prefix);
 
-#ifdef __cplusplus
-}
 
-#endif
 #endif                /* BUFFER_H */
 
 /* vi:set sts=3 sw=3 autoindent: */

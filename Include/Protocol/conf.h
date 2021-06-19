@@ -22,9 +22,6 @@
 
 #include <cstdint>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 struct _Tn5250ConfigStr
 {
@@ -80,9 +77,7 @@ extern void tn5250_config_unset(Tn5250Config* This,
 extern void tn5250_config_promote(Tn5250Config* This,
 		const char* prefix);
 
-#ifdef __cplusplus
-}
-#endif
+
 
 #endif                /* CONF_H */
 

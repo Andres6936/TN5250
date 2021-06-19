@@ -22,9 +22,6 @@
 #ifndef TN5250_H
 #define TN5250_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /* We need this */
 #include <stdio.h>
@@ -49,8 +46,5 @@ extern "C" {
 
 #include <tn5250/conf.h>
 
-#ifdef __cplusplus
-}
-#endif
 
 #endif                /* TN5250_H */

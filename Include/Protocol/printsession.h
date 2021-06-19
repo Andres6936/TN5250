@@ -22,9 +22,6 @@
 #ifndef PRINTSESSION_H
 #define PRINTSESSION_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /****s* lib5250/Tn5250PrintSession
  * NAME
@@ -70,10 +67,7 @@ extern void tn5250_print_session_main_loop(Tn5250PrintSession* This);
 
 #define tn5250_print_session_stream(This) ((This)->stream)
 
-#ifdef __cplusplus
-}
 
-#endif
 #endif                /* PRINTSESSION_H */
 
 /* vi:set cindent sts=3 sw=3: */
