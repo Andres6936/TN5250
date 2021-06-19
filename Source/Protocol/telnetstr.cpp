@@ -1444,7 +1444,7 @@ int telnet_stream_handle_receive(Tn5250Stream* This)
 static void telnet_stream_escape(Tn5250Buffer* in)
 {
 	Tn5250Buffer out;
-	register unsigned char c;
+	unsigned char c;
 	int n;
 
 	tn5250_buffer_init(&out);

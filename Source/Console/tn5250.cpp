@@ -20,6 +20,8 @@
 
 #include "cursesterm.h"
 #include "tn5250-private.h"
+#include <array>
+#include <utility>
 
 Tn5250Session* sess = NULL;
 Tn5250Stream* stream = NULL;
@@ -27,26 +29,6 @@ Tn5250Terminal* term = NULL;
 Tn5250Display* display = NULL;
 Tn5250Config* config = NULL;
 Tn5250Macro* macro = NULL;
-
-/* FIXME: This should be moved into session.[ch] or something. */
-static struct valid_term
-{
-	char* name;
-	char* descr;
-} valid_terms[] = {
-		/* DBCS Terminals not yet supported.
-		 * { "IBM-5555-C01", "DBCS color" },
-		 * { "IBM-5555-B01", "DBCS monocrome" }, */
-		{ "IBM-3477-FC", "27x132 color" },
-		{ "IBM-3477-FG", "27x132 monochrome" },
-		{ "IBM-3180-2",  "27x132 monochrome" },
-		{ "IBM-3179-2",  "24x80 color" },
-		{ "IBM-3196-A1", "24x80 monochrome" },
-		{ "IBM-5292-2",  "24x80 color" },
-		{ "IBM-5291-1",  "24x80 monochrome" },
-		{ "IBM-5251-11", "24x80 monochrome" },
-		{ NULL, NULL }
-};
 
 static void syntax(void);
 
@@ -236,11 +218,22 @@ Options:\n\
    +/-version              Show emulator version and exit.\n\
    env.NAME=VALUE          Set telnet environment string NAME to VALUE.\n\
    env.TERM=TYPE           Emulate IBM terminal type (default: depends)");
-	p = valid_terms;
-	while (p->name)
+
+	const std::array<std::pair<const char*, const char*>, 8> valid_terms = {
+			{
+					{ "IBM-3477-FC", "27x132 color" },
+					{ "IBM-3477-FG", "27x132 monochrome" },
+					{ "IBM-3180-2", "27x132 monochrome" },
+					{ "IBM-3179-2", "24x80 color" },
+					{ "IBM-3196-A1", "24x80 monochrome" },
+					{ "IBM-5292-2", "24x80 color" },
+					{ "IBM-5291-1", "24x80 monochrome" },
+					{ "IBM-5251-11", "24x80 monochrome" }
+			}};
+
+	for (const auto&[name, description] : valid_terms)
 	{
-		printf("\n                             %s (%s)", p->name, p->descr);
-		p++;
+		printf("\n                             %s (%s)", name, description);
 	}
 	printf("\n\n");
 	exit(255);

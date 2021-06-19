@@ -24,6 +24,7 @@ ADD_LIBRARY(Tan.Protocol
         Source/Protocol/window.cpp
         Source/Protocol/wtd.cpp
         )
+SET_TARGET_PROPERTIES(Tan.Protocol PROPERTIES CXX_STANDARD 17)
 TARGET_COMPILE_DEFINITIONS(Tan.Protocol PRIVATE -DSYSCONFDIR="tmp")
 TARGET_INCLUDE_DIRECTORIES(Tan.Protocol PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Include/Protocol>)
 
@@ -31,6 +32,7 @@ ADD_EXECUTABLE(Tan.App
         Source/Console/tn5250.cpp
         Source/Console/cursesterm.cpp
         )
+SET_TARGET_PROPERTIES(Tan.App PROPERTIES CXX_STANDARD 17)
 TARGET_INCLUDE_DIRECTORIES(Tan.App PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Include/Console>)
 TARGET_LINK_LIBRARIES(Tan.App PRIVATE Tan.Protocol)
 
