@@ -22,6 +22,10 @@
 
 void Tn5250Config::put(const std::string& key, const std::string& value) noexcept
 {
+	// If a key equivalent to k already exists in the container, assigns
+	// std::forward<M>(obj) to the mapped_type corresponding to the key k.
+	// If the key does not exist, inserts the new value as if by insert,
+	// constructing it from value_type(k, std::forward<M>(obj))
 	this->insert_or_assign(key, value);
 }
 

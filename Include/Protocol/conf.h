@@ -45,7 +45,8 @@ struct _Tn5250Config : private std::map<std::string, std::string>
 
 	/**
 	 * Associates the specified value with the specified key in this map
-	 * (optional operation).
+	 * (optional operation). If the map previously contained a mapping for
+	 * the key, the old value is replaced by the specified value.
 	 *
 	 * @param key key with which the specified value is to be associated.
 	 * @param value value to be associated with the specified key.
