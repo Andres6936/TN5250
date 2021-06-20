@@ -95,8 +95,6 @@ extern void tn5250_record_skip_to_end(Tn5250Record* This);
    (void)((This)->cur_pos = (newpos))
 #define tn5250_record_opcode(This) \
    (tn5250_record_data(This)[9])
-#define tn5250_record_flow_type(This) \
-   ((tn5250_record_data(This)[4] << 8) | (tn5250_record_data(This)[5]))
 #define tn5250_record_flags(This) \
    (tn5250_record_data(This)[7])
 #define tn5250_record_sys_request(This) \

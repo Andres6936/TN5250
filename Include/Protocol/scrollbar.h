@@ -54,17 +54,7 @@ typedef struct _Tn5250Scrollbar Tn5250Scrollbar;
 /* Manipulate scrollbars */
 extern Tn5250Scrollbar* tn5250_scrollbar_new();
 
-extern Tn5250Scrollbar* tn5250_scrollbar_copy(Tn5250Scrollbar* This);
-
 extern void tn5250_scrollbar_destroy(Tn5250Scrollbar* This);
-
-extern int tn5250_scrollbar_direction(Tn5250Scrollbar* This);
-
-extern int tn5250_scrollbar_rowscols(Tn5250Scrollbar* This);
-
-extern int tn5250_scrollbar_sliderpos(Tn5250Scrollbar* This);
-
-extern int tn5250_scrollbar_size(Tn5250Scrollbar* This);
 
 /* Manipulate scrollbar lists */
 extern Tn5250Scrollbar* tn5250_scrollbar_list_destroy(Tn5250Scrollbar*
@@ -72,16 +62,6 @@ list);
 
 extern Tn5250Scrollbar* tn5250_scrollbar_list_add(Tn5250Scrollbar* list,
 		Tn5250Scrollbar* node);
-
-extern Tn5250Scrollbar* tn5250_scrollbar_list_remove(Tn5250Scrollbar*
-list,
-		Tn5250Scrollbar*
-		node);
-
-extern Tn5250Scrollbar* tn5250_scrollbar_list_find_by_id(Tn5250Scrollbar*
-list, int id);
-
-extern Tn5250Scrollbar* tn5250_scrollbar_list_copy(Tn5250Scrollbar* list);
 
 
 #endif                /* SCROLLBAR_H */
