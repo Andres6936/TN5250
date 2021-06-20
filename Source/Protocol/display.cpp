@@ -85,51 +85,6 @@ tn5250_display_new()
 }
 
 
-/****f* lib5250/tn5250_display_destroy
- * NAME
- *    tn5250_display_destroy
- * SYNOPSIS
- *    tn5250_display_destroy (This);
- * INPUTS
- *    Tn5250Display *      This       - 
- * DESCRIPTION
- *    DOCUMENT ME!!!
- *****/
-void
-tn5250_display_destroy(Tn5250Display* This)
-{
-	Tn5250DBuffer* diter, * dnext;
-
-	if ((diter = This->display_buffers) != NULL)
-	{
-		do
-		{
-			dnext = diter->next;
-			tn5250_dbuffer_destroy(diter);
-			diter = dnext;
-		} while (diter != This->display_buffers);
-	}
-	if (This->terminal != NULL)
-	{
-		tn5250_terminal_destroy(This->terminal);
-	}
-	if (This->saved_msg_line != NULL)
-	{
-		free(This->saved_msg_line);
-	}
-	if (This->msg_line != NULL)
-	{
-		free(This->msg_line);
-	}
-	if (This->config != NULL)
-	{
-		tn5250_config_unref(This->config);
-	}
-	free(This);
-	return;
-}
-
-
 /****f* lib5250/tn5250_display_config
  * NAME
  *    tn5250_display_config
@@ -229,75 +184,6 @@ tn5250_display_set_session(Tn5250Display* This, struct _Tn5250Session* s)
 	{
 		This->session->display = This;
 	}
-	return;
-}
-
-
-/****f* lib5250/tn5250_display_push_dbuffer
- * NAME
- *    tn5250_display_push_dbuffer
- * SYNOPSIS
- *    ret = tn5250_display_push_dbuffer (This);
- * INPUTS
- *    Tn5250Display *      This       - 
- * DESCRIPTION
- *    Create a new display buffer and assign the old one an id so we can
- *    later restore it.  Return the id which must be > 0.
- *****/
-Tn5250DBuffer*
-tn5250_display_push_dbuffer(Tn5250Display* This)
-{
-	Tn5250DBuffer* dbuf;
-
-	dbuf = tn5250_dbuffer_copy(This->display_buffers);
-	tn5250_display_add_dbuffer(This, dbuf);
-	return dbuf;            /* Pointer is used as unique identifier in data stream. */
-}
-
-
-/****f* lib5250/tn5250_display_restore_dbuffer
- * NAME
- *    tn5250_display_restore_dbuffer
- * SYNOPSIS
- *    tn5250_display_restore_dbuffer (This, id);
- * INPUTS
- *    Tn5250Display *      This       - 
- *    Tn5250DBuffer *      id         - 
- * DESCRIPTION
- *    Delete the current dbuffer and replace it with the one with id `id'.
- *****/
-void
-tn5250_display_restore_dbuffer(Tn5250Display* This, Tn5250DBuffer* id)
-{
-	Tn5250DBuffer* iter;
-
-	/* Sanity check to make sure that the display buffer is for real and
-	 * that it isn't the one which is currently active. */
-	if ((iter = This->display_buffers) != NULL)
-	{
-		do
-		{
-			if (iter == id && iter != This->display_buffers)
-			{
-				break;
-			}
-			iter = iter->next;
-		} while (iter != This->display_buffers);
-
-		if (iter != id || iter == This->display_buffers)
-		{
-			return;
-		}
-	}
-	else
-	{
-		return;
-	}
-
-	This->display_buffers->prev->next = This->display_buffers->next;
-	This->display_buffers->next->prev = This->display_buffers->prev;
-	tn5250_dbuffer_destroy(This->display_buffers);
-	This->display_buffers = iter;
 	return;
 }
 
@@ -2950,31 +2836,6 @@ tn5250_display_set_msg_line(Tn5250Display* This,
 	l = tn5250_dbuffer_msg_line(This->display_buffers);
 	memcpy(This->display_buffers->data + tn5250_display_width (This) * l,
 			This->msg_line, This->msg_len);
-	return;
-}
-
-
-/****f* lib5250/tn5250_display_set_char_map
- * NAME
- *    tn5250_display_set_char_map
- * SYNOPSIS
- *    tn5250_display_set_char_map (display, "37");
- * INPUTS
- *    Tn5250Display *      display    - Pointer to the display object.
- *    const char *         name       - Name of translation map to use.
- * DESCRIPTION
- *    Save the current message line.
- *****/
-void
-tn5250_display_set_char_map(Tn5250Display* This, const char* name)
-{
-	Tn5250CharMap* map = tn5250_char_map_new(name);
-	TN5250_ASSERT (map != NULL);
-	if (This->map != NULL)
-	{
-		tn5250_char_map_destroy(This->map);
-	}
-	This->map = map;
 	return;
 }
 

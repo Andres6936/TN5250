@@ -75,31 +75,15 @@ typedef struct _Tn5250Menubar Tn5250Menubar;
 /* Manipulate menubars */
 extern Tn5250Menubar* tn5250_menubar_new();
 
-extern Tn5250Menubar* tn5250_menubar_copy(Tn5250Menubar* This);
-
 extern void tn5250_menubar_destroy(Tn5250Menubar* This);
 
-#define tn5250_menubar_restricted_cursor(This) ((This)->restricted_cursor)
 #define tn5250_menubar_type(This) ((This)->type)
-#define tn5250_menubar_start_row(This) ((This)->row)
-#define tn5250_menubar_start_col(This) ((This)->column)
-#define tn5250_menubar_itemsize(This) ((This)->itemsize)
-#define tn5250_menubar_height(This) ((This)->height)
-#define tn5250_menubar_items(This) ((This)->items)
 
 /* Manipulate menubar lists */
 extern Tn5250Menubar* tn5250_menubar_list_destroy(Tn5250Menubar* list);
 
 extern Tn5250Menubar* tn5250_menubar_list_add(Tn5250Menubar* list,
 		Tn5250Menubar* node);
-
-extern Tn5250Menubar* tn5250_menubar_list_remove(Tn5250Menubar* list,
-		Tn5250Menubar* node);
-
-extern Tn5250Menubar* tn5250_menubar_list_find_by_id(Tn5250Menubar* list,
-		int id);
-
-extern Tn5250Menubar* tn5250_menubar_list_copy(Tn5250Menubar* list);
 
 extern Tn5250Menubar* tn5250_menubar_hit_test(Tn5250Menubar* list, int x,
 		int y);
@@ -144,10 +128,6 @@ typedef struct _Tn5250Menuitem Tn5250Menuitem;
 /* Manipulate menuitems */
 extern Tn5250Menuitem* tn5250_menuitem_new();
 
-extern Tn5250Menuitem* tn5250_menuitem_copy(Tn5250Menuitem* This);
-
-extern void tn5250_menuitem_destroy(Tn5250Menuitem* This);
-
 extern int tn5250_menuitem_new_row(Tn5250Menuitem* This);
 
 extern int tn5250_menuitem_new_col(Tn5250Menuitem* This);
@@ -155,19 +135,11 @@ extern int tn5250_menuitem_new_col(Tn5250Menuitem* This);
 #define tn5250_menuitem_start_row(This) ((This)->row)
 #define tn5250_menuitem_start_col(This) ((This)->column)
 
-/* Manipulate menuitem lists */
-extern Tn5250Menuitem* tn5250_menuitem_list_destroy(Tn5250Menuitem* list);
-
 extern Tn5250Menuitem* tn5250_menuitem_list_add(Tn5250Menuitem* list,
-		Tn5250Menuitem* node);
-
-extern Tn5250Menuitem* tn5250_menuitem_list_remove(Tn5250Menuitem* list,
 		Tn5250Menuitem* node);
 
 extern Tn5250Menuitem* tn5250_menuitem_list_find_by_id(Tn5250Menuitem*
 list, int id);
-
-extern Tn5250Menuitem* tn5250_menuitem_list_copy(Tn5250Menuitem* list);
 
 extern Tn5250Menuitem* tn5250_menuitem_hit_test(Tn5250Menuitem* list,
 		int x, int y);

@@ -169,48 +169,23 @@ extern int tn5250_field_valid_char(Tn5250Field* This, int ch, int* src);
     (((This)->FFW & TN5250_FIELD_FER) != 0)
 #define tn5250_field_is_monocase(This) \
     (((This)->FFW & TN5250_FIELD_MONOCASE) != 0)
-#define tn5250_field_is_mandatory(This) \
-    (((This)->FFW & TN5250_FIELD_MANDATORY) != 0)
 
 /* Mandatory fill type macros */
 #define tn5250_field_mand_fill_type(This) \
     ((This)->FFW & TN5250_FIELD_MAND_FILL_MASK)
-#define tn5250_field_is_no_adjust(This) \
-    (tn5250_field_mand_fill_type (This) == TN5250_FIELD_NO_ADJUST)
-#define tn5250_field_is_right_zero(This) \
-    (tn5250_field_mand_fill_type (This) == TN5250_FIELD_RIGHT_ZERO)
-#define tn5250_field_is_right_blank(This) \
-    (tn5250_field_mand_fill_type (This) == TN5250_FIELD_RIGHT_BLANK)
-#define tn5250_field_is_mand_fill(This) \
-    (tn5250_field_mand_fill_type (This) != 0)
 
 #define tn5250_field_type(This) \
     ((This)->FFW & TN5250_FIELD_FIELD_MASK)
-#define tn5250_field_is_alpha_shift(This) \
-    (tn5250_field_type (This) == TN5250_FIELD_ALPHA_SHIFT)
-#define tn5250_field_is_alpha_only(This) \
-    (tn5250_field_type (This) == TN5250_FIELD_ALPHA_ONLY)
-#define tn5250_field_is_num_shift(This) \
-    (tn5250_field_type (This) == TN5250_FIELD_NUM_SHIFT)
 #define tn5250_field_is_num_only(This) \
     (tn5250_field_type (This) == TN5250_FIELD_NUM_ONLY)
-#define tn5250_field_is_kata_shift(This) \
-    (tn5250_field_type (This) == TN5250_FIELD_KATA_SHIFT)
-#define tn5250_field_is_digit_only(This) \
-    (tn5250_field_type (This) == TN5250_FIELD_DIGIT_ONLY)
-#define tn5250_field_is_mag_reader(This) \
-    (tn5250_field_type (This) == TN5250_FIELD_MAG_READER)
 #define tn5250_field_is_signed_num(This) \
     (tn5250_field_type (This) == TN5250_FIELD_SIGNED_NUM)
 
 
 #define TN5250_FIELD_CONTROL_HILIGHTED_ENTRY    0x8900
-#define TN5250_FIELD_CONTROL_CONTINUED          0x8600
 
 #define tn5250_field_control(This) \
         ((This)->FCW)
-#define tn5250_field_is_higlighted_entry(This) \
-        ( (tn5250_field_control (This) & 0xFF00) == TN5250_FIELD_CONTROL_HILIGHTED_ENTRY)
 #define tn5250_field_is_continued(This) \
         ((This)->continuous)
 #define tn5250_field_is_continued_first(This) \
@@ -247,9 +222,6 @@ extern Tn5250Field /*@null@*/ * tn5250_field_list_destroy(Tn5250Field /*@null@*/
 
 extern Tn5250Field*
 tn5250_field_list_add(Tn5250Field /*@null@*/ * list, Tn5250Field /*@dependent@*/ * node);
-
-extern Tn5250Field /*@null@*/ *
-tn5250_field_list_remove(Tn5250Field /*@null@*/ * list, Tn5250Field* node);
 
 extern Tn5250Field /*@null@*/ /*@observer@*/ *
 tn5250_field_list_find_by_id(Tn5250Field /*@null@*/ * list, int id);

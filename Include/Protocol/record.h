@@ -51,16 +51,10 @@ typedef struct _Tn5250Record Tn5250Record;
 /******/
 
 #define TN5250_RECORD_FLOW_DISPLAY 0x00
-#define TN5250_RECORD_FLOW_STARTUP 0x90
-#define TN5250_RECORD_FLOW_SERVERO 0x11
-#define TN5250_RECORD_FLOW_CLIENTO 0x12
 
 #define TN5250_RECORD_H_NONE        0
 #define TN5250_RECORD_H_ERR        0x80
 #define TN5250_RECORD_H_ATN        0x40
-#define TN5250_RECORD_H_PRINTER_READY    0x20
-#define TN5250_RECORD_H_FIRST_OF_CHAIN    0x10
-#define TN5250_RECORD_H_LAST_OF_CHAIN    0x08
 #define TN5250_RECORD_H_SRQ        0x04
 #define TN5250_RECORD_H_TRQ        0x02
 #define TN5250_RECORD_H_HLP        0x01
@@ -76,8 +70,6 @@ typedef struct _Tn5250Record Tn5250Record;
 #define TN5250_RECORD_OPCODE_CANCEL_INVITE    10
 #define TN5250_RECORD_OPCODE_MESSAGE_ON        11
 #define TN5250_RECORD_OPCODE_MESSAGE_OFF    12
-#define TN5250_RECORD_OPCODE_PRINT_COMPLETE    1
-#define TN5250_RECORD_OPCODE_CLEAR        2
 
 extern Tn5250Record /*@only@*/ * tn5250_record_new(void);
 

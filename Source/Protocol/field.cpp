@@ -624,41 +624,6 @@ tn5250_field_list_add(Tn5250Field* list, Tn5250Field* node)
 }
 
 
-/****f* lib5250/tn5250_field_list_remove
- * NAME
- *    tn5250_field_list_remove
- * SYNOPSIS
- *    ret = tn5250_field_list_remove (list, node);
- * INPUTS
- *    Tn5250Field *        list       - 
- *    Tn5250Field *        node       - 
- * DESCRIPTION
- *    Remove a field from a list of fields.
- *****/
-Tn5250Field*
-tn5250_field_list_remove(Tn5250Field* list, Tn5250Field* node)
-{
-	if (list == NULL)
-	{
-		return NULL;
-	}
-	if (list->next == list && list == node)
-	{
-		node->next = node->prev = NULL;
-		return NULL;
-	}
-	if (list == node)
-	{
-		list = list->next;
-	}
-
-	node->next->prev = node->prev;
-	node->prev->next = node->next;
-	node->prev = node->next = NULL;
-	return list;
-}
-
-
 /****f* lib5250/tn5250_field_list_find_by_id
  * NAME
  *    tn5250_field_list_find_by_id

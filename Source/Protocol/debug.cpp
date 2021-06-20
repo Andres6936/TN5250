@@ -155,22 +155,6 @@ Tn5250Terminal* tn5250_debug_terminal_new(Tn5250Terminal* slave, Tn5250Stream* d
 	return This;
 }
 
-/****f* lib5250/tn5250_debug_terminal_set_pause
- * NAME
- *    tn5250_debug_terminal_set_pause
- * SYNOPSIS
- *    tn5250_debug_terminal_set_pause (This, f);
- * INPUTS
- *    Tn5250Terminal *     This       - 
- *    int                  f          - 
- * DESCRIPTION
- *    DOCUMENT ME!!!
- *****/
-void tn5250_debug_terminal_set_pause(Tn5250Terminal* This, int f)
-{
-	This->data->pauseflag = f;
-}
-
 /****i* lib5250/debug_stream_connect
  * NAME
  *    debug_stream_connect

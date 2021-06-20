@@ -40,22 +40,6 @@ tn5250_menubar_new()
 }
 
 
-Tn5250Menubar*
-tn5250_menubar_copy(Tn5250Menubar* This)
-{
-	Tn5250Menubar* menu = tn5250_new (Tn5250Menubar, 1);
-
-	if (menu == NULL)
-	{
-		return NULL;
-	}
-	memcpy(menu, This, sizeof(Tn5250Menubar));
-	menu->next = NULL;
-	menu->prev = NULL;
-	return menu;
-}
-
-
 void
 tn5250_menubar_destroy(Tn5250Menubar* This)
 {
@@ -96,70 +80,6 @@ tn5250_menubar_list_add(Tn5250Menubar* list, Tn5250Menubar* node)
 	node->prev->next = node;
 	node->next->prev = node;
 	return list;
-}
-
-
-Tn5250Menubar*
-tn5250_menubar_list_remove(Tn5250Menubar* list, Tn5250Menubar* node)
-{
-	if (list == NULL)
-	{
-		return NULL;
-	}
-	if ((list->next == list) && (list == node))
-	{
-		node->next = node->prev = NULL;
-		return NULL;
-	}
-	if (list == node)
-	{
-		list = list->next;
-	}
-
-	node->next->prev = node->prev;
-	node->prev->next = node->next;
-	node->prev = node->next = NULL;
-	return list;
-}
-
-
-Tn5250Menubar*
-tn5250_menubar_list_find_by_id(Tn5250Menubar* list, int id)
-{
-	Tn5250Menubar* iter;
-
-	if ((iter = list) != NULL)
-	{
-		do
-		{
-			if (iter->id == id)
-			{
-				return iter;
-			}
-			iter = iter->next;
-		} while (iter != list);
-	}
-	return NULL;
-}
-
-
-Tn5250Menubar*
-tn5250_menubar_list_copy(Tn5250Menubar* This)
-{
-	Tn5250Menubar* new_list = NULL, * iter, * new_menubar;
-	if ((iter = This) != NULL)
-	{
-		do
-		{
-			new_menubar = tn5250_menubar_copy(iter);
-			if (new_menubar != NULL)
-			{
-				new_list = tn5250_menubar_list_add(new_list, new_menubar);
-			}
-			iter = iter->next;
-		} while (iter != This);
-	}
-	return new_list;
 }
 
 
@@ -286,30 +206,6 @@ tn5250_menuitem_list_add(Tn5250Menuitem* list, Tn5250Menuitem* node)
 	node->prev = list->prev;
 	node->prev->next = node;
 	node->next->prev = node;
-	return list;
-}
-
-
-Tn5250Menuitem*
-tn5250_menuitem_list_remove(Tn5250Menuitem* list, Tn5250Menuitem* node)
-{
-	if (list == NULL)
-	{
-		return NULL;
-	}
-	if ((list->next == list) && (list == node))
-	{
-		node->next = node->prev = NULL;
-		return NULL;
-	}
-	if (list == node)
-	{
-		list = list->next;
-	}
-
-	node->next->prev = node->prev;
-	node->prev->next = node->next;
-	node->prev = node->next = NULL;
 	return list;
 }
 

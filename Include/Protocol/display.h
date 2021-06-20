@@ -89,18 +89,11 @@ typedef struct _Tn5250Display Tn5250Display;
 
 extern Tn5250Display* tn5250_display_new(void);
 
-extern void tn5250_display_destroy(Tn5250Display* This);
-
 extern int tn5250_display_config(Tn5250Display* This,
 		struct _Tn5250Config* config);
 
 extern void tn5250_display_set_session(Tn5250Display* This,
 		struct _Tn5250Session* s);
-
-extern Tn5250DBuffer* tn5250_display_push_dbuffer(Tn5250Display* This);
-
-extern void tn5250_display_restore_dbuffer(Tn5250Display* This,
-		Tn5250DBuffer* display);
 
 extern void tn5250_display_set_terminal(Tn5250Display* This,
 		struct _Tn5250Terminal*);
@@ -174,9 +167,6 @@ extern void tn5250_display_save_msg_line(Tn5250Display* This);
 extern void tn5250_display_set_msg_line(Tn5250Display* This,
 		const unsigned char* m,
 		int msglen);
-
-extern void tn5250_display_set_char_map(Tn5250Display* This,
-		const char* name);
 
 /* Key functions */
 extern void tn5250_display_do_keys(Tn5250Display* This);
@@ -264,14 +254,10 @@ void tn5250_display_wordwrap(Tn5250Display* This, unsigned char* text,
    (tn5250_dbuffer_addch((This)->display_buffers,(ch)))
 #define tn5250_display_roll(This, top, bottom, lines) \
    (tn5250_dbuffer_roll((This)->display_buffers,(top),(bottom),(lines)))
-#define tn5250_display_set_ic(This, y, x) \
-   (tn5250_dbuffer_set_ic((This)->display_buffers,(y),(x)))
 #define tn5250_display_set_header_data(This, data, len) \
    (tn5250_dbuffer_set_header_data((This)->display_buffers,(data),(len)))
 #define tn5250_display_clear_pending_insert(This) \
    (void)((This)->pending_insert = 0)
-#define tn5250_display_pending_insert(This) \
-   ((This)->pending_insert)
 #define tn5250_display_field_data(This, field) \
    (tn5250_dbuffer_field_data((This)->display_buffers,(field)))
 #define tn5250_display_msg_line(This) \
