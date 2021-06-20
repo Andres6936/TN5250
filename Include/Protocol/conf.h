@@ -44,7 +44,7 @@ struct _Tn5250Config : private std::vector<std::pair<std::string, std::string>>
 
 	_Tn5250Config() noexcept = default;
 
-	void add(const std::string& key, const std::string& value) noexcept;
+	void put(const std::string& key, const std::string& value) noexcept;
 
 	const bool containsKey(const std::string& key) const noexcept;
 
