@@ -30,7 +30,7 @@ tn5250_terminal_init(Tn5250Terminal* This)
 void
 tn5250_terminal_term(Tn5250Terminal* This)
 {
-	(*((This)->term))((This));
+	This->termUp();
 }
 
 void

@@ -1966,7 +1966,7 @@ void Curses::startUp()
 
 void Curses::termUp()
 {
-	_Tn5250Terminal::termUp();
+	endwin();
 }
 
 void Curses::destroyUp()
