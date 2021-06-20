@@ -149,6 +149,18 @@ struct _Tn5250Terminal
 	SOCKET_TYPE conn_fd;
 	struct _Tn5250TerminalPrivate* data;
 
+	virtual void startUp()
+	{
+	};
+
+	virtual void termUp()
+	{
+	};
+
+	virtual void destroyUp()
+	{
+	};
+
 	void (* init)(struct _Tn5250Terminal* This);
 
 	void (* term)(struct _Tn5250Terminal* This);

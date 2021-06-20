@@ -24,7 +24,7 @@
 void
 tn5250_terminal_init(Tn5250Terminal* This)
 {
-	(*((This)->init))((This));
+	This->startUp();
 }
 
 void

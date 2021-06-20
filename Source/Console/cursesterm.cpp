@@ -279,7 +279,7 @@ static Key curses_vt100[] = {
  *****/
 Tn5250Terminal* tn5250_curses_terminal_new()
 {
-	Tn5250Terminal* r = tn5250_new(Tn5250Terminal, 1);
+	Tn5250Terminal* r = new Curses();
 	if (r == NULL)
 		return NULL;
 
@@ -1817,3 +1817,159 @@ void curses_postscript_print(FILE* out, int x, int y, char* string, attr_t attr)
 #endif /* USE_CURSES */
 
 /* vi:set cindent sts=3 sw=3: */
+void Curses::startUp()
+{
+	int i = 0, c, s;
+	char* str;
+	int x;
+
+	(void)initscr();
+	raw();
+
+#ifdef USE_OWN_KEY_PARSING
+	if ((str = (unsigned char*)tgetstr("ks", NULL)) != NULL)
+		tputs(str, 1, putchar);
+	fflush(stdout);
+#else
+	keypad(stdscr, 1);
+#endif
+
+	nodelay(stdscr, 1);
+	noecho();
+
+	/* Determine if we're talking to an xterm ;) */
+	if ((str = getenv("TERM")) != NULL &&
+		(!strcmp(str, "xterm") || !strcmp(str, "xterm-5250")
+		 || !strcmp(str, "xterm-color")))
+		this->data->is_xterm = 1;
+
+	/* Initialize colors if the terminal supports it. */
+	if (has_colors())
+	{
+		start_color();
+		init_pair(COLOR_BLACK, colorlist[COLOR_BLACK].ref,
+				colorlist[COLOR_BLACK].ref);
+		init_pair(COLOR_GREEN, colorlist[COLOR_GREEN].ref,
+				colorlist[COLOR_BLACK].ref);
+		init_pair(COLOR_RED, colorlist[COLOR_RED].ref,
+				colorlist[COLOR_BLACK].ref);
+		init_pair(COLOR_CYAN, colorlist[COLOR_CYAN].ref,
+				colorlist[COLOR_BLACK].ref);
+		init_pair(COLOR_WHITE, colorlist[COLOR_WHITE].ref,
+				colorlist[COLOR_BLACK].ref);
+		init_pair(COLOR_MAGENTA, colorlist[COLOR_MAGENTA].ref,
+				colorlist[COLOR_BLACK].ref);
+		init_pair(COLOR_BLUE, colorlist[COLOR_BLUE].ref,
+				colorlist[COLOR_BLACK].ref);
+		init_pair(COLOR_YELLOW, colorlist[COLOR_YELLOW].ref,
+				colorlist[COLOR_BLACK].ref);
+	}
+
+	x = -1;
+	attribute_map[++x] = A_5250_GREEN;
+	attribute_map[++x] = A_5250_GREEN | A_REVERSE;
+	attribute_map[++x] = A_5250_WHITE;
+	attribute_map[++x] = A_5250_WHITE | A_REVERSE;
+	attribute_map[++x] = A_5250_GREEN | A_UNDERLINE;
+	attribute_map[++x] = A_5250_GREEN | A_UNDERLINE | A_REVERSE;
+	attribute_map[++x] = A_5250_WHITE | A_UNDERLINE;
+	attribute_map[++x] = 0x00;
+	attribute_map[++x] = A_5250_RED;
+	attribute_map[++x] = A_5250_RED | A_REVERSE;
+	attribute_map[++x] = A_5250_RED | A_BLINK;
+	attribute_map[++x] = A_5250_RED | A_BLINK | A_REVERSE;
+	attribute_map[++x] = A_5250_RED | A_UNDERLINE;
+	attribute_map[++x] = A_5250_RED | A_UNDERLINE | A_REVERSE;
+	attribute_map[++x] = A_5250_RED | A_UNDERLINE | A_BLINK;
+	attribute_map[++x] = 0x00;
+	attribute_map[++x] = A_5250_TURQ | A_VERTICAL;
+	attribute_map[++x] = A_5250_TURQ | A_VERTICAL | A_REVERSE;
+	attribute_map[++x] = A_5250_YELLOW | A_VERTICAL;
+	attribute_map[++x] = A_5250_YELLOW | A_VERTICAL | A_REVERSE;
+	attribute_map[++x] = A_5250_TURQ | A_UNDERLINE | A_VERTICAL;
+	attribute_map[++x] = A_5250_TURQ | A_UNDERLINE | A_REVERSE | A_VERTICAL;
+	attribute_map[++x] = A_5250_YELLOW | A_UNDERLINE | A_VERTICAL;
+	attribute_map[++x] = 0x00;
+	attribute_map[++x] = A_5250_PINK;
+	attribute_map[++x] = A_5250_PINK | A_REVERSE;
+	attribute_map[++x] = A_5250_BLUE;
+	attribute_map[++x] = A_5250_BLUE | A_REVERSE;
+	attribute_map[++x] = A_5250_PINK | A_UNDERLINE;
+	attribute_map[++x] = A_5250_PINK | A_UNDERLINE | A_REVERSE;
+	attribute_map[++x] = A_5250_BLUE | A_UNDERLINE;
+	attribute_map[++x] = 0x00;
+
+	this->data->quit_flag = 0;
+
+	/* Determine if the terminal supports underlining. */
+	if (this->data->have_underscores == 0)
+	{
+		this->data->underscores = 1;
+//		if ((unsigned char*)tgetstr("us", NULL) == NULL)
+//			This->data->underscores = 1;
+//		else
+//			This->data->underscores = 0;
+	}
+
+#ifdef USE_OWN_KEY_PARSING
+	/* Allocate and populate an array of escape code => key code
+	 * mappings. */
+	This->data->k_map_len = (sizeof(curses_vt100) / sizeof(Key)) * 2
+							+ sizeof(curses_caps) / sizeof(Key) + 1;
+	This->data->k_map = (Key*)malloc(sizeof(Key) * This->data->k_map_len);
+
+	c = sizeof(curses_caps) / sizeof(Key);
+	s = sizeof(curses_vt100) / sizeof(Key);
+	for (i = 0; i < c; i++)
+	{
+		This->data->k_map[i].k_code = curses_caps[i].k_code;
+		if ((str = (unsigned char*)tgetstr(curses_caps[i].k_str, NULL)) != NULL)
+		{
+			TN5250_LOG(("Found string for cap '%s': '%s'.\n",
+					curses_caps[i].k_str, str));
+			strcpy(This->data->k_map[i].k_str, str);
+		}
+		else
+			This->data->k_map[i].k_str[0] = '\0';
+	}
+
+	/* Populate vt100 escape codes, both ESC+ and C-g+ forms. */
+	for (i = 0; i < sizeof(curses_vt100) / sizeof(Key); i++)
+	{
+		This->data->k_map[i + c].k_code =
+		This->data->k_map[i + c + s].k_code =
+				curses_vt100[i].k_code;
+		strcpy(This->data->k_map[i + c].k_str, curses_vt100[i].k_str);
+		strcpy(This->data->k_map[i + c + s].k_str, curses_vt100[i].k_str);
+
+		if (This->data->k_map[i + c + s].k_str[0] == '\033')
+			This->data->k_map[i + c + s].k_str[0] = K_CTRL('G');
+		else
+			This->data->k_map[i + c + s].k_str[0] = '\0';
+	}
+
+	/* Damn the exceptions to the rules. (ESC + DEL) */
+	This->data->k_map[This->data->k_map_len - 1].k_code = K_INSERT;
+	This->data->k_map[This->data->k_map_len - s - 1].k_code = K_INSERT;
+	if ((str = (unsigned char*)tgetstr("kD", NULL)) != NULL)
+	{
+		This->data->k_map[This->data->k_map_len - 1].k_str[0] = '\033';
+		This->data->k_map[This->data->k_map_len - s - 1].k_str[0] = K_CTRL('G');
+		strcpy(This->data->k_map[This->data->k_map_len - 1].k_str + 1, str);
+		strcpy(This->data->k_map[This->data->k_map_len - s - 1].k_str + 1, str);
+	}
+	else
+		This->data->k_map[This->data->k_map_len - 1].k_str[0] =
+		This->data->k_map[This->data->k_map_len - s - 1].k_str[0] = 0;
+#endif
+}
+
+void Curses::termUp()
+{
+	_Tn5250Terminal::termUp();
+}
+
+void Curses::destroyUp()
+{
+	_Tn5250Terminal::destroyUp();
+}

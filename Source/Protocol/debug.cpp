@@ -238,7 +238,7 @@ static void debug_stream_destroy(Tn5250Stream* This)
  *****/
 static void debug_terminal_init(Tn5250Terminal* This)
 {
-	(*(This->data->slaveterm->init))(This->data->slaveterm);
+	This->data->slaveterm->startUp();
 }
 
 /****i* lib5250/debug_terminal_term
