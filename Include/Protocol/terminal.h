@@ -161,6 +161,14 @@ struct _Tn5250Terminal
 	{
 	};
 
+	virtual std::size_t getWidth()
+	{
+	};
+
+	virtual std::size_t getHeight()
+	{
+	};
+
 	void (* init)(struct _Tn5250Terminal* This);
 
 	void (* term)(struct _Tn5250Terminal* This);
