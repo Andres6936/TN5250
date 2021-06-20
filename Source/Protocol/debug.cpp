@@ -268,7 +268,7 @@ static void debug_terminal_term(Tn5250Terminal* This)
  *****/
 static void debug_terminal_destroy(Tn5250Terminal /*@only@*/ * This)
 {
-	(*(This->data->slaveterm->destroy))(This->data->slaveterm);
+	This->data->slaveterm->destroyUp();
 	free(This->data);
 	free(This);
 }

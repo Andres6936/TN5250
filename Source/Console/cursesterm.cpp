@@ -1971,5 +1971,15 @@ void Curses::termUp()
 
 void Curses::destroyUp()
 {
-	_Tn5250Terminal::destroyUp();
+#ifdef USE_OWN_KEY_PARSING
+	if (This->data->k_map != NULL)
+		free(This->data->k_map);
+#endif
+	if (this->data->font_80 != NULL)
+		free(this->data->font_80);
+	if (this->data->font_132 != NULL)
+		free(this->data->font_132);
+	if (this->data != NULL)
+		free(this->data);
+	free(this);
 }

@@ -36,7 +36,7 @@ tn5250_terminal_term(Tn5250Terminal* This)
 void
 tn5250_terminal_destroy(Tn5250Terminal* This)
 {
-	(*((This)->destroy))((This));
+	This->destroyUp();
 }
 
 void
