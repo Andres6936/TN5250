@@ -1559,27 +1559,27 @@ void curses_terminal_print_screen(Tn5250Terminal* This, Tn5250Display* display)
 		{
 			outcmd = tn5250_config_get(This->data->config, "outputcommand");
 		}
-		if (tn5250_config_get(This->data->config, "pagewidth"))
+		if (This->data->config->containsKey("pagewidth"))
 		{
 			pgwid = atoi(tn5250_config_get(This->data->config, "pagewidth"));
 		}
-		if (tn5250_config_get(This->data->config, "pagelength"))
+		if (This->data->config->containsKey("pagelength"))
 		{
 			pglen = atoi(tn5250_config_get(This->data->config, "pagelength"));
 		}
-		if (tn5250_config_get(This->data->config, "leftmargin"))
+		if (This->data->config->containsKey("leftmargin"))
 		{
 			leftmar = atoi(tn5250_config_get(This->data->config, "leftmargin"));
 		}
-		if (tn5250_config_get(This->data->config, "topmargin"))
+		if (This->data->config->containsKey("topmargin"))
 		{
 			topmar = atoi(tn5250_config_get(This->data->config, "topmargin"));
 		}
-		if (tn5250_config_get(This->data->config, "psfontsize_80"))
+		if (This->data->config->containsKey("psfontsize_80"))
 		{
 			fs80 = atoi(tn5250_config_get(This->data->config, "psfontsize_80"));
 		}
-		if (tn5250_config_get(This->data->config, "psfontsize_80"))
+		if (This->data->config->containsKey("psfontsize_80"))
 		{
 			fs132 = atoi(tn5250_config_get(This->data->config, "psfontsize_132"));
 		}
