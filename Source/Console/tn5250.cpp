@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
 		printf("tn5250 %s\n", VERSION);
 		exit(0);
 	}
-	else if (!tn5250_config_get(config, "host"))
+	else if (not config->containsKey("host"))
 	{
 		syntax();
 	}
