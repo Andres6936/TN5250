@@ -139,13 +139,6 @@ extern void tn5250_stream_destroy(Tn5250Stream /*@only@*/ * This);
 
 extern Tn5250Record /*@only@*/ * tn5250_stream_get_record(Tn5250Stream* This);
 
-extern Tn5250Stream* tn5250_stream_host(SOCKET_TYPE masterSock, long timeout,
-		int streamtype);
-
-#define tn5250_stream_connect(This, to) \
-   (* (This->connect)) ((This),(to))
-#define tn5250_stream_disconnect(This) \
-   (* (This->disconnect)) ((This))
 #define tn5250_stream_handle_receive(This) \
    (* (This->handle_receive)) ((This))
 #define tn5250_stream_send_packet(This, len, header, data) \
@@ -155,8 +148,6 @@ extern Tn5250Stream* tn5250_stream_host(SOCKET_TYPE masterSock, long timeout,
  * strings. */
 extern void tn5250_stream_setenv(Tn5250Stream* This, const char* name,
 		const char /*@null@*/ * value);
-
-extern void tn5250_stream_unsetenv(Tn5250Stream* This, const char* name);
 
 extern /*@observer@*/ /*@null@*/ const char*
 tn5250_stream_getenv(Tn5250Stream* This, const char* name);

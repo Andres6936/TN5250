@@ -61,31 +61,13 @@ extern Tn5250Window* tn5250_window_copy(Tn5250Window* This);
 
 extern void tn5250_window_destroy(Tn5250Window* This);
 
-extern int tn5250_window_start_row(Tn5250Window* This);
-
-extern int tn5250_window_start_col(Tn5250Window* This);
-
-extern int tn5250_window_height(Tn5250Window* This);
-
-extern int tn5250_window_width(Tn5250Window* This);
-
 /* Manipulate window lists */
 extern Tn5250Window* tn5250_window_list_destroy(Tn5250Window* list);
 
 extern Tn5250Window* tn5250_window_list_add(Tn5250Window* list,
 		Tn5250Window* node);
 
-extern Tn5250Window* tn5250_window_list_remove(Tn5250Window* list,
-		Tn5250Window* node);
-
-extern Tn5250Window* tn5250_window_list_find_by_id(Tn5250Window* list,
-		int id);
-
 extern Tn5250Window* tn5250_window_list_copy(Tn5250Window* list);
-
-extern Tn5250Window* tn5250_window_match_test(Tn5250Window* list, int x,
-		int y, int columns,
-		int rows);
 
 extern Tn5250Window* tn5250_window_hit_test(Tn5250Window* list, int x,
 		int y);

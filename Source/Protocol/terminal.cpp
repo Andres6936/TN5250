@@ -39,24 +39,6 @@ tn5250_terminal_destroy(Tn5250Terminal* This)
 	(*((This)->destroy))((This));
 }
 
-int
-tn5250_terminal_width(Tn5250Terminal* This)
-{
-	return (*((This)->width))((This));
-}
-
-int
-tn5250_terminal_height(Tn5250Terminal* This)
-{
-	return (*((This)->height))((This));
-}
-
-int
-tn5250_terminal_flags(Tn5250Terminal* This)
-{
-	return (*((This)->flags))((This));
-}
-
 void
 tn5250_terminal_update(Tn5250Terminal* This, Tn5250Display* d)
 {
@@ -157,9 +139,3 @@ tn5250_terminal_create_menuitem(Tn5250Terminal* This, Tn5250Display* d,
 	(*((This)->create_menuitem))((This), (d), (i));
 }
 
-void
-tn5250_terminal_destroy_menuitem(Tn5250Terminal* This, Tn5250Display* d,
-		struct _Tn5250Menuitem* i)
-{
-	(*((This)->destroy_menuitem))((This), (d), (i));
-}

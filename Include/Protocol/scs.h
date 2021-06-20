@@ -55,11 +55,6 @@
 #define SCS_ROTATE180    2
 #define SCS_ROTATE270    3
 
-/* Logging levels */
-#define SCS_LOG_BASIC    0
-#define SCS_LOG_DETAIL    1
-#define SCS_LOG_MAX    1
-
 #endif
 
 

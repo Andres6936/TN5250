@@ -121,8 +121,6 @@ extern int tn5250_session_config(Tn5250Session* This, struct _Tn5250Config* conf
 
 extern void tn5250_session_set_stream(Tn5250Session* This, Tn5250Stream /*@only@*/ * newstream);
 
-#define tn5250_session_stream(This) ((This)->stream)
-
 extern void tn5250_session_main_loop(Tn5250Session* This);
 
 

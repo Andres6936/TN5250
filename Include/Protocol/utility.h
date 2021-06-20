@@ -71,8 +71,6 @@ struct _clientaddr
 	unsigned long int mask;
 };
 
-typedef struct _clientaddr clientaddr;
-
 extern Tn5250CharMap tn5250_transmaps[];
 
 /*******/
@@ -81,12 +79,6 @@ Tn5250CharMap* tn5250_char_map_new(const char* maping);
 
 void tn5250_char_map_destroy(Tn5250CharMap* This);
 
-void tn5250_closeall(int fd);
-
-int tn5250_daemon(int nochdir, int noclose, int ignsigcld);
-
-int tn5250_make_socket(unsigned short int port);
-
 Tn5250Char tn5250_char_map_to_remote(Tn5250CharMap* This, Tn5250Char ascii);
 
 Tn5250Char tn5250_char_map_to_local(Tn5250CharMap* This, Tn5250Char ebcdic);
@@ -94,8 +86,6 @@ Tn5250Char tn5250_char_map_to_local(Tn5250CharMap* This, Tn5250Char ebcdic);
 int tn5250_char_map_printable_p(Tn5250CharMap* This, Tn5250Char data);
 
 int tn5250_char_map_attribute_p(Tn5250CharMap* This, Tn5250Char data);
-
-int tn5250_setenv(const char* name, const char* value, int overwrite);
 
 /* Idea shamelessly stolen from GTK+ */
 #define tn5250_new(type, count) (type *)malloc (sizeof (type) * (count))

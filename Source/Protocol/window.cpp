@@ -61,34 +61,6 @@ tn5250_window_destroy(Tn5250Window* This)
 }
 
 
-int
-tn5250_window_start_row(Tn5250Window* This)
-{
-	return (This->row);
-}
-
-
-int
-tn5250_window_start_col(Tn5250Window* This)
-{
-	return (This->column);
-}
-
-
-int
-tn5250_window_height(Tn5250Window* This)
-{
-	return (This->height);
-}
-
-
-int
-tn5250_window_width(Tn5250Window* This)
-{
-	return (This->width);
-}
-
-
 Tn5250Window*
 tn5250_window_list_destroy(Tn5250Window* list)
 {
@@ -126,50 +98,6 @@ tn5250_window_list_add(Tn5250Window* list, Tn5250Window* node)
 
 
 Tn5250Window*
-tn5250_window_list_remove(Tn5250Window* list, Tn5250Window* node)
-{
-	if (list == NULL)
-	{
-		return NULL;
-	}
-	if ((list->next == list) && (list == node))
-	{
-		node->next = node->prev = NULL;
-		return NULL;
-	}
-	if (list == node)
-	{
-		list = list->next;
-	}
-
-	node->next->prev = node->prev;
-	node->prev->next = node->next;
-	node->prev = node->next = NULL;
-	return list;
-}
-
-
-Tn5250Window*
-tn5250_window_list_find_by_id(Tn5250Window* list, int id)
-{
-	Tn5250Window* iter;
-
-	if ((iter = list) != NULL)
-	{
-		do
-		{
-			if (iter->id == id)
-			{
-				return iter;
-			}
-			iter = iter->next;
-		} while (iter != list);
-	}
-	return NULL;
-}
-
-
-Tn5250Window*
 tn5250_window_list_copy(Tn5250Window* This)
 {
 	Tn5250Window* new_list = NULL, * iter, * new_window;
@@ -186,28 +114,6 @@ tn5250_window_list_copy(Tn5250Window* This)
 		} while (iter != This);
 	}
 	return new_list;
-}
-
-
-Tn5250Window*
-tn5250_window_match_test(Tn5250Window* list, int x, int y, int columns,
-		int rows)
-{
-	Tn5250Window* iter;
-
-	if ((iter = list) != NULL)
-	{
-		do
-		{
-			if ((iter->column == x) && (iter->row == y) &&
-				(iter->width == columns) && (iter->height == rows))
-			{
-				return iter;
-			}
-			iter = iter->next;
-		} while (iter != list);
-	}
-	return NULL;
 }
 
 

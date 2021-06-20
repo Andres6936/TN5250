@@ -233,12 +233,6 @@ extern void tn5250_terminal_term(Tn5250Terminal* This);
 
 extern void tn5250_terminal_destroy(Tn5250Terminal* This);
 
-extern int tn5250_terminal_width(Tn5250Terminal* This);
-
-extern int tn5250_terminal_height(Tn5250Terminal* This);
-
-extern int tn5250_terminal_flags(Tn5250Terminal* This);
-
 extern void tn5250_terminal_update(Tn5250Terminal* This,
 		struct _Tn5250Display* d);
 
@@ -284,10 +278,6 @@ extern void tn5250_terminal_destroy_menubar(Tn5250Terminal* This,
 		struct _Tn5250Menubar* m);
 
 extern void tn5250_terminal_create_menuitem(Tn5250Terminal* This,
-		struct _Tn5250Display* d,
-		struct _Tn5250Menuitem* i);
-
-extern void tn5250_terminal_destroy_menuitem(Tn5250Terminal* This,
 		struct _Tn5250Display* d,
 		struct _Tn5250Menuitem* i);
 

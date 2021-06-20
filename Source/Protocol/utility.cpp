@@ -29,24 +29,6 @@ static char mapfix4[256];
 
 #ifndef WIN32
 
-/****f* lp5250d/tn5250_closeall
- * NAME
- *    tn5250_closeall
- * SYNOPSIS
- *    tn5250_closeall (fd);
- * INPUTS
- *    int fd	- The starting file descriptor.
- * DESCRIPTION
- *    Closes all file descriptors >= a specified value.
- *****/
-void tn5250_closeall(int fd)
-{
-	int fdlimit = sysconf(_SC_OPEN_MAX);
-
-	while (fd < fdlimit)
-		close(fd++);
-}
-
 /*
   Signal handler for SIGCHLD.  We use waitpid instead of wait, since there
   is no way to tell wait not to block if there are still non-terminated child
@@ -63,118 +45,7 @@ sig_child(int signum)
 	return;
 }
 
-/****f* lp5250d/tn5250_daemon
- * NAME
- *    tn5250_daemon
- * SYNOPSIS
- *    ret = tn5250_daemon (nochdir, noclose);
- * INPUTS
- *    int nochdir	- 0 to perform chdir.
- *    int noclose	- 0 to close all file handles.
- * DESCRIPTION
- *    Detach process from user and disappear into the background
- *    returns -1 on failure, but you can't do much except exit in that 
- *    case since we may already have forked. Believed to work on all 
- *    Posix systems.
- *****/
-int tn5250_daemon(int nochdir, int noclose, int ignsigcld)
-{
-	struct sigaction sa;
-
-	switch (fork())
-	{
-	case 0:
-		break;
-	case -1:
-		return -1;
-	default:
-		_exit(0);          /* exit the original process */
-	}
-
-	if (setsid() < 0)               /* shoudn't fail */
-		return -1;
-
-	/* dyke out this switch if you want to acquire a control tty in */
-	/* the future -- not normally advisable for daemons */
-
-	switch (fork())
-	{
-	case 0:
-		break;
-	case -1:
-		return -1;
-	default:
-		_exit(0);
-	}
-
-	if (!nochdir)
-		chdir("/");
-
-	if (!noclose)
-	{
-		tn5250_closeall(0);
-		open("/dev/null", O_RDWR);
-		dup(0);
-		dup(0);
-	}
-
-//	umask(0);
-
-
-	if (ignsigcld)
-	{
-		sa.sa_handler = sig_child;
-		sigemptyset(&sa.sa_mask);
-		sa.sa_flags = SA_RESTART;
-
-#ifdef SIGCHLD
-		sigaction(SIGCHLD, &sa, NULL);
-#else
-#ifdef SIGCLD
-		sigaction(SIGCLD, &sa, NULL);
-#endif
-#endif
-	}
-
-	return 0;
-}
-
 #endif  /* ifndef WIN32 */
-
-int
-tn5250_make_socket(unsigned short int port)
-{
-	int sock;
-	int on = 1;
-	struct sockaddr_in name;
-	u_long ioctlarg = 0;
-
-	/* Create the socket. */
-	sock = socket(PF_INET, SOCK_STREAM, 0);
-	if (sock < 0)
-	{
-#ifndef WIN32
-		syslog(LOG_INFO, "socket: %s\n", strerror(errno));
-#endif
-		exit(EXIT_FAILURE);
-	}
-
-	/* Give the socket a name. */
-	name.sin_family = AF_INET;
-	name.sin_port = htons(port);
-	name.sin_addr.s_addr = htonl(INADDR_ANY);
-	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (const char*)&on, sizeof(on));
-	TN_IOCTL(sock, FIONBIO, &ioctlarg);
-	if (bind(sock, (struct sockaddr*)&name, sizeof(name)) < 0)
-	{
-#ifndef WIN32
-		syslog(LOG_INFO, "bind: %s\n", strerror(errno));
-#endif
-		exit(EXIT_FAILURE);
-	}
-
-	return sock;
-}
 
 
 /****f* lib5250/tn5250_char_map_to_remote
@@ -614,43 +485,6 @@ int tn5250_parse_color(Tn5250Config* config, const char* colorname,
 	return 0;
 }
 
-
-/****f* lib5250/tn5250_setenv
- * NAME
- *    tn5250_setenv
- * SYNOPSIS
- *    tn5250_setenv ("TN5250_CCSID", "37", 1);
- * INPUTS
- *    const char   *       name       -
- *    const char   *       value      - 
- *    int                  overwrite  - 
- * DESCRIPTION
- *    This works just like setenv(3), but setenv(3) doesn't
- *    exist on all systems. 
- *****/
-int tn5250_setenv(const char* name, const char* value, int overwrite)
-{
-
-	char* strval;
-	int ret;
-
-	if (!overwrite)
-		if (getenv(name) != NULL) return 0;
-
-	strval = static_cast<char*>(malloc(strlen(name) + strlen(value) + 2));
-	TN5250_ASSERT(strval != NULL);
-
-	strcpy(strval, name);
-	strcat(strval, "=");
-	strcat(strval, value);
-
-	ret = putenv(strval);
-
-	/* free(strval)   on some systems, it continues to use our memory,
-					  so we should not free it...                    */
-
-	return ret;
-}
 
 /****f* lib5250/tn5250_run_cmd
  * NAME

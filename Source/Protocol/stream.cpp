@@ -162,50 +162,6 @@ Tn5250Stream* tn5250_stream_open(const char* to, Tn5250Config* config)
 	return NULL;
 }
 
-/****f* lib5250/tn5250_stream_host
- * NAME
- *    tn5250_stream_host
- * SYNOPSIS
- *    ret = tn5250_stream_host (masterSock);
- * INPUTS
- *    SOCKET_TYPE	masterSock	-	Master socket
- * DESCRIPTION
- *    DOCUMENT ME!!!
- *****/
-Tn5250Stream* tn5250_stream_host(SOCKET_TYPE masterfd, long timeout,
-		int streamtype)
-{
-	Tn5250Stream* This = tn5250_new(Tn5250Stream, 1);
-	int ret;
-
-	if (This != NULL)
-	{
-		streamInit(This, timeout);
-		if (streamtype == TN5250_STREAM)
-		{
-			/* Assume telnet stream type. */
-			ret = tn5250_telnet_stream_init(This);
-		}
-		else
-		{
-			ret = tn3270_telnet_stream_init(This);
-		}
-		if (ret != 0)
-		{
-			tn5250_stream_destroy(This);
-			return NULL;
-		}
-		/* Accept */
-		printf("masterfd = %d\n", masterfd);
-		ret = (*(This->accept))(This, masterfd);
-		if (ret == 0)
-			return This;
-
-		tn5250_stream_destroy(This);
-	}
-	return NULL;
-}
-
 
 /****f* lib5250/tn5250_stream_config
  * NAME
@@ -345,30 +301,6 @@ const char* tn5250_stream_getenv(Tn5250Stream* This, const char* name)
 	val = tn5250_config_get(This->config, name_buf);
 	free(name_buf);
 	return val;
-}
-
-/****f* lib5250/tn5250_stream_unsetenv
- * NAME
- *    tn5250_stream_unsetenv
- * SYNOPSIS
- *    tn5250_stream_unsetenv (This, name);
- * INPUTS
- *    Tn5250Stream *       This       - 
- *    const char *         name       - 
- * DESCRIPTION
- *    Unset a 5250 environment string.
- *****/
-void tn5250_stream_unsetenv(Tn5250Stream* This, const char* name)
-{
-	char* name_buf;
-	if (This->config == NULL)
-		return; /* Nothing to unset. */
-
-	name_buf = (char*)malloc(strlen(name) + 10);
-	strcpy(name_buf, "env.");
-	strcat(name_buf, name);
-	tn5250_config_unset(This->config, name_buf);
-	free(name_buf);
 }
 
 int tn5250_stream_socket_handle(Tn5250Stream* This)
