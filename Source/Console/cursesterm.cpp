@@ -1983,3 +1983,17 @@ void Curses::destroyUp()
 		free(this->data);
 	free(this);
 }
+
+const std::size_t Curses::getWidth()
+{
+	int y, x;
+	getmaxyx(stdscr, y, x);
+	return x + 1;
+}
+
+const std::size_t Curses::getHeight()
+{
+	int y, x;
+	getmaxyx(stdscr, y, x);
+	return y + 1;
+}

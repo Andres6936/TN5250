@@ -161,11 +161,11 @@ struct _Tn5250Terminal
 	{
 	};
 
-	virtual std::size_t getWidth()
+	virtual const std::size_t getWidth()
 	{
 	};
 
-	virtual std::size_t getHeight()
+	virtual const std::size_t getHeight()
 	{
 	};
 

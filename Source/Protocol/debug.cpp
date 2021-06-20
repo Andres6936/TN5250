@@ -285,7 +285,7 @@ static void debug_terminal_destroy(Tn5250Terminal /*@only@*/ * This)
  *****/
 static int debug_terminal_width(Tn5250Terminal* This)
 {
-	return (*(This->data->slaveterm->width))(This->data->slaveterm);
+	return This->data->slaveterm->getWidth();
 }
 
 /****i* lib5250/debug_terminal_height
@@ -300,7 +300,7 @@ static int debug_terminal_width(Tn5250Terminal* This)
  *****/
 static int debug_terminal_height(Tn5250Terminal* This)
 {
-	return (*(This->data->slaveterm->height))(This->data->slaveterm);
+	return This->data->slaveterm->getHeight();
 }
 
 /****i* lib5250/debug_terminal_flags
