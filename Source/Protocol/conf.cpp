@@ -22,7 +22,7 @@
 
 void Tn5250Config::put(const std::string& key, const std::string& value) noexcept
 {
-	this->push_back({key, value});
+	this->insert_or_assign(key, value);
 }
 
 const bool Tn5250Config::containsKey(const std::string& key) const noexcept
@@ -32,12 +32,17 @@ const bool Tn5250Config::containsKey(const std::string& key) const noexcept
 
 const std::string Tn5250Config::get(const std::string& key) const noexcept
 {
-	for (const auto& [_key, _value]: *this)
+	try
 	{
-		if (key == _key) return _value;
+		// The method at returns a reference to the mapped value of
+		// the element with key equivalent to key. If no such element
+		// exists, an exception of type std::out_of_range is thrown.
+		return this->at(key);
 	}
-
-	return {};
+	catch (const std::out_of_range& outOfRange)
+	{
+		return {};
+	}
 }
 
 #define MAX_PREFIX_STACK 50

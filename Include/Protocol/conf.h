@@ -20,9 +20,8 @@
 #ifndef CONF_H
 #define CONF_H
 
+#include <map>
 #include <string>
-#include <vector>
-#include <utility>
 #include <cstdint>
 
 struct _Tn5250ConfigStr
@@ -35,7 +34,7 @@ struct _Tn5250ConfigStr
 
 typedef struct _Tn5250ConfigStr Tn5250ConfigStr;
 
-struct _Tn5250Config : private std::vector<std::pair<std::string, std::string>>
+struct _Tn5250Config : private std::map<std::string, std::string>
 {
 	std::int32_t ref = 1;
 	Tn5250ConfigStr* vars = nullptr;
