@@ -1555,24 +1555,42 @@ void curses_terminal_print_screen(Tn5250Terminal* This, Tn5250Display* display)
 	if (This->data->config != NULL)
 	{
 		int fs80 = 0, fs132 = 0;
-		if (tn5250_config_get(This->data->config, "outputcommand"))
+		if (This->data->config->containsKey("outputcommand"))
+		{
 			outcmd = tn5250_config_get(This->data->config, "outputcommand");
+		}
 		if (tn5250_config_get(This->data->config, "pagewidth"))
+		{
 			pgwid = atoi(tn5250_config_get(This->data->config, "pagewidth"));
+		}
 		if (tn5250_config_get(This->data->config, "pagelength"))
+		{
 			pglen = atoi(tn5250_config_get(This->data->config, "pagelength"));
+		}
 		if (tn5250_config_get(This->data->config, "leftmargin"))
+		{
 			leftmar = atoi(tn5250_config_get(This->data->config, "leftmargin"));
+		}
 		if (tn5250_config_get(This->data->config, "topmargin"))
+		{
 			topmar = atoi(tn5250_config_get(This->data->config, "topmargin"));
+		}
 		if (tn5250_config_get(This->data->config, "psfontsize_80"))
+		{
 			fs80 = atoi(tn5250_config_get(This->data->config, "psfontsize_80"));
+		}
 		if (tn5250_config_get(This->data->config, "psfontsize_80"))
+		{
 			fs132 = atoi(tn5250_config_get(This->data->config, "psfontsize_132"));
+		}
 		if (tn5250_display_width(display) == 132 && fs132 != 0)
+		{
 			fontsize = fs132;
+		}
 		if (tn5250_display_width(display) == 80 && fs80 != 0)
+		{
 			fontsize = fs80;
+		}
 	}
 
 	colwidth = (pgwid - leftmar * 2) / tn5250_display_width(display);
