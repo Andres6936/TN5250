@@ -56,11 +56,11 @@ int main(int argc, char* argv[])
 	}
 
 
-	if (config->contains("help"))
+	if (config->containsKey("help"))
 	{
 		syntax();
 	}
-	else if (config->contains("version"))
+	else if (config->containsKey("version"))
 	{
 		printf("tn5250 %s\n", VERSION);
 		exit(0);

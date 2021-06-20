@@ -25,7 +25,7 @@ void Tn5250Config::add(const std::string& key, const std::string& value) noexcep
 	this->push_back({key, value});
 }
 
-const bool Tn5250Config::contains(const std::string& key) const noexcept
+const bool Tn5250Config::containsKey(const std::string& key) const noexcept
 {
 	return this->get(key).empty() ? false : true;
 }
