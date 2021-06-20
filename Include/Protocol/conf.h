@@ -34,6 +34,10 @@ struct _Tn5250ConfigStr
 
 typedef struct _Tn5250ConfigStr Tn5250ConfigStr;
 
+/**
+ * An object that maps keys to values. A map cannot contain duplicate keys;
+ * each key can map to at most one value.
+ */
 struct _Tn5250Config : private std::map<std::string, std::string>
 {
 	std::int32_t ref = 1;
