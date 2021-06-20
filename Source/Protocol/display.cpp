@@ -155,25 +155,25 @@ tn5250_display_config(Tn5250Display* This, Tn5250Config* config)
 	This->config = config;
 
 	/* check if the +/- sign keyboard hack should be enabled */
-	if (tn5250_config_get(config, "sign_key_hack"))
+	if (config->containsKey("sign_key_hack"))
 	{
 		This->sign_key_hack = tn5250_config_get_bool(config, "sign_key_hack");
 	}
 
 	/* check if Input Inhibited should be cleared automatically */
-	if (tn5250_config_get(config, "uninhibited"))
+	if (config->containsKey("uninhibited"))
 	{
 		This->uninhibited = tn5250_config_get_bool(config, "uninhibited");
 	}
 
 	/* check if user wants to allow the host to run commands via strpccmd */
-	if (tn5250_config_get(config, "allow_strpccmd"))
+	if (config->containsKey("allow_strpccmd"))
 	{
 		This->allow_strpccmd = tn5250_config_get_bool(config, "allow_strpccmd");
 	}
 
 	/* Should field minus act like field exit in a char field? */
-	if (tn5250_config_get(config, "field_minus_in_char"))
+	if (config->containsKey("field_minus_in_char"))
 	{
 		This->field_minus_in_char =
 				tn5250_config_get_bool(config, "field_minus_in_char");
