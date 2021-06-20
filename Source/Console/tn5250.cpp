@@ -86,20 +86,20 @@ int main(int argc, char* argv[])
 
 #ifdef USE_CURSES
 	term = tn5250_curses_terminal_new();
-	if (tn5250_config_get(config, "underscores"))
+	if (config->containsKey( "underscores"))
 	{
 		tn5250_curses_terminal_use_underscores(term,
 				tn5250_config_get_bool(config, "underscores")
 		);
 	}
-	if (tn5250_config_get(config, "ruler"))
+	if (config->containsKey( "ruler"))
 	{
 		tn5250_curses_terminal_display_ruler(term,
 				tn5250_config_get_bool(config, "ruler")
 		);
 	}
-	if ((tn5250_config_get(config, "font_80"))
-		&& (tn5250_config_get(config, "font_132")))
+	if ((config->containsKey( "font_80"))
+		&& (config->containsKey( "font_132")))
 	{
 		tn5250_curses_terminal_set_xterm_font(term,
 				tn5250_config_get(config, "font_80"),
