@@ -205,8 +205,10 @@ struct _Tn5250Terminal
 
 	};
 
+	virtual const std::size_t enhancedUp()
+	{
 
-	int (* enhanced)(struct _Tn5250Terminal* This);
+	};
 
 	int (* config)(struct _Tn5250Terminal* This,
 			struct _Tn5250Config* config);

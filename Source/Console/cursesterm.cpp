@@ -310,8 +310,6 @@ Tn5250Terminal* tn5250_curses_terminal_new()
 #endif
 
 	r->conn_fd = -1;
-
-	r->enhanced = curses_terminal_enhanced;
 	r->config = curses_terminal_config;
 	return r;
 }
@@ -2293,4 +2291,9 @@ void Curses::beepUp()
 	TN5250_LOG (("CURSES: beep\n"));
 	beep();
 	refresh();
+}
+
+const std::size_t Curses::enhancedUp()
+{
+	return 0;
 }

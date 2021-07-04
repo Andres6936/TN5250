@@ -72,6 +72,8 @@ public:
 
 	void beepUp() override;
 
+	const std::size_t enhancedUp() override;
+
 };
 
 extern Tn5250Terminal /*@null@*/ /*@only@*/ * tn5250_curses_terminal_new(void);
