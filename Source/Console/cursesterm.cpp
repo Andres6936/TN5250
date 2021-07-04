@@ -2201,3 +2201,95 @@ const std::size_t Curses::waitForEvent()
 
 	return result;
 }
+
+const std::size_t Curses::getKey()
+{
+	int key;
+
+	key = getch();
+
+	while (1)
+	{
+		switch (key)
+		{
+
+		case 0x0d:
+		case 0x0a:
+			return K_ENTER;
+
+		case 0x1b:
+			if ((key = curses_terminal_get_esc_key(this, 1)) != ERR)
+				return key;
+			break;
+
+		case K_CTRL('A'):
+			return K_ATTENTION;
+		case K_CTRL('B'):
+			return K_ROLLDN;
+		case K_CTRL('C'):
+			return K_SYSREQ;
+		case K_CTRL('D'):
+			return K_ROLLUP;
+		case K_CTRL('E'):
+			return K_ERASE;
+		case K_CTRL('F'):
+			return K_ROLLUP;
+		case K_CTRL('K'):
+			return K_FIELDEXIT;
+		case K_CTRL('L'):
+			return K_REFRESH;
+		case K_CTRL('O'):
+			return K_HOME;
+		case K_CTRL('P'):
+			return K_PRINT;
+		case K_CTRL('R'):
+			return K_RESET;    /* Error Reset */
+		case K_CTRL('S'):
+			return K_MEMO;
+		case K_CTRL('T'):
+			return K_TESTREQ;
+		case K_CTRL('U'):
+			return K_ROLLDN;
+		case K_CTRL('W'):
+			return K_EXEC;
+		case K_CTRL('X'):
+			return K_FIELDPLUS;
+
+		case K_CTRL('Q'):
+			this->data->quit_flag = 1;
+			return -1;
+
+		case K_CTRL('G'):    /* C-g <function-key-shortcut> */
+			if ((key = curses_terminal_get_esc_key(this, 0)) != ERR)
+				return key;
+			break;
+
+		case ERR:
+			return -1;
+
+		case 127:
+			return K_DELETE;
+
+		case KEY_A1:
+			return K_HOME;
+
+		case KEY_A3:
+			return K_ROLLDN;
+
+		case KEY_C1:
+			return K_END;
+
+		case KEY_C3:
+			return K_ROLLUP;
+
+		case KEY_ENTER:
+			return K_FIELDEXIT;
+
+		case KEY_END:
+			return K_END;
+
+		default:
+			return key;
+		}
+	}
+}

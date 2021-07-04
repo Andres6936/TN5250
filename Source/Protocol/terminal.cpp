@@ -60,7 +60,7 @@ tn5250_terminal_waitevent(Tn5250Terminal* This)
 int
 tn5250_terminal_getkey(Tn5250Terminal* This)
 {
-	return (*((This)->getkey))((This));
+	return This->getKey();
 }
 
 void

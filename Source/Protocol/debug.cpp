@@ -459,9 +459,9 @@ static int debug_terminal_getkey(Tn5250Terminal* This)
 	int ret = This->data->keyq;
 
 	if (This->data->keyq == -1 && feof(This->data->dbgstream->debugfile))
-		ret = (*(This->data->slaveterm->getkey))(This->data->slaveterm);
+		ret = This->data->slaveterm->getKey();
 	else
-		(*(This->data->slaveterm->getkey))(This->data->slaveterm);
+		This->data->slaveterm->getKey();
 
 	This->data->keyq = -1;
 	return ret;

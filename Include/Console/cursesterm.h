@@ -65,6 +65,8 @@ public:
 
 	const std::size_t waitForEvent() override;
 
+	const std::size_t getKey() override;
+
 };
 
 extern Tn5250Terminal /*@null@*/ /*@only@*/ * tn5250_curses_terminal_new(void);
