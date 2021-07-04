@@ -331,7 +331,7 @@ static int debug_terminal_flags(Tn5250Terminal* This)
  *****/
 static void debug_terminal_update(Tn5250Terminal* This, Tn5250Display* display)
 {
-	(*(This->data->slaveterm->update))(This->data->slaveterm, display);
+	This->data->slaveterm->updateUp(display);
 }
 
 /****i* lib5250/debug_terminal_update_indicators

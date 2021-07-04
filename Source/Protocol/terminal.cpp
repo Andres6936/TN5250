@@ -42,7 +42,7 @@ tn5250_terminal_destroy(Tn5250Terminal* This)
 void
 tn5250_terminal_update(Tn5250Terminal* This, Tn5250Display* d)
 {
-	(*((This)->update))((This), (d));
+	This->updateUp(d);
 }
 
 void

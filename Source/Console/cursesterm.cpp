@@ -2005,3 +2005,137 @@ const std::size_t Curses::getFlags()
 		f |= TN5250_TERMINAL_HAS_COLOR;
 	return f;
 }
+
+void Curses::updateUp(_Tn5250Display* display)
+{
+	int my, mx;
+	int y, x;
+	attr_t curs_attr;
+	unsigned char a = 0x20, c;
+
+	this->data->display = display;
+
+	if (this->data->last_width != tn5250_display_width(display)
+		|| this->data->last_height != tn5250_display_height(display))
+	{
+		clear();
+		if (this->data->is_xterm)
+		{
+			if (this->data->font_132 != NULL)
+			{
+				if (tn5250_display_width (display) > 100)
+					printf(this->data->font_132);
+				else
+					printf(this->data->font_80);
+			}
+			printf("\x1b[8;%d;%dt", tn5250_display_height (display) + 1,
+					tn5250_display_width (display));
+			fflush(stdout);
+#ifdef HAVE_RESIZETERM
+			resizeterm(tn5250_display_height(display)+1, tn5250_display_width(display)+1);
+#endif
+			/* Make sure we get a SIGWINCH - We need curses to resize its
+			 * buffer. */
+			raise(SIGWINCH);
+			refresh();
+		}
+		this->data->last_width = tn5250_display_width(display);
+		this->data->last_height = tn5250_display_height(display);
+
+/* XXX: this is somewhat of a hack.  For some reason the change to
+      132 col lags a bit, causing our update to fail, so this just waits
+      for the update to finish...  (is there a better way?) */
+
+		for (x = 0; x < 10; x++)
+		{
+			refresh();
+			if (tn5250_display_width(display) == curses_terminal_width(this) - 1)
+				break;
+			usleep(10000);
+		}
+	}
+	attrset(A_NORMAL);
+	getmaxyx(stdscr, my, mx);
+	for (y = 0; y < tn5250_display_height(display); y++)
+	{
+		if (y > my)
+			break;
+
+		move(y, 0);
+		for (x = 0; x < tn5250_display_width(display); x++)
+		{
+			c = tn5250_display_char_at(display, y, x);
+			if ((c & 0xe0) == 0x20)
+			{    /* ATTRIBUTE */
+				a = (c & 0xff);
+				if (curses_terminal_is_ruler(this, display, x, y))
+				{
+					addch(A_REVERSE | attribute_map[0] | ' ');
+				}
+				else
+				{
+					addch(attribute_map[0] | ' ');
+				}
+			}
+			else
+			{        /* DATA */
+				curs_attr = attribute_map[a - 0x20];
+				if (curs_attr == 0x00)
+				{    /* NONDISPLAY */
+					if (curses_terminal_is_ruler(this, display, x, y))
+					{
+						addch(A_REVERSE | attribute_map[0] | ' ');
+					}
+					else
+					{
+						addch(attribute_map[0] | ' ');
+					}
+				}
+				else
+				{
+					/* UNPRINTABLE -- print block */
+					if ((c == 0x1f) || (c == 0x3F))
+					{
+						c = ' ';
+						curs_attr ^= A_REVERSE;
+					}
+						/* UNPRINTABLE -- print blank */
+					else if ((c < 0x40 && c > 0x00) || c == 0xff)
+					{
+						c = ' ';
+					}
+					else
+					{
+						c = tn5250_char_map_to_local(tn5250_display_char_map (display), c);
+					}
+					if ((curs_attr & A_VERTICAL) != 0)
+					{
+						curs_attr |= A_UNDERLINE;
+						curs_attr &= ~A_VERTICAL;
+					}
+					/* this is a kludge since vga hardware doesn't support under-
+					 * lining characters.  It's pretty ugly. */
+					if (this->data->underscores)
+					{
+						if ((curs_attr & A_UNDERLINE) != 0)
+						{
+							curs_attr &= ~A_UNDERLINE;
+							if (c == ' ')
+								c = '_';
+						}
+					}
+					if (curses_terminal_is_ruler(this, display, x, y))
+					{
+						curs_attr |= A_REVERSE;
+					}
+					addch((chtype)(c | curs_attr));
+				}
+			}            /* if ((c & 0xe0) ... */
+		}                /* for (int x ... */
+	}                /* for (int y ... */
+
+	move(tn5250_display_cursor_y(display), tn5250_display_cursor_x(display));
+
+	/* this performs the refresh () */
+	curses_terminal_update_indicators(this, display);
+}
