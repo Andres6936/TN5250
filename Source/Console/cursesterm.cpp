@@ -2139,3 +2139,34 @@ void Curses::updateUp(_Tn5250Display* display)
 	/* this performs the refresh () */
 	curses_terminal_update_indicators(this, display);
 }
+
+void Curses::updateIndicators(_Tn5250Display* display)
+{
+	int inds = tn5250_display_indicators(display);
+	char ind_buf[80];
+
+	memset(ind_buf, ' ', sizeof(ind_buf));
+	memcpy(ind_buf, "5250", 4);
+	if ((inds & TN5250_DISPLAY_IND_MESSAGE_WAITING) != 0)
+		memcpy(ind_buf + 23, "MW", 2);
+	if ((inds & TN5250_DISPLAY_IND_INHIBIT) != 0)
+		memcpy(ind_buf + 9, "X II", 4);
+	else if ((inds & TN5250_DISPLAY_IND_X_CLOCK) != 0)
+		memcpy(ind_buf + 9, "X CLOCK", 7);
+	else if ((inds & TN5250_DISPLAY_IND_X_SYSTEM) != 0)
+		memcpy(ind_buf + 9, "X SYSTEM", 8);
+	if ((inds & TN5250_DISPLAY_IND_INSERT) != 0)
+		memcpy(ind_buf + 30, "IM", 2);
+	if ((inds & TN5250_DISPLAY_IND_FER) != 0)
+		memcpy(ind_buf + 33, "FER", 3);
+	if ((inds & TN5250_DISPLAY_IND_MACRO) != 0)
+		memcpy(ind_buf + 54, tn5250_macro_printstate(display), 11);
+	sprintf(ind_buf + 72, "%03.3d/%03.3d", tn5250_display_cursor_x(display) + 1,
+			tn5250_display_cursor_y(display) + 1);
+
+	attrset((attr_t)COLOR_PAIR(COLOR_WHITE));
+	mvaddnstr(tn5250_display_height(display), 0, ind_buf, 80);
+	move(tn5250_display_cursor_y(display), tn5250_display_cursor_x(display));
+	attrset(A_NORMAL);
+	refresh();
+}

@@ -61,6 +61,8 @@ public:
 
 	void updateUp(_Tn5250Display* display) override;
 
+	void updateIndicators(_Tn5250Display* display) override;
+
 };
 
 extern Tn5250Terminal /*@null@*/ /*@only@*/ * tn5250_curses_terminal_new(void);

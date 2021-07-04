@@ -347,7 +347,7 @@ static void debug_terminal_update(Tn5250Terminal* This, Tn5250Display* display)
  *****/
 static void debug_terminal_update_indicators(Tn5250Terminal* This, Tn5250Display* display)
 {
-	(*(This->data->slaveterm->update_indicators))(This->data->slaveterm, display);
+	This->data->slaveterm->updateIndicators(display);
 }
 
 /****i* lib5250/debug_terminal_beep

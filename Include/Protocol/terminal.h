@@ -179,6 +179,11 @@ struct _Tn5250Terminal
 
 	};
 
+	virtual void updateIndicators(_Tn5250Display* display)
+	{
+
+	};
+
 	void (* init)(struct _Tn5250Terminal* This);
 
 	void (* term)(struct _Tn5250Terminal* This);

@@ -48,7 +48,7 @@ tn5250_terminal_update(Tn5250Terminal* This, Tn5250Display* d)
 void
 tn5250_terminal_update_indicators(Tn5250Terminal* This, Tn5250Display* d)
 {
-	(*((This)->update_indicators))((This), (d));
+	This->updateIndicators(d);
 }
 
 int
