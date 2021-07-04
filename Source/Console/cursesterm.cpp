@@ -310,17 +310,6 @@ Tn5250Terminal* tn5250_curses_terminal_new()
 #endif
 
 	r->conn_fd = -1;
-	r->init = curses_terminal_init;
-	r->term = curses_terminal_term;
-	r->destroy = curses_terminal_destroy;
-	r->width = curses_terminal_width;
-	r->height = curses_terminal_height;
-	r->flags = curses_terminal_flags;
-	r->update = curses_terminal_update;
-	r->update_indicators = curses_terminal_update_indicators;
-	r->waitevent = curses_terminal_waitevent;
-	r->getkey = curses_terminal_getkey;
-	r->putkey = NULL;
 	r->beep = curses_terminal_beep;
 	r->enhanced = curses_terminal_enhanced;
 	r->config = curses_terminal_config;

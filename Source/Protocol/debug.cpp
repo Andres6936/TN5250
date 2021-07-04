@@ -128,16 +128,6 @@ Tn5250Terminal* tn5250_debug_terminal_new(Tn5250Terminal* slave, Tn5250Stream* d
 	if (This != NULL)
 	{
 		This->conn_fd = -1;
-		This->init = debug_terminal_init;
-		This->term = debug_terminal_term;
-		This->destroy = debug_terminal_destroy;
-		This->width = debug_terminal_width;
-		This->height = debug_terminal_height;
-		This->flags = debug_terminal_flags;
-		This->update = debug_terminal_update;
-		This->update_indicators = debug_terminal_update_indicators;
-		This->waitevent = debug_terminal_waitevent;
-		This->getkey = debug_terminal_getkey;
 		This->beep = debug_terminal_beep;
 		This->config = NULL;
 

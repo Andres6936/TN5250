@@ -200,31 +200,6 @@ struct _Tn5250Terminal
 
 	};
 
-	void (* init)(struct _Tn5250Terminal* This);
-
-	void (* term)(struct _Tn5250Terminal* This);
-
-	void (* destroy)(struct _Tn5250Terminal /*@only@ */  * This);
-
-	int (* width)(struct _Tn5250Terminal* This);
-
-	int (* height)(struct _Tn5250Terminal* This);
-
-	int (* flags)(struct _Tn5250Terminal* This);
-
-	void (* update)(struct _Tn5250Terminal* This,
-			struct _Tn5250Display* display);
-
-	void (* update_indicators)(struct _Tn5250Terminal* This,
-			struct _Tn5250Display* display);
-
-	int (* waitevent)(struct _Tn5250Terminal* This);
-
-	int (* getkey)(struct _Tn5250Terminal* This);
-
-	void (* putkey)(struct _Tn5250Terminal* This,
-			struct _Tn5250Display* display, unsigned char key,
-			int row, int column);
 
 	void (* beep)(struct _Tn5250Terminal* This);
 
