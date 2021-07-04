@@ -92,47 +92,47 @@ void
 tn5250_terminal_create_window(Tn5250Terminal* This, Tn5250Display* d,
 		struct _Tn5250Window* w)
 {
-	(*((This)->create_window))((This), (d), (w));
+	This->createWindow(d, w);
 }
 
 void
 tn5250_terminal_destroy_window(Tn5250Terminal* This, Tn5250Display* d,
 		struct _Tn5250Window* w)
 {
-	(*((This)->destroy_window))((This), (d), (w));
+	This->destroyWindow(d, w);
 }
 
 void
 tn5250_terminal_create_scrollbar(Tn5250Terminal* This, Tn5250Display* d,
 		struct _Tn5250Scrollbar* s)
 {
-	(*((This)->create_scrollbar))((This), (d), (s));
+	This->createScrollbar(d, s);
 }
 
 void
 tn5250_terminal_destroy_scrollbar(Tn5250Terminal* This, Tn5250Display* d)
 {
-	(*((This)->destroy_scrollbar))((This), (d));
+	This->destroyScrollbar(d);
 }
 
 void
 tn5250_terminal_create_menubar(Tn5250Terminal* This, Tn5250Display* d,
 		struct _Tn5250Menubar* m)
 {
-	(*((This)->create_menubar))((This), (d), (m));
+	This->createMenuBar(d, m);
 }
 
 void
 tn5250_terminal_destroy_menubar(Tn5250Terminal* This, Tn5250Display* d,
 		struct _Tn5250Menubar* m)
 {
-	(*((This)->destroy_menubar))((This), (d), (m));
+	This->destroyMenuBar(d, m);
 }
 
 void
 tn5250_terminal_create_menuitem(Tn5250Terminal* This, Tn5250Display* d,
 		struct _Tn5250Menuitem* i)
 {
-	(*((This)->create_menuitem))((This), (d), (i));
+	This->createMenuItem(d, i);
 }
 

@@ -215,36 +215,46 @@ struct _Tn5250Terminal
 
 	};
 
-	void (* create_window)(struct _Tn5250Terminal* This,
-			struct _Tn5250Display* display,
-			struct _Tn5250Window* window);
+	virtual void createWindow(struct _Tn5250Display* display, struct _Tn5250Window* window)
+	{
 
-	void (* destroy_window)(struct _Tn5250Terminal* This,
-			struct _Tn5250Display* display,
-			struct _Tn5250Window* window);
+	};
 
-	void (* create_scrollbar)(struct _Tn5250Terminal* This,
-			struct _Tn5250Display* display,
-			struct _Tn5250Scrollbar* scrollbar);
+	virtual void destroyWindow(struct _Tn5250Display* display, struct _Tn5250Window* window)
+	{
 
-	void (* destroy_scrollbar)(struct _Tn5250Terminal* This,
-			struct _Tn5250Display* display);
+	};
 
-	void (* create_menubar)(struct _Tn5250Terminal* This,
-			struct _Tn5250Display* display,
-			struct _Tn5250Menubar* menubar);
+	virtual void createScrollbar(struct _Tn5250Display* display, struct _Tn5250Scrollbar* scrollbar)
+	{
 
-	void (* destroy_menubar)(struct _Tn5250Terminal* This,
-			struct _Tn5250Display* display,
-			struct _Tn5250Menubar* menubar);
+	};
 
-	void (* create_menuitem)(struct _Tn5250Terminal* This,
-			struct _Tn5250Display* display,
-			struct _Tn5250Menuitem* menuitem);
+	virtual void destroyScrollbar(struct _Tn5250Display* display)
+	{
 
-	void (* destroy_menuitem)(struct _Tn5250Terminal* This,
-			struct _Tn5250Display* display,
-			struct _Tn5250Menuitem* menuitem);
+	};
+
+	virtual void createMenuBar(struct _Tn5250Display* display, struct _Tn5250Menubar* menubar)
+	{
+
+	};
+
+	virtual void destroyMenuBar(struct _Tn5250Display* display, struct _Tn5250Menubar* menubar)
+	{
+
+	};
+
+	virtual void createMenuItem(struct _Tn5250Display* display, struct _Tn5250Menuitem* menuitem)
+	{
+
+	};
+
+	virtual void destroyMenuItem(struct _Tn5250Display* display, struct _Tn5250Menuitem* menuitem)
+	{
+
+	};
+
 };
 
 typedef struct _Tn5250Terminal Tn5250Terminal;
