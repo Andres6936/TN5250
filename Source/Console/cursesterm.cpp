@@ -1412,7 +1412,7 @@ void curses_terminal_print_screen(Tn5250Terminal* This, Tn5250Display* display)
 	while (curses_terminal_getkey(This) != K_ENTER)
 	{ /* wait */ }
 
-	curses_terminal_update(This, display);
+	This->updateUp(display);
 }
 
 
