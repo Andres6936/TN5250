@@ -2293,3 +2293,8 @@ const std::size_t Curses::getKey()
 		}
 	}
 }
+
+const std::size_t Curses::putKey(_Tn5250Display* display, unsigned char key, int row, int column)
+{
+	return 0;
+}

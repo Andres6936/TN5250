@@ -67,6 +67,9 @@ public:
 
 	const std::size_t getKey() override;
 
+	const std::size_t
+	putKey(_Tn5250Display* display, unsigned char key, int row, int column) override;
+
 };
 
 extern Tn5250Terminal /*@null@*/ /*@only@*/ * tn5250_curses_terminal_new(void);

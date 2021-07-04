@@ -1099,12 +1099,9 @@ tn5250_display_interactive_addch(Tn5250Display* This, unsigned char ch)
 		}
 		else
 		{
-			if (This->terminal->putkey != NULL)
-			{
-				tn5250_terminal_putkey(This->terminal, This, ch,
-						tn5250_display_cursor_y (This),
-						tn5250_display_cursor_x (This));
-			}
+			tn5250_terminal_putkey(This->terminal, This, ch,
+					tn5250_display_cursor_y (This),
+					tn5250_display_cursor_x (This));
 
 			tn5250_dbuffer_addch(This->display_buffers,
 					tn5250_char_map_to_remote(This->map, ch));

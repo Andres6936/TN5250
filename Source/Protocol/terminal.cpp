@@ -67,10 +67,7 @@ void
 tn5250_terminal_putkey(Tn5250Terminal* This, Tn5250Display* d,
 		unsigned char k, int y, int x)
 {
-	if ((This)->putkey != NULL)
-	{
-		(*((This)->putkey))((This), (d), (k), (y), (x));
-	}
+	This->putKey(d, k, y, x);
 }
 
 void

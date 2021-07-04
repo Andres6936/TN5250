@@ -194,6 +194,12 @@ struct _Tn5250Terminal
 
 	};
 
+	virtual const std::size_t
+	putKey(_Tn5250Display* display, unsigned char key, int row, int column)
+	{
+
+	};
+
 	void (* init)(struct _Tn5250Terminal* This);
 
 	void (* term)(struct _Tn5250Terminal* This);
