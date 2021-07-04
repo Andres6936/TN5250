@@ -1691,7 +1691,7 @@ void Curses::updateUp(_Tn5250Display* display)
 		for (x = 0; x < 10; x++)
 		{
 			refresh();
-			if (tn5250_display_width(display) == curses_terminal_width(this) - 1)
+			if (tn5250_display_width(display) == getWidth() - 1)
 				break;
 			usleep(10000);
 		}
@@ -1779,7 +1779,7 @@ void Curses::updateUp(_Tn5250Display* display)
 	move(tn5250_display_cursor_y(display), tn5250_display_cursor_x(display));
 
 	/* this performs the refresh () */
-	curses_terminal_update_indicators(this, display);
+	updateIndicators(display);
 }
 
 void Curses::updateIndicators(_Tn5250Display* display)
