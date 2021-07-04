@@ -70,17 +70,7 @@ static curses_color_map colorlist[] =
 
 static attr_t attribute_map[33];
 
-static void curses_terminal_init(Tn5250Terminal* This) /*@modifies This@*/;
-
-static void curses_terminal_term(Tn5250Terminal* This) /*@modifies This@*/;
-
-static void curses_terminal_destroy(Tn5250Terminal /*@only@*/ * This);
-
 static int curses_terminal_width(Tn5250Terminal* This);
-
-static int curses_terminal_height(Tn5250Terminal* This);
-
-static int curses_terminal_flags(Tn5250Terminal* This);
 
 static void curses_terminal_update(Tn5250Terminal* This,
 		Tn5250Display* display) /*@modifies This@*/;
@@ -88,21 +78,13 @@ static void curses_terminal_update(Tn5250Terminal* This,
 static void curses_terminal_update_indicators(Tn5250Terminal* This,
 		Tn5250Display* display) /*@modifies This@*/;
 
-static int curses_terminal_waitevent(Tn5250Terminal* This) /*@modifies This@*/;
-
 static int curses_terminal_getkey(Tn5250Terminal* This) /*@modifies This@*/;
 
 static int curses_terminal_get_esc_key(Tn5250Terminal* This, int is_esc) /*@modifies This@*/;
 
-static void curses_terminal_beep(Tn5250Terminal* This);
-
-static int curses_terminal_enhanced(Tn5250Terminal* This);
-
 static int curses_terminal_is_ruler(Tn5250Terminal* This, Tn5250Display* display, int x, int y);
 
 int curses_rgb_to_color(int r, int g, int b, int* rclr, int* rbold);
-
-int curses_terminal_config(Tn5250Terminal* This, Tn5250Config* config);
 
 void curses_terminal_print_screen(Tn5250Terminal* This, Tn5250Display* display);
 
@@ -313,163 +295,6 @@ Tn5250Terminal* tn5250_curses_terminal_new()
 	return r;
 }
 
-/****i* lib5250/curses_terminal_init
- * NAME
- *    curses_terminal_init
- * SYNOPSIS
- *    curses_terminal_init (This);
- * INPUTS
- *    Tn5250Terminal *     This       - 
- * DESCRIPTION
- *    DOCUMENT ME!!!
- *****/
-static void curses_terminal_init(Tn5250Terminal* This)
-{
-	int i = 0, c, s;
-	char* str;
-	int x;
-
-	(void)initscr();
-	raw();
-
-#ifdef USE_OWN_KEY_PARSING
-	if ((str = (unsigned char*)tgetstr("ks", NULL)) != NULL)
-		tputs(str, 1, putchar);
-	fflush(stdout);
-#else
-	keypad(stdscr, 1);
-#endif
-
-	nodelay(stdscr, 1);
-	noecho();
-
-	/* Determine if we're talking to an xterm ;) */
-	if ((str = getenv("TERM")) != NULL &&
-		(!strcmp(str, "xterm") || !strcmp(str, "xterm-5250")
-		 || !strcmp(str, "xterm-color")))
-		This->data->is_xterm = 1;
-
-	/* Initialize colors if the terminal supports it. */
-	if (has_colors())
-	{
-		start_color();
-		init_pair(COLOR_BLACK, colorlist[COLOR_BLACK].ref,
-				colorlist[COLOR_BLACK].ref);
-		init_pair(COLOR_GREEN, colorlist[COLOR_GREEN].ref,
-				colorlist[COLOR_BLACK].ref);
-		init_pair(COLOR_RED, colorlist[COLOR_RED].ref,
-				colorlist[COLOR_BLACK].ref);
-		init_pair(COLOR_CYAN, colorlist[COLOR_CYAN].ref,
-				colorlist[COLOR_BLACK].ref);
-		init_pair(COLOR_WHITE, colorlist[COLOR_WHITE].ref,
-				colorlist[COLOR_BLACK].ref);
-		init_pair(COLOR_MAGENTA, colorlist[COLOR_MAGENTA].ref,
-				colorlist[COLOR_BLACK].ref);
-		init_pair(COLOR_BLUE, colorlist[COLOR_BLUE].ref,
-				colorlist[COLOR_BLACK].ref);
-		init_pair(COLOR_YELLOW, colorlist[COLOR_YELLOW].ref,
-				colorlist[COLOR_BLACK].ref);
-	}
-
-	x = -1;
-	attribute_map[++x] = A_5250_GREEN;
-	attribute_map[++x] = A_5250_GREEN | A_REVERSE;
-	attribute_map[++x] = A_5250_WHITE;
-	attribute_map[++x] = A_5250_WHITE | A_REVERSE;
-	attribute_map[++x] = A_5250_GREEN | A_UNDERLINE;
-	attribute_map[++x] = A_5250_GREEN | A_UNDERLINE | A_REVERSE;
-	attribute_map[++x] = A_5250_WHITE | A_UNDERLINE;
-	attribute_map[++x] = 0x00;
-	attribute_map[++x] = A_5250_RED;
-	attribute_map[++x] = A_5250_RED | A_REVERSE;
-	attribute_map[++x] = A_5250_RED | A_BLINK;
-	attribute_map[++x] = A_5250_RED | A_BLINK | A_REVERSE;
-	attribute_map[++x] = A_5250_RED | A_UNDERLINE;
-	attribute_map[++x] = A_5250_RED | A_UNDERLINE | A_REVERSE;
-	attribute_map[++x] = A_5250_RED | A_UNDERLINE | A_BLINK;
-	attribute_map[++x] = 0x00;
-	attribute_map[++x] = A_5250_TURQ | A_VERTICAL;
-	attribute_map[++x] = A_5250_TURQ | A_VERTICAL | A_REVERSE;
-	attribute_map[++x] = A_5250_YELLOW | A_VERTICAL;
-	attribute_map[++x] = A_5250_YELLOW | A_VERTICAL | A_REVERSE;
-	attribute_map[++x] = A_5250_TURQ | A_UNDERLINE | A_VERTICAL;
-	attribute_map[++x] = A_5250_TURQ | A_UNDERLINE | A_REVERSE | A_VERTICAL;
-	attribute_map[++x] = A_5250_YELLOW | A_UNDERLINE | A_VERTICAL;
-	attribute_map[++x] = 0x00;
-	attribute_map[++x] = A_5250_PINK;
-	attribute_map[++x] = A_5250_PINK | A_REVERSE;
-	attribute_map[++x] = A_5250_BLUE;
-	attribute_map[++x] = A_5250_BLUE | A_REVERSE;
-	attribute_map[++x] = A_5250_PINK | A_UNDERLINE;
-	attribute_map[++x] = A_5250_PINK | A_UNDERLINE | A_REVERSE;
-	attribute_map[++x] = A_5250_BLUE | A_UNDERLINE;
-	attribute_map[++x] = 0x00;
-
-	This->data->quit_flag = 0;
-
-	/* Determine if the terminal supports underlining. */
-	if (This->data->have_underscores == 0)
-	{
-		This->data->underscores = 1;
-//		if ((unsigned char*)tgetstr("us", NULL) == NULL)
-//			This->data->underscores = 1;
-//		else
-//			This->data->underscores = 0;
-	}
-
-#ifdef USE_OWN_KEY_PARSING
-	/* Allocate and populate an array of escape code => key code
-	 * mappings. */
-	This->data->k_map_len = (sizeof(curses_vt100) / sizeof(Key)) * 2
-							+ sizeof(curses_caps) / sizeof(Key) + 1;
-	This->data->k_map = (Key*)malloc(sizeof(Key) * This->data->k_map_len);
-
-	c = sizeof(curses_caps) / sizeof(Key);
-	s = sizeof(curses_vt100) / sizeof(Key);
-	for (i = 0; i < c; i++)
-	{
-		This->data->k_map[i].k_code = curses_caps[i].k_code;
-		if ((str = (unsigned char*)tgetstr(curses_caps[i].k_str, NULL)) != NULL)
-		{
-			TN5250_LOG(("Found string for cap '%s': '%s'.\n",
-					curses_caps[i].k_str, str));
-			strcpy(This->data->k_map[i].k_str, str);
-		}
-		else
-			This->data->k_map[i].k_str[0] = '\0';
-	}
-
-	/* Populate vt100 escape codes, both ESC+ and C-g+ forms. */
-	for (i = 0; i < sizeof(curses_vt100) / sizeof(Key); i++)
-	{
-		This->data->k_map[i + c].k_code =
-		This->data->k_map[i + c + s].k_code =
-				curses_vt100[i].k_code;
-		strcpy(This->data->k_map[i + c].k_str, curses_vt100[i].k_str);
-		strcpy(This->data->k_map[i + c + s].k_str, curses_vt100[i].k_str);
-
-		if (This->data->k_map[i + c + s].k_str[0] == '\033')
-			This->data->k_map[i + c + s].k_str[0] = K_CTRL('G');
-		else
-			This->data->k_map[i + c + s].k_str[0] = '\0';
-	}
-
-	/* Damn the exceptions to the rules. (ESC + DEL) */
-	This->data->k_map[This->data->k_map_len - 1].k_code = K_INSERT;
-	This->data->k_map[This->data->k_map_len - s - 1].k_code = K_INSERT;
-	if ((str = (unsigned char*)tgetstr("kD", NULL)) != NULL)
-	{
-		This->data->k_map[This->data->k_map_len - 1].k_str[0] = '\033';
-		This->data->k_map[This->data->k_map_len - s - 1].k_str[0] = K_CTRL('G');
-		strcpy(This->data->k_map[This->data->k_map_len - 1].k_str + 1, str);
-		strcpy(This->data->k_map[This->data->k_map_len - s - 1].k_str + 1, str);
-	}
-	else
-		This->data->k_map[This->data->k_map_len - 1].k_str[0] =
-		This->data->k_map[This->data->k_map_len - s - 1].k_str[0] = 0;
-#endif
-}
-
 /****i* lib5250/tn5250_curses_terminal_use_underscores
  * NAME
  *    tn5250_curses_terminal_use_underscores
@@ -539,46 +364,6 @@ void tn5250_curses_terminal_set_xterm_font(Tn5250Terminal* This,
 	TN5250_LOG(("font_132 = %s.\n", This->data->font_132));
 }
 
-/****i* lib5250/curses_terminal_term
- * NAME
- *    curses_terminal_term
- * SYNOPSIS
- *    curses_terminal_term (This);
- * INPUTS
- *    Tn5250Terminal  *    This       - 
- * DESCRIPTION
- *    DOCUMENT ME!!!
- *****/
-static void curses_terminal_term(Tn5250Terminal /*@unused@*/ * This)
-{
-	endwin();
-}
-
-/****i* lib5250/curses_terminal_destroy
- * NAME
- *    curses_terminal_destroy
- * SYNOPSIS
- *    curses_terminal_destroy (This);
- * INPUTS
- *    Tn5250Terminal *     This       - 
- * DESCRIPTION
- *    DOCUMENT ME!!!
- *****/
-static void curses_terminal_destroy(Tn5250Terminal* This)
-{
-#ifdef USE_OWN_KEY_PARSING
-	if (This->data->k_map != NULL)
-		free(This->data->k_map);
-#endif
-	if (This->data->font_80 != NULL)
-		free(This->data->font_80);
-	if (This->data->font_132 != NULL)
-		free(This->data->font_132);
-	if (This->data != NULL)
-		free(This->data);
-	free(This);
-}
-
 /****i* lib5250/curses_terminal_width
  * NAME
  *    curses_terminal_width
@@ -594,41 +379,6 @@ static int curses_terminal_width(Tn5250Terminal /*@unused@*/ * This)
 	int y, x;
 	getmaxyx(stdscr, y, x);
 	return x + 1;
-}
-
-/****i* lib5250/curses_terminal_height
- * NAME
- *    curses_terminal_height
- * SYNOPSIS
- *    ret = curses_terminal_height (This);
- * INPUTS
- *    Tn5250Terminal  *    This       - 
- * DESCRIPTION
- *    DOCUMENT ME!!!
- *****/
-static int curses_terminal_height(Tn5250Terminal /*@unused@*/ * This)
-{
-	int y, x;
-	getmaxyx(stdscr, y, x);
-	return y + 1;
-}
-
-/****i* lib5250/curses_terminal_flags
- * NAME
- *    curses_terminal_flags
- * SYNOPSIS
- *    ret = curses_terminal_flags (This);
- * INPUTS
- *    Tn5250Terminal  *    This       - 
- * DESCRIPTION
- *    DOCUMENT ME!!!
- *****/
-static int curses_terminal_flags(Tn5250Terminal /*@unused@*/ * This)
-{
-	int f = 0;
-	if (has_colors() != 0)
-		f |= TN5250_TERMINAL_HAS_COLOR;
-	return f;
 }
 
 /****i* lib5250/curses_terminal_update
@@ -853,47 +603,6 @@ curses_terminal_update_indicators(Tn5250Terminal /*@unused@*/ * This, Tn5250Disp
 	refresh();
 }
 
-/****i* lib5250/curses_terminal_waitevent
- * NAME
- *    curses_terminal_waitevent
- * SYNOPSIS
- *    ret = curses_terminal_waitevent (This);
- * INPUTS
- *    Tn5250Terminal *     This       - 
- * DESCRIPTION
- *    DOCUMENT ME!!!
- *****/
-static int curses_terminal_waitevent(Tn5250Terminal* This)
-{
-	fd_set fdr;
-	int result = 0;
-	int sm;
-
-
-	if (This->data->quit_flag)
-		return TN5250_TERMINAL_EVENT_QUIT;
-
-	FD_ZERO(&fdr);
-
-	FD_SET(0, &fdr);
-	sm = 1;
-	if (This->conn_fd >= 0)
-	{
-		FD_SET(This->conn_fd, &fdr);
-		sm = This->conn_fd + 1;
-	}
-
-	select(sm, &fdr, NULL, NULL, NULL);
-
-	if (FD_ISSET(0, &fdr))
-		result |= TN5250_TERMINAL_EVENT_KEY;
-
-	if (This->conn_fd >= 0 && FD_ISSET(This->conn_fd, &fdr))
-		result |= TN5250_TERMINAL_EVENT_DATA;
-
-	return result;
-}
-
 #ifndef USE_OWN_KEY_PARSING
 /****i* lib5250/curses_terminal_getkey
  * NAME
@@ -996,39 +705,6 @@ static int curses_terminal_getkey(Tn5250Terminal * This)
 }
 #endif
 
-/****i* lib5250/curses_terminal_beep
- * NAME
- *    curses_terminal_beep
- * SYNOPSIS
- *    curses_terminal_beep (This);
- * INPUTS
- *    Tn5250Terminal *     This       - 
- * DESCRIPTION
- *    DOCUMENT ME!!!
- *****/
-static void curses_terminal_beep(Tn5250Terminal* This)
-{
-	TN5250_LOG (("CURSES: beep\n"));
-	beep();
-	refresh ();
-}
-
-
-/***** lib5250/curses_terminal_enhanced
- * NAME
- *    curses_terminal_enhanced
- * SYNOPSIS
- *    ret = curses_terminal_enhanced (This);
- * INPUTS
- *    Tn5250Terminal  *    This       - 
- * DESCRIPTION
- *    Return 1 if we support the enhanced 5250 protocol, 0 otherwise.
- *****/
-static int
-curses_terminal_enhanced(Tn5250Terminal* This)
-{
-	return (0);
-}
 
 #ifndef USE_OWN_KEY_PARSING
 /****i* lib5250/curses_terminal_get_esc_key
@@ -1473,26 +1149,6 @@ void tn5250_curses_terminal_load_colorlist(Tn5250Config* config)
 		x++;
 	}
 
-}
-
-
-/****i* lib5250/curses_terminal_config
- * NAME
- *    curses_terminal_config
- * SYNOPSIS
- *    curses_terminal_config(This, config);
- * INPUTS
- *    Tn5250Terminal *     This       -
- *    Tn5250Display  *     config     -
- * DESCRIPTION
- *    Assign a set of configuration data to the terminal
- *****/
-int curses_terminal_config(Tn5250Terminal* This, Tn5250Config* config)
-{
-	This->data->config = config;
-	if (tn5250_config_get_bool(config, "local_print_key"))
-		This->data->local_print = 1;
-	return 0;
 }
 
 
