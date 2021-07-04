@@ -2170,3 +2170,34 @@ void Curses::updateIndicators(_Tn5250Display* display)
 	attrset(A_NORMAL);
 	refresh();
 }
+
+const std::size_t Curses::waitForEvent()
+{
+	fd_set fdr;
+	int result = 0;
+	int sm;
+
+
+	if (this->data->quit_flag)
+		return TN5250_TERMINAL_EVENT_QUIT;
+
+	FD_ZERO(&fdr);
+
+	FD_SET(0, &fdr);
+	sm = 1;
+	if (this->conn_fd >= 0)
+	{
+		FD_SET(this->conn_fd, &fdr);
+		sm = this->conn_fd + 1;
+	}
+
+	select(sm, &fdr, NULL, NULL, NULL);
+
+	if (FD_ISSET(0, &fdr))
+		result |= TN5250_TERMINAL_EVENT_KEY;
+
+	if (this->conn_fd >= 0 && FD_ISSET(this->conn_fd, &fdr))
+		result |= TN5250_TERMINAL_EVENT_DATA;
+
+	return result;
+}

@@ -54,7 +54,7 @@ tn5250_terminal_update_indicators(Tn5250Terminal* This, Tn5250Display* d)
 int
 tn5250_terminal_waitevent(Tn5250Terminal* This)
 {
-	return (*((This)->waitevent))((This));
+	return This->waitForEvent();
 }
 
 int

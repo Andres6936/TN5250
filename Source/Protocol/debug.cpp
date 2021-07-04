@@ -381,7 +381,7 @@ static int debug_terminal_waitevent(Tn5250Terminal* This)
 	int n;
 
 	if (feof(This->data->dbgstream->debugfile))
-		return (*(This->data->slaveterm->waitevent))(This->data->slaveterm);
+		return This->data->slaveterm->waitForEvent();
 
 	while (fgets(buf, sizeof(buf) - 2, This->data->dbgstream->debugfile))
 	{
@@ -434,14 +434,14 @@ static int debug_terminal_waitevent(Tn5250Terminal* This)
 		else if (!memcmp(buf, "@key ", 5))
 		{
 			if (This->data->pauseflag)
-				(*(This->data->slaveterm->waitevent))(This->data->slaveterm);
+				This->data->slaveterm->waitForEvent();
 			This->data->keyq = atoi(buf + 5);
 			return TN5250_TERMINAL_EVENT_KEY;
 		}
 	}
 
 	/* EOF */
-	return (*(This->data->slaveterm->waitevent))(This->data->slaveterm);
+	return This->data->slaveterm->waitForEvent();
 }
 
 /****i* lib5250/debug_terminal_getkey
