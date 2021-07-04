@@ -85,7 +85,7 @@ tn5250_terminal_enhanced(Tn5250Terminal* This)
 int
 tn5250_terminal_config(Tn5250Terminal* This, Tn5250Config* conf)
 {
-	return ((This)->config == NULL ? 0 : (*((This)->config))((This), (conf)));
+	return This->configuration(conf);
 }
 
 void

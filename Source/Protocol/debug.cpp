@@ -128,8 +128,6 @@ Tn5250Terminal* tn5250_debug_terminal_new(Tn5250Terminal* slave, Tn5250Stream* d
 	if (This != NULL)
 	{
 		This->conn_fd = -1;
-		This->config = NULL;
-
 		This->data = tn5250_new(Tn5250TerminalPrivate, 1);
 		if (This->data == NULL)
 		{

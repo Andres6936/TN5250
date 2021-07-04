@@ -310,7 +310,6 @@ Tn5250Terminal* tn5250_curses_terminal_new()
 #endif
 
 	r->conn_fd = -1;
-	r->config = curses_terminal_config;
 	return r;
 }
 
@@ -2295,5 +2294,13 @@ void Curses::beepUp()
 
 const std::size_t Curses::enhancedUp()
 {
+	return 0;
+}
+
+const std::size_t Curses::configuration(_Tn5250Config* config)
+{
+	this->data->config = config;
+	if (tn5250_config_get_bool(config, "local_print_key"))
+		this->data->local_print = 1;
 	return 0;
 }

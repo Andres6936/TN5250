@@ -210,8 +210,10 @@ struct _Tn5250Terminal
 
 	};
 
-	int (* config)(struct _Tn5250Terminal* This,
-			struct _Tn5250Config* config);
+	virtual const std::size_t configuration(_Tn5250Config* config)
+	{
+
+	};
 
 	void (* create_window)(struct _Tn5250Terminal* This,
 			struct _Tn5250Display* display,
