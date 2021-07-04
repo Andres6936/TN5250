@@ -1997,3 +1997,11 @@ const std::size_t Curses::getHeight()
 	getmaxyx(stdscr, y, x);
 	return y + 1;
 }
+
+const std::size_t Curses::getFlags()
+{
+	int f = 0;
+	if (has_colors() != 0)
+		f |= TN5250_TERMINAL_HAS_COLOR;
+	return f;
+}

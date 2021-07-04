@@ -315,7 +315,7 @@ static int debug_terminal_height(Tn5250Terminal* This)
  *****/
 static int debug_terminal_flags(Tn5250Terminal* This)
 {
-	return (*(This->data->slaveterm->flags))(This->data->slaveterm);
+	return This->data->slaveterm->getFlags();
 }
 
 /****i* lib5250/debug_terminal_update
