@@ -73,7 +73,7 @@ tn5250_terminal_putkey(Tn5250Terminal* This, Tn5250Display* d,
 void
 tn5250_terminal_beep(Tn5250Terminal* This)
 {
-	(*((This)->beep))((This));
+	This->beepUp();
 }
 
 int

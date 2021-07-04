@@ -128,7 +128,6 @@ Tn5250Terminal* tn5250_debug_terminal_new(Tn5250Terminal* slave, Tn5250Stream* d
 	if (This != NULL)
 	{
 		This->conn_fd = -1;
-		This->beep = debug_terminal_beep;
 		This->config = NULL;
 
 		This->data = tn5250_new(Tn5250TerminalPrivate, 1);
@@ -352,7 +351,7 @@ static void debug_terminal_update_indicators(Tn5250Terminal* This, Tn5250Display
  *****/
 static void debug_terminal_beep(Tn5250Terminal* This)
 {
-	(*(This->data->slaveterm->beep))(This->data->slaveterm);
+	This->data->slaveterm->beepUp();
 }
 
 /****i* lib5250/debug_terminal_waitevent

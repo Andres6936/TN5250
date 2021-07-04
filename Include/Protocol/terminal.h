@@ -200,8 +200,11 @@ struct _Tn5250Terminal
 
 	};
 
+	virtual void beepUp()
+	{
 
-	void (* beep)(struct _Tn5250Terminal* This);
+	};
+
 
 	int (* enhanced)(struct _Tn5250Terminal* This);
 
